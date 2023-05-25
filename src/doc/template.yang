@@ -11,9 +11,9 @@ module [ halo-{{...}} {{device-family}}-{{device-model}} ] {
   }
 
   organization
-    "CommScope, Inc.";
+    "Vendor.";
   contact
-    "x.y@commscope.com";
+    "x.y@vendor.com";
   description
     "...";
 
