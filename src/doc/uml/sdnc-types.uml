@@ -669,6 +669,6 @@ class "/if:interfaces/if:interface" as ietf_interfaces_I_interfaces_I_interface 
 
 interface_ref-->"if:name"ietf_interfaces_I_interfaces_I_interface: interface-ref
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

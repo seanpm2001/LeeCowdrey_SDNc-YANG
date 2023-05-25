@@ -145,7 +145,7 @@ module toaster {
   }
 
   augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
-    description "CommScope Domain Manager YANG-to-CLI testing';
+    description "YANG-to-CLI testing';
     container config {
       config true;
       leaf raw {

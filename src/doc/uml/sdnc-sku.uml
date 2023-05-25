@@ -156,6 +156,6 @@ class "../../../.." as sdnc_I_sdnc_I_sku_I_models <<leafref>>
 
 sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule-->"cs:model-namespace"sdnc_I_sdnc_I_sku_I_models: belongs-to-xmlns
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

@@ -11,7 +11,7 @@ run() {
 }
 DN=$(dirname $0)
 pushd ${DN}/.. &>/dev/null
-UML_FOOTER="CommScope © 2020-2022 All Rights Reserved"
+UML_FOOTER="Cowdrey Consulting UK"
 UML_OPTS=""
 [[ ! -d src/doc/uml ]] && (mkdir -p src/doc/uml)
 [[ ! -d src/doc/uml/devices ]] && (mkdir -p src/doc/uml/devices)

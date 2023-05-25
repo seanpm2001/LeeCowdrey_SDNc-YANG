@@ -402,6 +402,6 @@ sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history-->"cs:model-revision"sdnc_I_sd
 network_topology_I_network_topology_I_topology_I_node_I_sdnc-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 sdnc_xnf_I_nf_config_delivery-->"cnf:instance-slice"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices: instance-slice
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

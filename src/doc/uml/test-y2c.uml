@@ -153,6 +153,6 @@ sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types-->"hostname"sdnc_I_sdnc_I_xnf_
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things: variant
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things: variant
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

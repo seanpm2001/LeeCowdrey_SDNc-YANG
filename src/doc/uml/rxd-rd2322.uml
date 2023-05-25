@@ -1532,6 +1532,6 @@ sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulatio
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances: instance
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs: identifier
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

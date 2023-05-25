@@ -772,6 +772,6 @@ sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets-->"cnf:instance"sdnc_I_s
 sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

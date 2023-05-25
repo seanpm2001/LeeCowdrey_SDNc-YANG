@@ -76,6 +76,6 @@ sdnc_I_sdnc_I_topology_I_link_I_links-->"ctop:link-id"sdnc_I_sdnc_I_topology_I_l
 sdnc_I_sdnc_I_topology_I_link_I_links_I_source-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 sdnc_I_sdnc_I_topology_I_link_I_links_I_destination-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 

@@ -199,6 +199,6 @@ sdnc_halo_docs --> sdnc_halo_docs_I_device_structure_grouping : uses
 sdnc_halo_docs --> sdnc_halo_docs_I_device_structure_grouping : uses 
 sdnc_halo_docs --> sdnc_halo_docs_I_device_ethernet_interfaces_grouping : uses 
 center footer
- <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ <size:24> Cowdrey Consulting UK </size>
  endfooter 
 @enduml 
