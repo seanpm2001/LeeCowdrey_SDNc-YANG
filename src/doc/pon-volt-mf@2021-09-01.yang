@@ -49,15 +49,7 @@ module pon-volt-mf {
   contact
     "lee.cowdrey@commscope.com";
   description
-    "CSDM PON SHOLT Management Funciton (volt-mf)
-
-     CommScope © 2020-2021 All Rights Reserved
-
-     This program is confidential and proprietary to CommScope, Inc.
-     (CommScope), and may not be copied, reproduced, modified, disclosed
-     to others, published or used, in whole or in part, without the express
-     prior written permission of CommScope.
-    ";
+    "XGS-PON Virtual Management Funciton (volt-mf)";
 
   revision 2021-09-01 {
     description
@@ -69,9 +61,9 @@ module pon-volt-mf {
   }
 
   cx:sku-model-revision "2021-09-01";
-  cx:sku-vendor "CommScope";
+  cx:sku-vendor "Vendor";
   cx:sku-model-family "XGSPON";
-  cx:sku-model-type "ARRIS SH-OLT VOLT-MF";
+  cx:sku-model-type "VOLT-MF";
   cx:sku-firmware-name "default";
   cx:sku-firmware-version "1.0.0";
   cx:cli-process "false";
