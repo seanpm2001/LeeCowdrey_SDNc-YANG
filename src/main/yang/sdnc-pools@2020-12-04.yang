@@ -1,0 +1,2790 @@
+module sdnc-pools {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:pools";
+  prefix cp;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Number/Identifier pool management";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-pools {
+    status current;
+  }
+
+  rpc allocid-request {
+    if-feature "c:sdnc";
+    description
+      "Generate or use supplied PON Alloc-Id to register";
+    input {
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier for pOLT";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf port {
+        description
+          "OLT PON port";
+        type uint8 {
+          range "1..255";
+        }
+        mandatory true;
+      }
+      leaf port-mode {
+        description
+          "OLT PON port mode";
+        type ct:pon-port-mode;
+        default "xgspon";
+      }
+      leaf identifier {
+        description
+          "Optional, if supplied will be used if available";
+        type uint16 {
+          range "256..16383";
+        }
+      }
+    }
+    output {
+      leaf identifier {
+        description
+          "Generated/reserved alloc-id";
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:pon/cp:alloc-id/cp:allocs/cp:ports/cp:ids/cp:identifier";
+          require-instance true;
+        }
+      }
+    }
+  }
+
+  rpc gemportid-request {
+    if-feature "c:sdnc";
+    description
+      "Generate or use supplied PON Gemport-Id to register";
+    input {
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier for pOLT";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf port {
+        description
+          "OLT PON port";
+        type uint8 {
+          range "1..255";
+        }
+        mandatory true;
+      }
+      leaf port-mode {
+        description
+          "OLT PON port mode";
+        type ct:pon-port-mode;
+        default "xgspon";
+      }
+      leaf block-size {
+        type uint8 {
+          range "1..8";
+        }
+        default "8";
+      }
+      leaf gemport-type {
+        description
+          "point-to-point (aka unicast) or point-to-multipoint (aka multicast)";
+        type ct:ip-gemport-type;
+        mandatory true;
+      }
+      leaf allocation-strategy {
+        description
+          "Increment from starting range or Decrement from end range";
+        type ct:ip-allocation-strategy;
+        mandatory true;
+      }
+      leaf identifier {
+        description
+          "Optional, if supplied will be used if available";
+        type uint32 {
+          range "0..65534";
+        }
+      }
+    }
+    output {
+      list ids {
+        key "identifier";
+        min-elements 1;
+        max-elements 8;
+        ordered-by system;
+        leaf identifier {
+          description
+            "Generated/reserved gemport-id";
+          type leafref {
+            path "/c:sdnc/cp:pools/cp:pon/cp:gemport-id/cp:gemports/cp:ports/cp:ids/cp:identifier";
+            require-instance true;
+          }
+        }
+      }
+    }
+  }
+
+  rpc gemportid-release {
+    if-feature "c:sdnc";
+    description
+      "Release block of previously generated PON Gemport-Ids";
+    input {
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier for pOLT";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf port {
+        description
+          "OLT PON port";
+        type uint8 {
+          range "1..255";
+        }
+        mandatory true;
+      }
+      list ids {
+        key "identifier";
+        min-elements 1;
+        max-elements 8;
+        ordered-by system;
+        leaf identifier {
+          description
+            "Generated/reserved gemport-id";
+          type leafref {
+            path "/c:sdnc/cp:pools/cp:pon/cp:gemport-id/cp:gemports/cp:ports/cp:ids/cp:identifier";
+            require-instance true;
+          }
+        }
+      }
+    }
+  }
+
+  rpc onuid-request {
+    if-feature "c:sdnc";
+    description
+      "Generate or use supplied PON onu-Id to register";
+    input {
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier for pOLT";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf port {
+        description
+          "OLT PON port";
+        type uint8 {
+          range "1..255";
+        }
+        mandatory true;
+      }
+      leaf port-mode {
+        description
+          "OLT PON port mode";
+        type ct:pon-port-mode;
+        default "xgspon";
+      }
+      leaf identifier {
+        description
+          "Optional, if supplied will be used if available";
+        type uint32 {
+          range "0..1022";
+        }
+      }
+    }
+    output {
+      leaf identifier {
+        description
+          "Generated/reserved onu-id";
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:pon/cp:onu-id/cp:onus/cp:ports/cp:ids/cp:identifier";
+          require-instance true;
+        }
+      }
+    }
+  }
+
+  rpc ipv4-block-allocate {
+    if-feature "c:sdnc";
+    input {
+      leaf starting-address {
+        description
+          "starting address";
+        type inet:ipv4-address-no-zone;
+        mandatory true;
+      }
+      choice allocation {
+        case mask {
+          leaf subnet-mask {
+            type ct:ipv4-subnet-mask;
+            default "255.255.255.0";
+          }
+        }
+        case bits {
+          leaf subnet-bits {
+            type ct:ipv4-subnet-bits;
+            default "24";
+          }
+        }
+      }
+      leaf usage {
+        type ct:ipv4-network-usage;
+        default "unicast";
+      }
+    }
+    output {
+      leaf address-block {
+        type inet:ipv4-address;
+        mandatory true;
+      }
+    }
+  }
+
+  rpc ipv6-block-allocate {
+    if-feature "c:sdnc";
+    input {
+      leaf type {
+        type ct:ipv6-address-type;
+        default "global";
+      }
+      leaf prefix {
+        type ct:ipv6-prefix;
+        default "128";
+      }
+      leaf usage {
+        type ct:ipv6-network-usage;
+        default "unicast";
+      }
+      leaf starting-address {
+        description
+          "Optional starting address";
+        type inet:ipv6-address-no-zone;
+      }
+    }
+    output {
+      leaf address-block {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:blocks/cp:block";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc vrf-request {
+    if-feature "c:sdnc";
+    description
+      "request virtual routing and forwarding (VRF) identifier";
+    input {
+      leaf identifier {
+        description
+          "optionally supply VRF to register, it will be outputted back if unique/valid";
+        type ct:ip-vrf;
+      }
+      leaf type {
+        type ct:ip-vrf-type;
+        default "vrf";
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:vrf/cp:vrfs/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc vlan-outer-request {
+    if-feature "c:sdnc";
+    description
+      "request outer VLAN identifiers";
+    input {
+      leaf identifier {
+        description
+          "outer VLAN-ID (i.e. SVID, Q-in-Q)";
+        type ct:ip-vlan-id;
+        default "1";
+      }
+      leaf classification {
+        type ct:ip-vlan-classification;
+        default "normal";
+      }
+      leaf name {
+        type string;
+        default "default";
+      }
+      leaf type {
+        type ct:ip-vlan-type;
+        default "qinq";
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc vlan-request {
+    if-feature "c:sdnc";
+    description
+      "request outer/inner VLAN identifiers";
+    input {
+      leaf outer-identifier {
+        description "optional outer VLAN-ID (i.e. SVID, Q-in-Q) or default (1) to register/use."
+                  + "if outer does not exist, then will be created";
+        type ct:ip-vlan-id;
+        default "1";
+      }
+      leaf outer-classification {
+        type ct:ip-vlan-classification;
+        default "normal";
+      }
+      leaf outer-name {
+        type string;
+        default "default";
+      }
+      leaf outer-type {
+        type ct:ip-vlan-type;
+        default "default";
+      }
+      leaf inner-identifier {
+        description
+          "optional inner VLAN-ID (i.e. CVID, Q-in-Q) to register";
+        type ct:ip-vlan-id;
+      }
+      leaf inner-classification {
+        type ct:ip-vlan-classification;
+        default "normal";
+      }
+      leaf inner-name {
+        type string;
+      }
+      leaf inner-type {
+        type ct:ip-vlan-type;
+        default "default";
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf outer-identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf inner-identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer/cp:inner/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc svlan-request {
+    if-feature "c:sdnc";
+    description
+      "validate input s-vlan (outer) identifier and optional c-vlan (inner) identifier using the associated group and tagging mode.";
+    input {
+      leaf outer-identifier {
+        description
+          "aka s-vlan identifier or s-vid.";
+        type ct:ip-vlan-id;
+        mandatory true;
+      }
+      leaf inner-identifier {
+        description
+          "aka c-vlan identifier or c-vid";
+        type ct:ip-vlan-id;
+      }
+      leaf vlan-group {
+        type ct:ip-vlan-group;
+        mandatory true;
+      }
+      leaf tagging-mode {
+        type ct:ip-vlan-tagmode;
+        mandatory true;
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc vxlan-request {
+    if-feature "c:sdnc";
+    description
+      "request VXLAN identifier (VNI)";
+    input {
+      leaf identifier {
+        description
+          "optionally supply VXLAN VNI to register, it will be outputted back if unique/valid";
+        type ct:ip-vxlan-vni;
+      }
+      leaf scope {
+        type ct:ip-vxlan-scope;
+        default "network-wide";
+      }
+      leaf name {
+        type string;
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:vxlan/cp:vxlans/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc virtual-router-request {
+    if-feature "c:sdnc";
+    description
+      "request virtual-router identifier (VRID)";
+    input {
+      leaf identifier {
+        description
+          "optionally supply VRID to register, it will be outputted back if unique/valid";
+        type ct:ip-vrid;
+      }
+      leaf name {
+        type string;
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:virtual-router/cp:virtual-routers/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc route-target-request {
+    if-feature "c:sdnc";
+    description
+      "request route-target (RT)";
+    input {
+      leaf type {
+        type ct:ip-rt-type;
+        mandatory true;
+      }
+      choice variant {
+        case existing {
+          description
+            "Externally generated or existing identifier";
+          leaf identifier {
+            type ct:ip-rt;
+            mandatory true;
+          }
+        }
+        case type-0 {
+          description
+            "2-octet-asn:4-octet-number";
+          leaf t0-asn {
+            type ct:ip-asn;
+            mandatory true;
+          }
+          leaf t0-octet {
+            type string {
+              length "1..4";
+              pattern '[0-9]{1,4}';
+            }
+            mandatory true;
+          }
+        }
+        case type-1 {
+          description
+            "4-octet-ipv4addr:2-octet-number";
+          leaf t1-ipv4-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+          }
+          leaf t1-octet {
+            type string {
+              length "1..2";
+              pattern '[0-9]{1,2}';
+            }
+            mandatory true;
+          }
+        }
+        case type-2 {
+          description
+            "4-octet-asn:2-octet-number";
+          leaf t2-asn {
+            type ct:ip-asn;
+            mandatory true;
+          }
+          leaf t2-octet {
+            type string {
+              length "1..2";
+              pattern '[0-9]{1,2}';
+            }
+            mandatory true;
+          }
+        }
+        case type-6 {
+          description
+            "6-octet-mac-address";
+          leaf mac-address {
+            type ct:mac-address;
+            mandatory true;
+          }
+        }
+        case generic {
+          description
+            "Additionally, a generic pattern is defined for future route target types: 2-octet-other-hex-number:6-octet-hex-number";
+          leaf generic-octet {
+            type string {
+              pattern '([3-57-9a-f]|[1-9a-f])[0-9a-f]:[0-9a-f]{6}';
+            }
+            mandatory true;
+          }
+        }
+        case ipv6 {
+          description
+            "IPv6 Route Target is a 20-octet BGP IPv6 Address";
+          leaf ipv6-address {
+            type inet:ipv6-address;
+            mandatory true;
+          }
+        }
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:route-target/cp:route-targets/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc route-distinguisher-request {
+    if-feature "c:sdnc";
+    description
+      "request route-distinguisher (RD)";
+    input {
+      leaf type {
+        type ct:ip-rd-type;
+        mandatory true;
+      }
+      choice variant {
+        case existing {
+          description
+            "Externally generated or existing identifier";
+          leaf identifier {
+            type ct:ip-rd;
+            mandatory true;
+          }
+        }
+        case type-0 {
+          description
+            "2-octet-asn:4-octet-number";
+          leaf t0-asn {
+            type ct:ip-asn;
+            mandatory true;
+          }
+          leaf t0-octet {
+            type string {
+              length "1..4";
+              pattern '[0-9]{1,4}';
+            }
+            mandatory true;
+          }
+        }
+        case type-1 {
+          description
+            "4-octet-ipv4addr:2-octet-number";
+          leaf ipv4-address {
+            type inet:ipv4-address-no-zone;
+            mandatory true;
+          }
+          leaf t1-octet {
+            type string {
+              length "1..2";
+              pattern '[0-9]{1,2}';
+            }
+            mandatory true;
+          }
+        }
+        case type-2 {
+          description
+            "4-octet-asn:2-octet-number";
+          leaf t2-asn {
+            type ct:ip-asn;
+            mandatory true;
+          }
+          leaf t2-octet {
+            type string {
+              length "1..2";
+              pattern '[0-9]{1,2}';
+            }
+            mandatory true;
+          }
+        }
+        case type-6 {
+          description
+            "6-octet-mac-address";
+          leaf mac-address {
+            type ct:mac-address;
+            mandatory true;
+          }
+        }
+        case generic {
+          description
+            "Additionally, a generic pattern is defined for future route discriminator types: 2-octet-other-hex-number:6-octet-hex-number";
+          leaf generic-octet {
+            type string {
+              pattern '([3-57-9a-f]|[1-9a-f])[0-9a-f]:[0-9a-f]{6}';
+            }
+            mandatory true;
+          }
+        }
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:route-distinguisher/cp:route-distinguishers/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc autonomous-system-request {
+    if-feature "c:sdnc";
+    description
+      "request autonomous-system (AS) identifier";
+    input {
+      leaf identifier {
+        description
+          "optionally supply AS to register, it will be outputted back if unique/valid";
+        type ct:ip-asn;
+      }
+      leaf classification {
+        type ct:ip-asn-type;
+        default "private";
+      }
+      leaf instance {
+        description
+          "sdnc-xnf instance identifier";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf identifier {
+        type leafref {
+          path "/c:sdnc/cp:pools/cp:ip/cp:autonomous-system/cp:autonomous-systems/cp:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container pools {
+      config true;
+      container pon {
+        container alloc-id {
+          list allocs {
+            key "instance";
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier for pOLT";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            action destroy {
+              description
+                "Release all identifiers against all ports";
+            }
+            list ports {
+              key "port";
+              leaf port {
+                description
+                  "OLT PON port";
+                type uint8 {
+                  range "1..255";
+                }
+                mandatory true;
+              }
+              leaf port-mode {
+                description
+                  "OLT PON port mode";
+                type ct:pon-port-mode;
+                mandatory true;
+              }
+              action clear {
+                description
+                  "Release all identifiers against current port";
+              }
+              list ids {
+                key "identifier";
+                leaf identifier {
+                  type uint16 {
+                    range "256..16383";
+                  }
+                  must "(../../port-mode='gpon' and (. > 255 and . < 4097)) or "
+                     + "(../../port-mode='epon' and (. > 255 and . < 4097)) or "
+                     + "(../../port-mode='xgs' and (. > 1023 and . < 16384)) or "
+                     + "(../../port-mode='xgpon' and (. > 1023 and . < 16384)) or "
+                     + "(../../port-mode='xgspon' and (. > 1023 and . < 16384)) or "
+                     + "(../../port-mode='ngpon2' and (. > 1023 and . < 16384))" {
+                    error-app-tag "pon-allocid-out-of-range";
+                    error-message "PON Alloc-Id out of permitted range based on PON port mode selected";
+                  }
+                }
+                action release {
+                  description
+                    "Release Alloc-Id";
+                }
+              }
+              container tracking {
+                config false;
+                leaf last-issued-identifier {
+                  type uint16 {
+                    range "256..16383";
+                  }
+                }
+                leaf last-released-identifier {
+                  type uint16 {
+                    range "256..16383";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container gemport-id {
+          list gemports {
+            key "instance";
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier for pOLT";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            action destroy {
+              description
+                "Release all identifiers against all ports";
+            }
+            list ports {
+              key "port";
+              leaf port {
+                description
+                  "OLT PON port";
+                type uint8 {
+                  range "1..255";
+                }
+                mandatory true;
+              }
+              leaf port-mode {
+                description
+                  "OLT PON port mode";
+                type ct:pon-port-mode;
+                mandatory true;
+              }
+              leaf gemport-type {
+                description
+                  "point-to-point (aka unicast) or point-to-multipoint (aka multicast)";
+                type ct:ip-gemport-type;
+                must "(. = 'point-to-point' and (allocation-strategy = increment) and (block-size = 8)) or "
+                   + "(. = 'point-to-multipoint' and (allocation-strategy = decrement) and (block-size = 1))" {
+                  error-app-tag "mismatch-in-gemport-type-allocation-strategy-block-size";
+                  error-message "Mismatch in input gemport-type, allocation-strategy and block-size";
+                }
+                mandatory true;
+              }
+              leaf allocation-strategy {
+                description
+                  "Increment from starting range or Decrement from end range";
+                type ct:ip-allocation-strategy;
+                must "(gemport-type = 'point-to-point' and (. = increment) and (block-size = 8)) or "
+                   + "(gemport-type = 'point-to-multipoint' and (. = decrement) and (block-size = 1))" {
+                  error-app-tag "mismatch-in-gemport-type-allocation-strategy-block-size";
+                  error-message "Mismatch in input gemport-type, allocation-strategy and block-size";
+                }
+                mandatory true;
+              }
+              action clear {
+                description
+                  "Release all identifiers against current port";
+              }
+              list ids {
+                key "identifier";
+                leaf identifier {
+                  type uint32 {
+                    range "0..65534";
+                  }
+                  must "(../../port-mode='gpon' and (. >= 256 and . <= 4095)) or "
+                     + "(../../port-mode='epon' and (. >= 0 and . <= 4095)) or "
+                     + "(../../port-mode='xgs' and (. >= 1024 and . < 16384)) or "
+                     + "(../../port-mode='xgpon' and (. >= 1024 and . <= 65534)) or "
+                     + "(../../port-mode='xgspon' and (. >= 1024 and . <= 8960)) or "
+                     + "(../../port-mode='ngpon2' and (. >= 1021 and . <= 65534))" {
+                    error-app-tag "pon-gemportid-out-of-range";
+                    error-message "PON Gemport-Id out of permitted range based on PON port mode selected";
+                  }
+                }
+                leaf block-size {
+                  type uint8 {
+                    range "1..8";
+                  }
+                  default "8";
+                }
+                action release {
+                  description
+                    "Release gemport-Id";
+                }
+              }
+              container tracking {
+                config false;
+                leaf p2p-last-issued-identifier {
+                  type uint32 {
+                    range "0..65534";
+                  }
+                }
+                leaf p2p-last-issued-block-size {
+                  type uint8 {
+                    range "1..8";
+                  }
+                  default "8";
+                }
+                leaf p2p-last-released-identifier {
+                  type uint32 {
+                    range "0..65534";
+                  }
+                }
+                leaf p2mp-last-issued-identifier {
+                  type uint32 {
+                    range "0..65534";
+                  }
+                }
+                leaf p2mp-last-issued-block-size {
+                  type uint8 {
+                    range "1..8";
+                  }
+                  default "8";
+                }
+                leaf p2mp-last-released-identifier {
+                  type uint32 {
+                    range "0..65534";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container onu-id {
+          list onus {
+            key "instance";
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier for pOLT";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            action destroy {
+              description
+                "Release all identifiers against all ports";
+            }
+            list ports {
+              key "port";
+              leaf port {
+                description
+                  "OLT PON port";
+                type uint8 {
+                  range "1..255";
+                }
+                mandatory true;
+              }
+              leaf port-mode {
+                description
+                  "OLT PON port mode";
+                type ct:pon-port-mode;
+                mandatory true;
+              }
+              action clear {
+                description
+                  "Release all identifiers against current port";
+              }
+              list ids {
+                key "identifier";
+                leaf identifier {
+                  type uint32 {
+                    range "0..1022";
+                  }
+                  must "(../../port-mode='gpon' and (. >= 0 and . <= 253)) or "
+                     + "(../../port-mode='epon' and (. >= 0 and . <= 253)) or "
+                     + "(../../port-mode='xgs' and (. > 0 and . < 1022)) or "
+                     + "(../../port-mode='xgpon' and (. >= 0 and . <= 1022)) or "
+                     + "(../../port-mode='xgspon' and (. >= 0 and . <= 1020)) or "
+                     + "(../../port-mode='ngpon2' and (. >= 0 and . <= 1020))" {
+                    error-app-tag "pon-onuid-out-of-range";
+                    error-message "PON onu-Id out of permitted range based on PON port mode selected";
+                  }
+                }
+                action release {
+                  description
+                    "Release onu-Id";
+                }
+              }
+              container tracking {
+                config false;
+                leaf last-issued-identifier {
+                  type uint32 {
+                    range "0..1022";
+                  }
+                }
+                leaf last-released-identifier {
+                  type uint32 {
+                    range "0..1022";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container vlan {
+          list outer {
+            key "instance";
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier for OLT";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            action destroy {
+              description
+                "Release all s-vlans (outer-identifiers) against the OLT";
+            }
+            list vlans {
+              key "identifier";
+              leaf identifier {
+                type ct:ip-vlan-id;
+                mandatory true;
+              }
+              leaf vlan-group {
+                type ct:ip-vlan-group;
+                mandatory true;
+              }
+              leaf taggingmode {
+                description
+                  "tagging mode used between outer (s-vlan) & inner (c-vlan) vlans";
+                type ct:ip-vlan-tagmode;
+                mandatory true;
+              }
+              action release {
+                description
+                  "Release input s-vlan (outer-identifier) and its c-vlan's against current OLT";
+              }
+              list inner {
+                key "identifier";
+                leaf identifier {
+                  type ct:ip-vlan-id;
+                  mandatory true;
+                }
+                action clear {
+                  description
+                    "Release c-vlan of the s-vlan of the OLT";
+                }
+              }
+            }
+            container tracking {
+              description
+                "For tracking c-vid's (aka inner-identifier's) allocated to the OLT";
+              config false;
+              list allocated-c-vids {
+                key "identifier";
+                leaf identifier {
+                  type ct:ip-vlan-id;
+                }
+              }
+            }
+          }
+        }
+        container collection {
+          list traffic-descriptors {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf profile-name {
+              type leafref {
+                path "../../../profile/traffic-descriptors/name";
+                require-instance true;
+              }
+            }
+          }
+          list l2-dhcp4-relays {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf profile-name {
+              type leafref {
+                path "../../../profile/l2-dhcp4-relays/name";
+                require-instance true;
+              }
+            }
+          }
+          list qos-policies {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf policy-name {
+              type leafref {
+                path "../../../policy/qos/name";
+                require-instance true;
+              }
+            }
+          }
+          list qos-classifiers {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf classifier-name {
+              type leafref {
+                path "../../../classifier/qos/name";
+                require-instance true;
+              }
+            }
+          }
+          list remote-endpoints {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf endpoint-name {
+              type leafref {
+                path "../../../endpoint/remote-endpoints/name";
+                require-instance true;
+              }
+            }
+          }
+          list syslog-endpoints {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf endpoint-name {
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:syslog-endpoint/cp:syslog-endpoints/name";
+                require-instance true;
+              }
+            }
+          }
+        }
+        container endpoint {
+          list remote-endpoints {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            container nf-client {
+              description
+                "Client network function configuration.";
+              leaf enabled {
+                type boolean;
+                default "true";
+                description
+                  "Administratively enable the use of the client connectivity
+                   capability to the network function.";
+              }
+              container nf-initiate {
+                presence "Enables network function client to initiate
+                          connections to remote endpoints";
+                description
+                  "Configures client initiating underlying connections.";
+                container remote-endpoints {
+                  description
+                    "Remote endpoints that the client will connect.";
+                  list remote-endpoint {
+                    key "name";
+                    min-elements 1;
+                    description
+                      "List of remote endpoints the client is to
+                       initiate connections to in parallel.";
+                    leaf name {
+                      type string;
+                      description
+                        "An arbitrary name for the remote endpoint.";
+                    }
+                    leaf type {
+                      type ct:pon-nf-type;
+                    }
+                    choice client-transport {
+                      mandatory true;
+                      description
+                        "Selects between available client transports.";
+                      case grpc {
+                        container grpc {
+                          description
+                            "The gRPC specific configuration for the
+                             connection.";
+                          leaf local-endpoint-name {
+                            type string;
+                          }
+                          container grpc-client-parameters {
+                            description
+                              "A wrapper around the gRPC client parameters
+                               to avoid name collisions.";
+                            container channel {
+                              description
+                                "The gRPC channel properties.";
+                              leaf ping-interval {
+                                type uint32 {
+                                  range "0..max";
+                                }
+                                units "seconds";
+                                default "300";
+                                description
+                                  "Sets the amount of time after to send a ping request.
+                                   A value of 0 disables pings from being sent.";
+                              }
+                            }
+                            // container channel
+                            container connection-backoff {
+                              description
+                                "The connection backoff directs how a client
+                                 reconnects to a remote endpoint, after discovering
+                                 its connection to the remote endpoint has dropped.
+                                 The gRPC connection backoff protocol is documented
+                                 in github.com/grpc/grpc/blob/master/doc
+                                              /connection-backoff.md.";
+                              leaf initial-backoff {
+                                type uint16 {
+                                  range "1..max";
+                                }
+                                units "seconds";
+                                default "30";
+                                description
+                                  "The initial wait period after the first failure
+                                   before retrying.";
+                              }
+                              leaf min-connect-timeout {
+                                type uint16 {
+                                  range "1..max";
+                                }
+                                units "seconds";
+                                default "20";
+                                description
+                                  "The minimum time to wait for the connection attempts.";
+                              }
+                              leaf multiplier {
+                                type decimal64 {
+                                  fraction-digits 2;
+                                }
+                                default "1.60";
+                                description
+                                  "The factor with which to multiply the backoff after a
+                                   failed retry.";
+                              }
+                              leaf jitter {
+                                type decimal64 {
+                                  fraction-digits 2;
+                                }
+                                default "0.20";
+                                description
+                                  "The factor with which to randomizethe backoff.";
+                              }
+                              leaf max-backoff {
+                                type uint16 {
+                                  range "1..max";
+                                }
+                                default "10";
+                                description
+                                  "The number times the client tries to connect to a
+                                   specific endpoint before moving on to the next endpoint
+                                   in the list (round robin).";
+                              }
+                            }
+                          }
+                        }
+                      }
+                      case kafka-agent {
+                        container kafka-agent {
+                          description
+                            "The Kafka agent specific configuration for the
+                             connection.";
+                          container kafka-agent-parameters {
+                            description
+                              "A wrapper around the kafka-agent parameters
+                               to avoid name collisions.";
+                            leaf client-id {
+                              type string;
+                              description
+                                "The identifier that the client/consumer (agent) uses
+                                 to identify the source of a message.";
+                            }
+                            container publication-parameters {
+                              description
+                                "The Kafka agent publication properties.";
+                              list topic {
+                                key "name";
+                                description
+                                  "The topics the agent will publish.";
+                                leaf name {
+                                  type string;
+                                  description
+                                    "The name of the topic.";
+                                }
+                                leaf purpose {
+                                  type string;
+                                  description
+                                    "The purpose of the topic (e.g., VOMCI_NOTIFICATION,
+                                     VOMCI_REQUEST, VOMCI_RESPONSE).";
+                                }
+                                leaf partition {
+                                  type string;
+                                  description
+                                    "For topics that are partitioned, the partition used for
+                                     production and consumption.";
+                                }
+                              }
+                            }
+                            container consumption-parameters {
+                              description
+                                "The Kafka agent consumption properties.";
+                              leaf group-id {
+                                type string;
+                                description
+                                  "The identifier that the group that the consumer can
+                                   participate.";
+                              }
+                              list topic {
+                                key "name";
+                                description
+                                  "The topics the agent will consume.";
+                                leaf name {
+                                  type string;
+                                  description
+                                    "The name of the topic.";
+                                }
+                                leaf purpose {
+                                  type string;
+                                  description
+                                    "The purpose of the topic (e.g., VOMCI_NOTIFICATION,
+                                     VOMCI_REQUEST, VOMCI_RESPONSE).";
+                                }
+                                leaf partition {
+                                  type string;
+                                  description
+                                    "For topics that are partitioned, the partition used for
+                                     production and consumption.";
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    } // choice transport
+                    list access-point {
+                      key "name";
+                      min-elements 1;
+                      ordered-by user;
+                      description
+                        "A user-ordered list of access points  that the client
+                         will attempt to connect to in the specified sequence.
+                         Defining more than one enables high-availability.";
+                      leaf name {
+                        type string;
+                        description
+                          "An arbitrary name for the access point.";
+                      }
+                      choice message-transport {
+                        mandatory true;
+                        description
+                          "Selects between available transports.";
+                        case grpc {
+                          container grpc {
+                            description
+                              "The IP and gRPC specific configuration for the
+                               connection.";
+                            container grpc-transport-parameters {
+                              description
+                                "A wrapper around the gRPC transport parameters
+                                 to avoid name collisions.";
+                              leaf remote-address {
+                                type inet:host;
+                                mandatory true;
+                                description
+                                  "The IP address or hostname of the remote peer to
+                                   establish a connection with.  If a domain name is
+                                   configured, then the DNS resolution should happen on
+                                   each connection attempt.  If the the DNS resolution
+                                   results in multiple IP addresses, the IP addresses
+                                   are tried according to local preference order until
+                                   a connection has been established or until all IP
+                                   addresses have failed.";
+                              }
+                              leaf remote-port {
+                                type inet:port-number;
+                                default "8443";
+                                description
+                                  "The IP port number for the remote peer to establish a
+                                   connection with.  An invalid default value (0) is used
+                                   (instead of 'mandatory true') so that as application
+                                   level data model may 'refine' it with an application
+                                   specific default port number value.";
+                              }
+                              leaf local-address {
+                                type inet:ip-address;
+                                description
+                                  "The local IP address/interface (VRF?) to bind to for when
+                                   connecting to the remote peer.  INADDR_ANY ('0.0.0.0') or
+                                   INADDR6_ANY ('0:0:0:0:0:0:0:0' a.k.a. '::') MAY be used to
+                                   explicitly indicate the implicit default, that the server
+                                   can bind to any IPv4 or IPv6 addresses, respectively.";
+                              }
+                              leaf local-port {
+                                type inet:port-number;
+                                default "0";
+                                description
+                                  "The local IP port number to bind to for when connecting
+                                   to the remote peer.  The port number '0', which is the
+                                   default value, indicates that any available local port
+                                   number may be used.";
+                              }
+                              container keepalives {
+                                leaf idle-time {
+                                  type uint16 {
+                                    range "1..max";
+                                  }
+                                  units "seconds";
+                                  mandatory true;
+                                }
+                                leaf max-probes {
+                                  type uint16 {
+                                    range "1..max";
+                                  }
+                                  mandatory true;
+                                }
+                                leaf probe-interval {
+                                  type uint16 {
+                                    range "1..max";
+                                  }
+                                  units "seconds";
+                                  mandatory true;
+                                }
+                              }
+                            }
+                          }
+                        }
+                        case kafka-agent {
+                          container kafka-agent {
+                            description
+                              "The Kafka agent connection.";
+                            container kafka-agent-transport-parameters {
+                              description
+                                "A wrapper around the kafka-agent transport
+                                 parameters to avoid name collisions.";
+                              leaf remote-address {
+                                type inet:host;
+                                mandatory true;
+                              }
+                              leaf remote-port {
+                                type inet:port-number;
+                                default "9092";
+                              }
+                              leaf local-address {
+                                type inet:ip-address;
+                              }
+                              leaf local-port {
+                                type inet:port-number;
+                                default "0";
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            container nf-server {
+              description
+                "Server network function configuration.";
+              leaf enabled {
+                type boolean;
+                default "true";
+                description
+                  "Administratively enable the use of the server connectivity
+                   capability for connecting network function.";
+              }
+              container listen {
+                presence "Enables server to listen for client connections.";
+                description
+                  "Configures listen behavior";
+                leaf idle-timeout {
+                  type uint16;
+                  units "seconds";
+                  default "3600";
+                  description
+                    "The maximum number of seconds that a session may remain
+                     idle. A session will be dropped if it is idle for an
+                     interval longer than this number of seconds. If set to
+                     zero, then the server will never drop a session because
+                     it is idle. Sessions that have a notification subscription
+                     active are never dropped.";
+                }
+                list listen-endpoint {
+                  key "name";
+                  min-elements 1;
+                  description
+                    "List of endpoints to listen for connections.";
+                  leaf name {
+                    type string;
+                    description
+                      "An arbitrary name for the listen endpoint.";
+                  }
+                  choice transport {
+                    mandatory true;
+                    description
+                      "Selects between available transports.";
+                    case grpc {
+                      container grpc {
+                        description
+                          "gRPC-specific listening configuration for inbound
+                           connections.";
+                        container grpc-server-parameters {
+                          description
+                            "A wrapper around the gRPC server parameters to
+                             avoid name collisions.";
+                          leaf local-endpoint-name {
+                            type string;
+                            description
+                              "The name that this entity will use when
+                               reporting the entity as an endpoint.
+                               For example, see section 5.6.2.1 Hello
+                               vOMCI service in TR-451 for how this parameter
+                               is used for vOMCI communication.";
+                          }
+                          leaf remote-address {
+                            type inet:host;
+                          }
+                          leaf remote-port {
+                            type inet:port-number;
+                            default "0";
+                          }
+                          leaf local-address {
+                            type inet:ip-address;
+                            mandatory true;
+                          }
+                          leaf local-port {
+                            type inet:port-number;
+                            default "8443";
+                          }
+                        }
+                      }
+                    }
+                  }
+                  container remote-endpoints {
+                    description
+                      "Remote endpoints that are currently connected to the
+                       server.";
+                    list remote-endpoint {
+                      key "name";
+                      description
+                        "List of currently connected remote endpoints.";
+                      leaf name {
+                        type string;
+                        description
+                          "Identity of the remote endpoint as provided when the
+                           connection was established.";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            container nf-endpoint-filter {
+              description
+                "The network function endpoint filter.";
+              list rule {
+                key "name";
+                min-elements 1;
+                description
+                  "A rule contains a classification of resources that
+                   match a criteria. The result is an endpoint name.
+                   The definition is: first match, then stop searching
+                   for matches with other rules, obtain the resulting
+                   endpoint specified in this rule.";
+                leaf name {
+                  type ct:string-ascii64;
+                  description
+                    "The rule name.";
+                }
+                leaf priority {
+                  type uint16 {
+                    range "1..max";
+                  }
+                  mandatory true;
+                  description
+                    "Indicates the priority for applying the match criteria
+                     of this rule against the priority of match criteria of
+                     other rules in this filter.
+
+                     The higher the value, the lower the priority, i.e.
+                     priority 1 is the highest priority.";
+                }
+                container flexible-match {
+                  choice onu-criterion {
+                    default "any-onu";
+                    description
+                      "ONU selection criterion values";
+                    case any-onu {
+                      leaf any-onu {
+                        type empty;
+                        description
+                          "Identifies any ONU";
+                      }
+                    }
+                    case onu-vendor {
+                      leaf onu-vendor {
+                        type ct:onu-vendor-id;
+                        description
+                          "ONU vendor as defined in the TC layer ONU-ID.";
+                      }
+                    }
+                  }
+                  description
+                    "Provides a generic framework to specify match criteria
+                     for endpoint filters. Specific match criteria shall be
+                     provided using augments in a context dependent way,
+                     e.g. match criteria can be augmented for ONUs, or in
+                     another context match criteria can be augmented for
+                     another resource.";
+                }
+                leaf resulting-endpoint {
+                  type string;
+                  description
+                    "The resulting endpoint name.
+                     When operating as a server the resulting endpoint is a
+                     value in the listen-endpoint' remote-endpoint list.
+                     When operating as a client the resulting endpoint is a
+                     value in the client's remote-endpoint list.
+                     If operating as both a client and server to the same
+                     remote-endpoint which session to use (client or server)
+                     is unspecified as the information transmitted will reach
+                     the same remote-endpoint.";
+                }
+              }
+            }
+          }
+        }
+        container policy {
+          list qos {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf description {
+              type ct:string-ascii64-or-empty;
+              description
+                "Description of the policy.";
+            }
+            list classifiers {
+              key "name";
+              ordered-by user;
+              description
+                "Provides a lists of classifiers which are evaluated in
+                 order as specified by the user. When a classifier is
+                 matched, no other classifiers are evaluated.";
+              leaf name {
+                type leafref {
+                  path "../../../../classifier/qos/name";
+                  require-instance true;
+                }
+              }
+            }
+          }
+        }
+        container profile {
+          list traffic-descriptors {
+            key "name";
+            leaf name {
+              type ct:name;
+              description
+                "Traffic descriptor profile name.";
+            }
+            leaf fixed-bandwidth {
+              type uint64;
+              units "bits/second";
+              default "0";
+            }
+            leaf assured-bandwidth {
+              type uint64;
+              units "bits/second";
+              default "0";
+            }
+            leaf maximum-bandwidth {
+              type uint64;
+              units "bits/second";
+              must "(boolean(../fixed-bandwidth) and
+                    boolean(../assured-bandwidth) and
+                    (. >= ../fixed-bandwidth + ../assured-bandwidth))
+                    or
+                    (boolean(../fixed-bandwidth) and
+                    not(boolean(../assured-bandwidth)) and
+                    (. >= ../fixed-bandwidth))
+                    or
+                    (not(boolean(../fixed-bandwidth)) and
+                    boolean(../assured-bandwidth) and
+                    (. >= ../assured-bandwidth))
+                    or
+                    (not(boolean(../fixed-bandwidth)) and
+                    not(boolean(../assured-bandwidth)))" {
+                error-message
+                  "The maximum bandwidth must be greater than or equal to
+                   the sum of the configured fixed and assured bandwidth.";
+              }
+              mandatory true;
+            }
+            leaf priority {
+              type uint8 {
+                range "1..8";
+              }
+            }
+            leaf weight {
+              type uint8;
+            }
+            leaf additional-bw-eligibility-indicator {
+              type enumeration {
+                enum non-assured-sharing;
+                enum best-effort-sharing;
+                enum none;
+              }
+              must ". = 'non-assured-sharing' or
+                    . = 'best-effort-sharing' or
+                    (. = 'none' and
+                    ((boolean(../fixed-bandwidth) and
+                    boolean(../assured-bandwidth) and
+                    (../maximum-bandwidth = ../fixed-bandwidth +
+                    ../assured-bandwidth))
+                    or
+                    (boolean(../fixed-bandwidth) and
+                    not(boolean(../assured-bandwidth)) and
+                    (../maximum-bandwidth = ../fixed-bandwidth))
+                    or
+                    (not(boolean(../fixed-bandwidth)) and
+                    boolean(../assured-bandwidth) and
+                    (../maximum-bandwidth = ../assured-bandwidth))
+                    or
+                    (not(boolean(../fixed-bandwidth)) and
+                    not(boolean(../assured-bandwidth)) and
+                    ../maximum-bandwidth = 0)))";
+            }
+          }
+          list l2-dhcp4-relays {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf max-packet-size {
+              type uint16 {
+                range "576..9000";
+              }
+              units "bytes";
+              default "1500";
+            }
+            container option82-format {
+              leaf-list suboptions {
+                type enumeration {
+                  enum circuit-id;
+                  enum remote-id;
+                  enum access-loop-characteristics;
+                }
+                min-elements 1;
+              }
+              leaf default-circuit-id-syntax {
+                type ct:string-ascii63-or-empty;
+                default "";
+              }
+              leaf default-remote-id-syntax {
+                type ct:string-ascii63-or-empty;
+                default "";
+              }
+              leaf access-loop-suboptions {
+                type ct:broadband-line-characteristics;
+                default "";
+              }
+              leaf start-numbering-from-zero {
+                type boolean;
+                default "false";
+              }
+              leaf use-leading-zeroes {
+                type boolean;
+                default "false";
+              }
+            }
+          }
+        }
+        container classifier {
+          list qos {
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf description {
+              type ct:string-ascii64-or-empty;
+              description
+                "Description of the class template.";
+            }
+            leaf filter-operation {
+              type enumeration {
+                enum match-any-filter;
+                enum match-all-filter;
+              }
+              default "match-any-filter";
+              status deprecated;
+            }
+            choice filter-method {
+              description
+                "Configuration of filter methods.";
+              case inline {
+                status deprecated;
+                description
+                  "The classifier criteria are directly configured here.";
+                container match-criteria {
+                  status deprecated;
+                  leaf vlan-tag-match-type {
+                    type enumeration {
+                      enum untagged;
+                      enum vlan-tagged;
+                      enum dscp-range;
+                      enum any;
+                    }
+                  }
+                  container untagged {
+                    when "../vlan-tag-match-type='untagged'";
+                    status deprecated;
+                    leaf untagged {
+                      type empty;
+                      status deprecated;
+                    }
+                  }
+                  container vlan-tagged {
+                    when "../vlan-tag-match-type='untagged'";
+                    status deprecated;
+                    list tag {
+                      key "index";
+                      min-elements 1;
+                      max-elements 2;
+                      status deprecated;
+                      leaf index {
+                        type uint8 {
+                          range "0..1";
+                        }
+                        must 'count(../../tag[index = 0]) > 0' {
+                          error-message "An inner tag can only be matched on when also "
+                                      + "matching on an outer tag.";
+                        }
+                        status deprecated;
+                      }
+                      leaf in-pbit-list {
+                        type string {
+                          pattern '([0-7](-[0-7])?(,[0-7](-[0-7])?)*)';
+                        }
+                        status deprecated;
+                      }
+                      leaf in-dei {
+                        type uint8 {
+                          range "0..1";
+                        }
+                        status deprecated;
+                      }
+                    }
+                  }
+                  container dscp-range {
+                    when "../vlan-tag-match-type='dscp-range'";
+                    leaf dscp-range {
+                      type union {
+                        type string {
+                          pattern '(([0-9]|[0-5][0-9]|[6][0-3])(-([0-9]|[0-5][0-9]|[6]['
+                                + '0-3]))?(,([0-9]|[0-5][0-9]|[6][0-3])(-([0-9]|[0-5]['
+                                + '0-9]|[6][0-3]))?)*)';
+                        }
+                        type enumeration {
+                          enum any {
+                            description
+                              "Matches any DSCP value in the range of 0 to 63.";
+                          }
+                        }
+                      }
+                      default "any";
+                      status deprecated;
+                      description
+                        "String identifying the DSCP values and/or range.";
+                    }
+                  }
+                  container protocols {
+                    status deprecated;
+                    description
+                      "The choice allows to specify combintations of frame field
+                       values that identify a particular protocol or allows to
+                       indicate any protocol.
+
+                       If no case is configured, then it has the same meaning as
+                       if case 'any-protocol' has been configured.";
+                    leaf protocol {
+                      type enumeration {
+                        enum any;
+                        enum one;
+                      }
+                    }
+                    container any-protocol {
+                      when "../protocol='any'";
+                      leaf any-protocol {
+                        type empty;
+                        status deprecated;
+                        description
+                          "Identifies any protocol, i.e. not match is specified
+                           for any protocol.";
+                      }
+                    }
+                    container one-protocol {
+                      when "../protocol='one'";
+                      status deprecated;
+                      leaf-list protocol {
+                        type enumeration {
+                          enum igmp {
+                            description
+                              "Identifies IPv4 IGMP messages, i.e. the IPv4 packets for
+                               which in the IPv4 header the protocol field is set to the
+                               value 0x02.";
+                          }
+                          enum mld {
+                            description
+                              "Identifies IPv6 MLD messages, MLD messages are a subset of
+                               the ICMPv6 protocol. ICMPv6 messages are identified with
+                               Next Header value of 58. MLD messages are identified by
+                               specific values of the Type field. Type field values are
+                               defined in RFC 3810.";
+                          }
+                          enum dhcpv4 {
+                            description
+                              "Identifies IPv4 packets with UDP source port 68 and
+                               destination port 67 (client to server), or with UDP source
+                               port 67 and destination port 68 (server to client).";
+                          }
+                          enum dhcpv6 {
+                            description
+                              "Identifies IPv6 packets with UDP source port 547 and
+                               destination port 546 (client to server), or with UDP source
+                               port 546 and destination port 547 (server to client).";
+                          }
+                          enum pppoe-discovery {
+                            description
+                              "Identifies PPPoE discovery messages, which are Ethernet
+                               frames with Ethertype=0x8863.";
+                          }
+                          enum icmpv6 {
+                            description
+                              "Identifies ICMPv6 protocol messages. ICMPv6 messages are
+                               identified with Next Header value of 58. When the
+                               individual ICMPv6 message types are configured then the
+                               individual configurations will take precedence over this
+                               configuration";
+                          }
+                          enum nd {
+                            description
+                              "Identifies IPv6 ND messages, ND mesages are a subset of the
+                               ICMPv6 protocol. ICMPv6 messages are identified with Next
+                               Header value of 58. ND messages are identified by specific
+                               values of the Type field. Type field values are defined in
+                               RFC 3810.";
+                          }
+                          enum arp {
+                            description
+                              "Identifies the ARP messages, which are ethernet frames with
+                               ethertype 0x0806.";
+                          }
+                          enum cfm {
+                            description
+                              "Identifies the CFM messages, which are ethernet frames with
+                               ethertype 0x8902.";
+                          }
+                          enum dot1x {
+                            description
+                              "Identifies the DOT1X messages, which are ethernet frames
+                               with ethertype 0x888E.";
+                          }
+                          enum lacp {
+                            description
+                              "Identifies the LACP messages, which are ethernet frames
+                               with ethertype 0x8809.";
+                          }
+                        }
+                        status deprecated;
+                        description
+                          "Defines the protocols which will be matched.";
+                      }
+                    }
+                  }
+                }
+              }
+              case all-packets {
+                description
+                  "The classifier applies to all frames that are in the
+                   scope of the flow on which the classifier applies.";
+                leaf all-packets {
+                  type empty;
+                  description
+                    "Identifies all frames.";
+                }
+              }
+            }
+            list classifier-action-entry-cfg {
+              key "action-type";
+              ordered-by user;
+              description
+                "Configuration of classifier associated actions.";
+              leaf action-type {
+                type enumeration {
+                  enum pbit-marking;
+                  enum dei-marking;
+                  enum scheduling-traffic-class;
+                  enum dscp-marking;
+                  enum permit;
+                }
+                description
+                  "This defines the action type.";
+              }
+              choice action-cfg-params {
+                description
+                  "Choice of action types.";
+                case pbit-marking {
+                  container pbit-marking-cfg {
+                    when "../action-type='pbit-marking'" {
+                      description
+                        "Only applicable when the action-type is
+                         'pbit-marking'.";
+                    }
+                    description
+                      "P-bits marking configuration container.";
+                    list pbit-marking-list {
+                      key "index";
+                      description
+                        "Creates metadata which can be used to determine p-bits values
+                         to write to a VLAN tag or as match criteria for another
+                         classifier associated with another QoS policy with which the
+                         frame is to be processed. Each entry uses a unique numeric
+                         index associated with a p-bits value.";
+                      leaf index {
+                        type uint8;
+                      }
+                      leaf pbit-value {
+                        type uint8 {
+                          range "0..7";
+                        }
+                      }
+                    }
+                  }
+                }
+                case dei-marking {
+                  container dei-marking-cfg {
+                    when "../action-type='dei-marking'" {
+                      description
+                        "Only applicable when the action-type is
+                         dei-marking.";
+                    }
+                    description
+                      "DEI marking configuration container.";
+                    list pbit-marking-list {
+                      key "index";
+                      description
+                        "Creates metadata which can be used to determine p-bits values
+                         to write to a VLAN tag or as match criteria for another
+                         classifier associated with another QoS policy with which the
+                         frame is to be processed. Each entry uses a unique numeric
+                         index associated with a p-bits value.";
+                      leaf index {
+                        type uint8;
+                        description
+                          "The index associated with a p-bits value.";
+                      }
+                      leaf pbit-value {
+                        type uint8 {
+                          range "0..7";
+                        }
+                        description
+                          "A p-bits value to be inserted in the p-bits of a frame's
+                           VLAN tag or as match criteria for another classifier
+                           associated with another QoS policy with which the frame is
+                           to be processed.";
+                      }
+                    }
+                  }
+                }
+                case dscp-marking {
+                  container dscp-marking-cfg {
+                    when "../action-type='dscp-marking'" {
+                      description
+                        "Only applicable when the action-type is dscp-marking.";
+                    }
+                    leaf dscp {
+                      type uint8 {
+                        range "0..63";
+                      }
+                      description
+                        "The value to be inserted in the DSCP field in the header of
+                         an IP packet.";
+                    }
+                    description
+                      "DSCP marking configuration container.";
+                  }
+                }
+                case scheduling-traffic-class {
+                  leaf scheduling-traffic-class {
+                    when "../action-type=
+                          'scheduling-traffic-class'" {
+                      description
+                        "Only applicable when the action-type is
+                         scheduling-traffic-class.";
+                    }
+                    type uint32 {
+                      range "0..7";
+                    }
+                    description
+                      "Define the traffic class for scheduling.";
+                  }
+                }
+                case permit {
+                  description
+                    "The action type for frames matching a classification
+                     criterium is that they are permitted and will be subject
+                     to further processing.";
+                  leaf permit {
+                    when '../action-type="permit"' {
+                      description
+                        "Only applicable when the action-type is 'permit'.";
+                    }
+                    type empty;
+                    description
+                      "The action type for frames matching a classification
+                       criterium is 'permit'.";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      container ip {
+        container syslog-endpoint {
+          description
+            "This container describes the configuration parameters for
+             forwarding syslog messages to remote relays or collectors.";
+          list syslog-endpoints {
+            key "name";
+            description
+              "This list describes a collection of remote logging
+               destinations.";
+            leaf name {
+              type string;
+              description
+                "An arbitrary name for the endpoint to connect to.";
+            }
+            choice transport {
+              mandatory true;
+              description
+                "This choice describes the transport option.";
+              case tcp {
+                container tcp {
+                  description
+                    "This container describes the TCP transport
+                     options.";
+                  reference
+                    "RFC 6587: Transmission of Syslog Messages over TCP";
+                  leaf address {
+                    type inet:host;
+                    description
+                      "The leaf uniquely specifies the address of
+                       the remote host. One of the following must
+                       be specified: an ipv4 address, an ipv6
+                       address, or a host name.";
+                  }
+                  leaf port {
+                    type inet:port-number;
+                    default "514";
+                    description
+                      "This leaf specifies the port number used to
+                       deliver messages to the remote server.";
+                  }
+                }
+              }
+              case udp {
+                container udp {
+                  description
+                    "This container describes the UDP transport
+                     options.";
+                  reference
+                    "RFC 5426: Transmission of Syslog Messages over UDP";
+                  leaf address {
+                    type inet:host;
+                    description
+                      "The leaf uniquely specifies the address of
+                       the remote host. One of the following must be
+                       specified: an ipv4 address, an ipv6 address,
+                       or a host name.";
+                  }
+                  leaf port {
+                    type inet:port-number;
+                    default "514";
+                    description
+                      "This leaf specifies the port number used to
+                       deliver messages to the remote server.";
+                  }
+                }
+              }
+            }
+          }
+        }
+        container address {
+          container ipv4 {
+            list blocks {
+              action deallocate {
+                description
+                  "relinquish IPv4 block";
+              }
+              action request {
+                description
+                  "request IPv4 address from previously allocated block";
+                input {
+                  leaf instance {
+                    description
+                      "sdnc-xnf instance identifier";
+                    type leafref {
+                      path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                      require-instance true;
+                    }
+                    mandatory true;
+                  }
+                }
+                output {
+                  leaf address {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    mandatory true;
+                  }
+                }
+              }
+              key "block usage";
+              leaf block {
+                type inet:ipv4-address;
+                mandatory true;
+              }
+              leaf subnet-mask {
+                type ct:ipv4-subnet-mask;
+                mandatory true;
+              }
+              leaf subnet-bits {
+                type ct:ipv4-subnet-bits;
+                mandatory true;
+              }
+              leaf wildcard-mask {
+                type ct:ipv4-subnet-mask;
+                mandatory true;
+              }
+              leaf usage {
+                type ct:ipv4-network-usage;
+                mandatory true;
+              }
+              leaf network-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+              }
+              leaf first-host-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+              }
+              leaf last-host-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+              }
+              leaf broadcast-address {
+                type inet:ipv4-address-no-zone;
+                mandatory true;
+              }
+              leaf total-usable {
+                type uint64;
+                mandatory true;
+              }
+              leaf total-usable-hosts {
+                type uint64;
+                mandatory true;
+              }
+              container tracking {
+                description
+                  "internal tracking";
+                config false;
+                leaf last-issued-address {
+                  type inet:ipv4-address-no-zone;
+                }
+                leaf last-released-address {
+                  type inet:ipv4-address-no-zone;
+                }
+              }
+            }
+            list addresses {
+              action release {
+                description
+                  "release IPv4 address back to allocated block";
+              }
+              key "address block";
+              leaf address {
+                type inet:ipv4-address;
+              }
+              leaf instance {
+                description
+                  "sdnc-xnf instance identifier";
+                type leafref {
+                  path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+              leaf block {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:blocks/cp:block";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+            }
+          }
+          container ipv6 {
+            list blocks {
+              action deallocate {
+                description
+                  "relinquish IPv6 block";
+              }
+              action request {
+                description
+                  "request IPv6 address from previously allocated block";
+                input {
+                  leaf instance {
+                    description
+                      "sdnc-xnf instance identifier";
+                    type leafref {
+                      path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                      require-instance true;
+                    }
+                    mandatory true;
+                  }
+                }
+                output {
+                  leaf address {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    mandatory true;
+                  }
+                }
+              }
+              key "block type";
+              leaf block {
+                type inet:ipv6-address;
+              }
+              leaf type {
+                type ct:ipv6-address-type;
+                mandatory true;
+              }
+              leaf prefix {
+                type ct:ipv6-prefix;
+                mandatory true;
+              }
+              leaf usage {
+                type ct:ipv6-network-usage;
+                mandatory true;
+              }
+              leaf network-address {
+                type inet:ipv6-address-no-zone;
+                mandatory true;
+              }
+              leaf first-host-address {
+                type inet:ipv6-address-no-zone;
+                mandatory true;
+              }
+              leaf last-host-address {
+                type inet:ipv6-address-no-zone;
+                mandatory true;
+              }
+              leaf total-usable {
+                type union {
+                  type uint64;
+                  type string {
+                    length "20..39";
+                    pattern '[0-9]{20,39}';
+                  }
+                }
+                mandatory true;
+              }
+              leaf total-usable-hosts {
+                type union {
+                  type uint64;
+                  type string {
+                    length "20..39";
+                    pattern '[0-9]{20,39}';
+                  }
+                }
+                mandatory true;
+              }
+              container tracking {
+                config false;
+                leaf last-issued-address {
+                  type inet:ipv6-address-no-zone;
+                }
+                leaf last-released-address {
+                  type inet:ipv6-address-no-zone;
+                }
+              }
+            }
+            list addresses {
+              action release {
+                description
+                  "release IPv4 address back to allocated block";
+              }
+              key "address block";
+              leaf address {
+                type inet:ipv6-address;
+              }
+              leaf instance {
+                description
+                  "sdnc-xnf instance identifier";
+                type leafref {
+                  path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+              leaf block {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:blocks/cp:block";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+            }
+          }
+        }
+        container vrf {
+          list vrfs {
+            action release {
+              description
+                "release virtual routing and forwarding (VRF) identifier";
+            }
+            key "identifier";
+            leaf identifier {
+              type ct:ip-vrf;
+            }
+            leaf type {
+              type ct:ip-vrf-type;
+              mandatory true;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+          container tracking {
+            config false;
+            leaf last-issued-identifier {
+              type ct:ip-vrf;
+            }
+            leaf last-released-identifier {
+              type ct:ip-vrf;
+            }
+          }
+        }
+        container vlan {
+          list outer {
+            key "identifier";
+            leaf identifier {
+              type ct:ip-vlan-id;
+            }
+            leaf classification {
+              type ct:ip-vlan-classification;
+              mandatory true;
+            }
+            leaf type {
+              type ct:ip-vlan-type;
+              mandatory true;
+            }
+            leaf name {
+              type string;
+            }
+            leaf outer-instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            action destroy {
+              description
+                "destroy outer VLAN-ID and all associated inner VLAN-IDs";
+            }
+            list inner {
+              action release {
+                description
+                  "release inner/ VLAN identifier";
+              }
+              key "identifier";
+              leaf identifier {
+                type ct:ip-vlan-id;
+              }
+              leaf classification {
+                type ct:ip-vlan-classification;
+                mandatory true;
+              }
+              leaf type {
+                type ct:ip-vlan-type;
+                mandatory true;
+              }
+              leaf name {
+                type string;
+              }
+              leaf instance {
+                description
+                  "sdnc-xnf instance identifier";
+                type leafref {
+                  path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+            }
+            container tracking {
+              config false;
+              leaf last-issued-identifier {
+                type ct:ip-vlan-id;
+              }
+              leaf last-released-identifier {
+                type ct:ip-vlan-id;
+              }
+            }
+          }
+          container tracking {
+            config false;
+            leaf last-issued-identifier {
+              type ct:ip-vlan-id;
+            }
+            leaf last-released-identifier {
+              type ct:ip-vlan-id;
+            }
+          }
+        }
+        container vxlan {
+          list vxlans {
+            action release {
+              description
+                "release VXLAN identifier (VNI)";
+            }
+            key "identifier";
+            leaf identifier {
+              type ct:ip-vxlan-vni;
+            }
+            leaf scope {
+              type ct:ip-vxlan-scope;
+              mandatory true;
+            }
+            leaf name {
+              type string;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+          container tracking {
+            config false;
+            leaf last-issued-identifier {
+              type ct:ip-vxlan-vni;
+            }
+            leaf last-released-identifier {
+              type ct:ip-vxlan-vni;
+            }
+          }
+        }
+        container virtual-router {
+          list virtual-routers {
+            action release {
+              description
+                "release virtual-router identifier (VRID)";
+            }
+            description
+              "virtual-router identifiers";
+            key "identifier";
+            leaf identifier {
+              type ct:ip-vrid;
+            }
+            leaf name {
+              type string;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+          container tracking {
+            config false;
+            leaf last-issued-identifier {
+              type ct:ip-vrid;
+            }
+            leaf last-released-identifier {
+              type ct:ip-vrid;
+            }
+          }
+        }
+        container route-target {
+          list route-targets {
+            action release {
+              description
+                "release route-target (RT)";
+            }
+            key "identifier";
+            leaf identifier {
+              type ct:ip-rt;
+            }
+            leaf type {
+              type ct:ip-rt-type;
+              mandatory true;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+        }
+        container route-distinguisher {
+          list route-distinguishers {
+            action release {
+              description
+                "release route-distinguisher (RD)";
+            }
+            key "identifier";
+            leaf identifier {
+              type ct:ip-rd;
+            }
+            leaf type {
+              type ct:ip-rd-type;
+              mandatory true;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+        }
+        container autonomous-system {
+          list autonomous-systems {
+            action release {
+              description
+                "release autonomous-system (AS) identifier";
+            }
+            key "identifier";
+            leaf identifier {
+              type ct:ip-asn;
+            }
+            leaf classification {
+              type ct:ip-asn-type;
+              mandatory true;
+            }
+            leaf instance {
+              description
+                "sdnc-xnf instance identifier";
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+          }
+        }
+      }
+    }
+  }
+}

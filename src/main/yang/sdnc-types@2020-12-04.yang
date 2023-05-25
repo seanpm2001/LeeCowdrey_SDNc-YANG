@@ -1,0 +1,4840 @@
+module sdnc-types {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:types";
+  prefix ct;
+
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-interfaces {
+    prefix if;
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc YANG Type Definitions";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  typedef identifier {
+    type string {
+      pattern '[A-Za-z_][A-Za-z0-9_-]*';
+    }
+    description
+      "YANG identifier string.";
+  }
+
+  typedef identifier-ref {
+    type string {
+      pattern '([A-Za-z_][A-Za-z0-9_-]*:)?[A-Za-z_][A-Za-z0-9_-]*';
+    }
+    description
+      "YANG identifier reference string.";
+  }
+
+  typedef name {
+    type string {
+      length "2..64";
+      pattern '([A-Za-z0-9\-_\s]+)';
+    }
+  }
+
+  typedef email-address {
+    type string {
+      // dot-atom-text "@" ...
+      pattern "[a-zA-Z0-9!#$%&"
+            + "'"
+            + "*+/=?^_`{|}~-]+"
+            + "(\\.[a-zA-Z0-9!#$%&"
+            + "'"
+            + "*+/=?^_`{|}~-]+)*"
+            + "@"
+            + "[a-zA-Z0-9!#$%&"
+            + "'"
+            + "*+/=?^_`{|}~-]+"
+            + "(\\.[a-zA-Z0-9!#$%&"
+            + "'"
+            + "*+/=?^_`{|}~-]+)*";
+    }
+    description
+      "The email-address type represents an email address as
+       defined as addr-spec in RFC 5322 section 3.4.1.";
+    reference
+      "RFC 5322: Internet Message Format";
+  }
+
+  typedef yes-no {
+    type enumeration {
+      enum yes {
+        value 0;
+      }
+      enum no {
+        value 1;
+      }
+    }
+  }
+
+  typedef enable-disable {
+    type enumeration {
+      enum disable {
+        value 0;
+      }
+      enum enable {
+        value 1;
+      }
+    }
+  }
+
+  typedef ok-fail {
+    type enumeration {
+      enum ok {
+        value 0;
+      }
+      enum fail {
+        value 1;
+      }
+    }
+  }
+
+  typedef module-namespace {
+    type inet:uri;
+  }
+
+  typedef module-revision {
+    type string {
+      length "10";
+      pattern '\d{4}-\d{2}-\d{2}';
+    }
+  }
+
+  typedef netconf-datastores {
+    type enumeration {
+      enum candidate {
+        value 0;
+      }
+      enum running {
+        value 1;
+      }
+      enum startup {
+        value 2;
+      }
+      enum operational {
+        description
+          "RFC8342 NMDA only";
+        value 3;
+      }
+      enum intended {
+        description
+          "RFC8342 NMDA only";
+        value 4;
+      }
+    }
+  }
+
+  typedef tls-certificate-type {
+    type enumeration {
+      enum ca {
+        description
+          "Certificate Authority";
+        value 0;
+      }
+      enum intermediate {
+        value 1;
+      }
+      enum csr {
+        description
+          "Certificate Signing Request";
+        value 2;
+      }
+      enum private-key {
+        value 3;
+      }
+      enum public-certificate {
+        value 4;
+      }
+      enum host {
+        value 5;
+      }
+    }
+  }
+
+  typedef system-log-level {
+    type enumeration {
+      enum trace;
+      enum warn;
+      enum info;
+      enum debug;
+      enum error;
+    }
+  }
+
+  typedef xnf-incarnation {
+    type enumeration {
+      enum pnf {
+        description
+          "Physical Network Function";
+      }
+      enum vnf {
+        description
+          "Virtual Network Function";
+      }
+      enum cnf {
+        description
+          "Container Network Function";
+      }
+      enum hnf {
+        description
+          "Hybrid Network Function";
+      }
+    }
+  }
+
+  typedef dependency-role {
+    type enumeration {
+      enum leader {
+        description
+          "Tighly or loosely controls followers and observers";
+        value 0;
+      }
+      enum follower {
+        description
+          "Tighyly-coupled to a leader";
+        value 1;
+      }
+      enum observer {
+        description
+          "Loosely-coupled to a leader";
+        value 2;
+      }
+      enum autonomous {
+        description
+          "Not dependant on a leader, able to be standalone";
+        value 3;
+      }
+    }
+  }
+
+  typedef xnf-state {
+    type enumeration {
+      enum operational {
+        description
+          "nf is operational as per normal expectations";
+        value 0;
+      }
+      enum intent {
+        description
+          "nf has alternative configuration intents to be applied,
+           either for a reset process or future adjustment.
+           Future may be time-based or dependency based";
+        value 1;
+      }
+      enum ztp {
+        description
+          "nf is expected to call-home and/or go through initial
+           zero-touch provisioning process before being considered
+           operational";
+        value 2;
+      }
+      enum fault {
+        description
+          "nf is reporting fault conditions or is faulty";
+        value 3;
+      }
+      enum recycle {
+        description
+          "nf is being repurposed and not expected to operational";
+        value 4;
+      }
+      enum swim {
+        description
+          "nf is undergoing software image/firmware management";
+        value 5;
+      }
+    }
+  }
+
+  typedef topology-base-class-type {
+    type enumeration {
+      enum underlay {
+        description
+          "Physical copper, fibre, coax etc.";
+        value 0;
+      }
+      enum overlay {
+        description
+          "Virtual VNF and CNF";
+        value 1;
+      }
+      enum pon {
+        description
+          "GPON, EPON, XGSPON etc.";
+        value 2;
+      }
+      enum ip {
+        description
+          "Assorted IP using Ethernet";
+        value 3;
+      }
+      enum docsis {
+        description
+          "DOCSIS HFC etc.";
+        value 4;
+      }
+      enum wifi {
+        description
+          "WiFi 2.4GHz, 5GHz, 6GHz etc.";
+        value 5;
+      }
+      enum mesh {
+        description
+          "Matter, Zigbee, Z-Wave, 6LoWPAN, etc.";
+        value 6;
+      }
+      enum bluetooth {
+        description
+          "personal area networks (PANs) using UHF radio";
+        value 7;
+      }
+      enum cellular {
+        description
+          "4G/LTE/5G etc.";
+        value 8;
+      }
+      enum microwave {
+        description
+          "Point-to-Point (P2P), Point-to-Multipoint (P2MP) links";
+        value 9;
+      }
+      enum satellite {
+        description
+          "Earth orbit, ground station, CPE etc.";
+        value 10;
+      }
+      enum service {
+        description
+          "Used when defining service topology";
+        value 11;
+      }
+    }
+  }
+
+  typedef topology-service-class-type {
+    type enumeration {
+      enum ip-fwd {
+        description
+          "IP Forwarding, i.e. layer-2";
+        value 0;
+      }
+      enum ip-rfw {
+        description
+          "IP Routing, i.e. layer-3";
+        value 1;
+      }
+      enum ip-vpws {
+        description
+          "Virtual Private Wire Service";
+        value 2;
+      }
+      enum ip-vpls {
+        description
+          "Virtual Private LAN service";
+        value 3;
+      }
+      enum ip-vlan {
+        description
+          "VLAN";
+        value 4;
+      }
+      enum ip-vxlan {
+        description
+          "VXLAN";
+        value 5;
+      }
+      enum ip-evpn {
+        description
+          "Ethernet VPN";
+        value 6;
+      }
+      enum ip-vpn {
+        description
+          "IPVPN";
+        value 7;
+      }
+      enum ip-l2tp {
+        description
+          "Layer-2 tunnelling protocol";
+        value 8;
+      }
+      enum docsis-sg {
+        description
+          "DOCSIS Service-Group";
+        value 50;
+      }
+    }
+  }
+
+  typedef firmware-version-type {
+    type string {
+      pattern '\d{1,2}.\d{1,2}.\d{1,2}(.\d{1,4})?';
+    }
+  }
+
+  typedef location-decimal-degrees-type {
+    type string {
+      length "7..22";
+      pattern '([-]?)[0-9]([0-9]?).([0-9]*),(\s?)([-]?)[0-9]([0-9]?).([0-9]*)';
+    }
+    default "0.0,0.0";
+  }
+
+  typedef location-latitude {
+    type decimal64 {
+      range "-90..90";
+      fraction-digits 4;
+    }
+    default "0.0000";
+  }
+
+  typedef location-longitude {
+    type decimal64 {
+      range "-180..180";
+      fraction-digits 4;
+    }
+    default "0.0000";
+  }
+
+  typedef location-iso3166-1-alpha-3 {
+    reference
+      "ISO 3166-1 alpha-3";
+    type enumeration {
+      enum ABW {
+        description
+          "Aruba";
+      }
+      enum AFG {
+        description
+          "Afghanistan";
+      }
+      enum AGO {
+        description
+          "Angola";
+      }
+      enum AIA {
+        description
+          "Anguilla";
+      }
+      enum ALA {
+        description
+          "Åland Islands";
+      }
+      enum ALB {
+        description
+          "Albania";
+      }
+      enum AND {
+        description
+          "Andorra";
+      }
+      enum ARE {
+        description
+          "United Arab Emirates";
+      }
+      enum ARG {
+        description
+          "Argentina";
+      }
+      enum ARM {
+        description
+          "Armenia";
+      }
+      enum ASM {
+        description
+          "American Samoa";
+      }
+      enum ATA {
+        description
+          "Antarctica";
+      }
+      enum ATF {
+        description
+          "French Southern Territories";
+      }
+      enum ATG {
+        description
+          "Antigua and Barbuda";
+      }
+      enum AUS {
+        description
+          "Australia";
+      }
+      enum AUT {
+        description
+          "Austria";
+      }
+      enum AZE {
+        description
+          "Azerbaijan";
+      }
+      enum BDI {
+        description
+          "Burundi";
+      }
+      enum BEL {
+        description
+          "Belgium";
+      }
+      enum BEN {
+        description
+          "Benin";
+      }
+      enum BES {
+        description
+          "Bonaire, Sint Eustatius and Saba";
+      }
+      enum BFA {
+        description
+          "Burkina Faso";
+      }
+      enum BGD {
+        description
+          "Bangladesh";
+      }
+      enum BGR {
+        description
+          "Bulgaria";
+      }
+      enum BHR {
+        description
+          "Bahrain";
+      }
+      enum BHS {
+        description
+          "Bahamas";
+      }
+      enum BIH {
+        description
+          "Bosnia and Herzegovina";
+      }
+      enum BLM {
+        description
+          "Saint Barthélemy";
+      }
+      enum BLR {
+        description
+          "Belarus";
+      }
+      enum BLZ {
+        description
+          "Belize";
+      }
+      enum BMU {
+        description
+          "Bermuda";
+      }
+      enum BOL {
+        description
+          "Bolivia (Plurinational State of)";
+      }
+      enum BRA {
+        description
+          "Brazil";
+      }
+      enum BRB {
+        description
+          "Barbados";
+      }
+      enum BRN {
+        description
+          "Brunei Darussalam";
+      }
+      enum BTN {
+        description
+          "Bhutan";
+      }
+      enum BVT {
+        description
+          "Bouvet Island";
+      }
+      enum BWA {
+        description
+          "Botswana";
+      }
+      enum CAF {
+        description
+          "Central African Republic";
+      }
+      enum CAN {
+        description
+          "Canada";
+      }
+      enum CCK {
+        description
+          "Cocos (Keeling) Islands";
+      }
+      enum CHE {
+        description
+          "Switzerland";
+      }
+      enum CHL {
+        description
+          "Chile";
+      }
+      enum CHN {
+        description
+          "China";
+      }
+      enum CIV {
+        description
+          "Côte d'Ivoire";
+      }
+      enum CMR {
+        description
+          "Cameroon";
+      }
+      enum COD {
+        description
+          "Congo, Democratic Republic of the";
+      }
+      enum COG {
+        description
+          "Congo";
+      }
+      enum COK {
+        description
+          "Cook Islands";
+      }
+      enum COL {
+        description
+          "Colombia";
+      }
+      enum COM {
+        description
+          "Comoros";
+      }
+      enum CPV {
+        description
+          "Cabo Verde";
+      }
+      enum CRI {
+        description
+          "Costa Rica";
+      }
+      enum CUB {
+        description
+          "Cuba";
+      }
+      enum CUW {
+        description
+          "Curaçao";
+      }
+      enum CXR {
+        description
+          "Christmas Island";
+      }
+      enum CYM {
+        description
+          "Cayman Islands";
+      }
+      enum CYP {
+        description
+          "Cyprus";
+      }
+      enum CZE {
+        description
+          "Czechia";
+      }
+      enum DEU {
+        description
+          "Germany";
+      }
+      enum DJI {
+        description
+          "Djibouti";
+      }
+      enum DMA {
+        description
+          "Dominica";
+      }
+      enum DNK {
+        description
+          "Denmark";
+      }
+      enum DOM {
+        description
+          "Dominican Republic";
+      }
+      enum DZA {
+        description
+          "Algeria";
+      }
+      enum ECU {
+        description
+          "Ecuador";
+      }
+      enum EGY {
+        description
+          "Egypt";
+      }
+      enum ERI {
+        description
+          "Eritrea";
+      }
+      enum ESH {
+        description
+          "Western Sahara";
+      }
+      enum ESP {
+        description
+          "Spain";
+      }
+      enum EST {
+        description
+          "Estonia";
+      }
+      enum ETH {
+        description
+          "Ethiopia";
+      }
+      enum FIN {
+        description
+          "Finland";
+      }
+      enum FJI {
+        description
+          "Fiji";
+      }
+      enum FLK {
+        description
+          "Falkland Islands (Malvinas)";
+      }
+      enum FRA {
+        description
+          "France";
+      }
+      enum FRO {
+        description
+          "Faroe Islands";
+      }
+      enum FSM {
+        description
+          "Micronesia (Federated States of)";
+      }
+      enum GAB {
+        description
+          "Gabon";
+      }
+      enum GBR {
+        description
+          "United Kingdom of Great Britain and Northern Ireland";
+      }
+      enum GEO {
+        description
+          "Georgia";
+      }
+      enum GGY {
+        description
+          "Guernsey";
+      }
+      enum GHA {
+        description
+          "Ghana";
+      }
+      enum GIB {
+        description
+          "Gibraltar";
+      }
+      enum GIN {
+        description
+          "Guinea";
+      }
+      enum GLP {
+        description
+          "Guadeloupe";
+      }
+      enum GMB {
+        description
+          "Gambia";
+      }
+      enum GNB {
+        description
+          "Guinea-Bissau";
+      }
+      enum GNQ {
+        description
+          "Equatorial Guinea";
+      }
+      enum GRC {
+        description
+          "Greece";
+      }
+      enum GRD {
+        description
+          "Grenada";
+      }
+      enum GRL {
+        description
+          "Greenland";
+      }
+      enum GTM {
+        description
+          "Guatemala";
+      }
+      enum GUF {
+        description
+          "French Guiana";
+      }
+      enum GUM {
+        description
+          "Guam";
+      }
+      enum GUY {
+        description
+          "Guyana";
+      }
+      enum HKG {
+        description
+          "Hong Kong";
+      }
+      enum HMD {
+        description
+          "Heard Island and McDonald Islands";
+      }
+      enum HND {
+        description
+          "Honduras";
+      }
+      enum HRV {
+        description
+          "Croatia";
+      }
+      enum HTI {
+        description
+          "Haiti";
+      }
+      enum HUN {
+        description
+          "Hungary";
+      }
+      enum IDN {
+        description
+          "Indonesia";
+      }
+      enum IMN {
+        description
+          "Isle of Man";
+      }
+      enum IND {
+        description
+          "India";
+      }
+      enum IOT {
+        description
+          "British Indian Ocean Territory";
+      }
+      enum IRL {
+        description
+          "Ireland";
+      }
+      enum IRN {
+        description
+          "Iran (Islamic Republic of)";
+      }
+      enum IRQ {
+        description
+          "Iraq";
+      }
+      enum ISL {
+        description
+          "Iceland";
+      }
+      enum ISR {
+        description
+          "Israel";
+      }
+      enum ITA {
+        description
+          "Italy";
+      }
+      enum JAM {
+        description
+          "Jamaica";
+      }
+      enum JEY {
+        description
+          "Jersey";
+      }
+      enum JOR {
+        description
+          "Jordan";
+      }
+      enum JPN {
+        description
+          "Japan";
+      }
+      enum KAZ {
+        description
+          "Kazakhstan";
+      }
+      enum KEN {
+        description
+          "Kenya";
+      }
+      enum KGZ {
+        description
+          "Kyrgyzstan";
+      }
+      enum KHM {
+        description
+          "Cambodia";
+      }
+      enum KIR {
+        description
+          "Kiribati";
+      }
+      enum KNA {
+        description
+          "Saint Kitts and Nevis";
+      }
+      enum KOR {
+        description
+          "Korea, Republic of";
+      }
+      enum KWT {
+        description
+          "Kuwait";
+      }
+      enum LAO {
+        description
+          "Lao People's Democratic Republic";
+      }
+      enum LBN {
+        description
+          "Lebanon";
+      }
+      enum LBR {
+        description
+          "Liberia";
+      }
+      enum LBY {
+        description
+          "Libya";
+      }
+      enum LCA {
+        description
+          "Saint Lucia";
+      }
+      enum LIE {
+        description
+          "Liechtenstein";
+      }
+      enum LKA {
+        description
+          "Sri Lanka";
+      }
+      enum LSO {
+        description
+          "Lesotho";
+      }
+      enum LTU {
+        description
+          "Lithuania";
+      }
+      enum LUX {
+        description
+          "Luxembourg";
+      }
+      enum LVA {
+        description
+          "Latvia";
+      }
+      enum MAC {
+        description
+          "Macao";
+      }
+      enum MAF {
+        description
+          "Saint Martin (French part)";
+      }
+      enum MAR {
+        description
+          "Morocco";
+      }
+      enum MCO {
+        description
+          "Monaco";
+      }
+      enum MDA {
+        description
+          "Moldova, Republic of";
+      }
+      enum MDG {
+        description
+          "Madagascar";
+      }
+      enum MDV {
+        description
+          "Maldives";
+      }
+      enum MEX {
+        description
+          "Mexico";
+      }
+      enum MHL {
+        description
+          "Marshall Islands";
+      }
+      enum MKD {
+        description
+          "North Macedonia";
+      }
+      enum MLI {
+        description
+          "Mali";
+      }
+      enum MLT {
+        description
+          "Malta";
+      }
+      enum MMR {
+        description
+          "Myanmar";
+      }
+      enum MNE {
+        description
+          "Montenegro";
+      }
+      enum MNG {
+        description
+          "Mongolia";
+      }
+      enum MNP {
+        description
+          "Northern Mariana Islands";
+      }
+      enum MOZ {
+        description
+          "Mozambique";
+      }
+      enum MRT {
+        description
+          "Mauritania";
+      }
+      enum MSR {
+        description
+          "Montserrat";
+      }
+      enum MTQ {
+        description
+          "Martinique";
+      }
+      enum MUS {
+        description
+          "Mauritius";
+      }
+      enum MWI {
+        description
+          "Malawi";
+      }
+      enum MYS {
+        description
+          "Malaysia";
+      }
+      enum MYT {
+        description
+          "Mayotte";
+      }
+      enum NAM {
+        description
+          "Namibia";
+      }
+      enum NCL {
+        description
+          "New Caledonia";
+      }
+      enum NER {
+        description
+          "Niger";
+      }
+      enum NFK {
+        description
+          "Norfolk Island";
+      }
+      enum NGA {
+        description
+          "Nigeria";
+      }
+      enum NIC {
+        description
+          "Nicaragua";
+      }
+      enum NIU {
+        description
+          "Niue";
+      }
+      enum NLD {
+        description
+          "Netherlands";
+      }
+      enum NOR {
+        description
+          "Norway";
+      }
+      enum NPL {
+        description
+          "Nepal";
+      }
+      enum NRU {
+        description
+          "Nauru";
+      }
+      enum NZL {
+        description
+          "New Zealand";
+      }
+      enum OMN {
+        description
+          "Oman";
+      }
+      enum PAK {
+        description
+          "Pakistan";
+      }
+      enum PAN {
+        description
+          "Panama";
+      }
+      enum PCN {
+        description
+          "Pitcairn";
+      }
+      enum PER {
+        description
+          "Peru";
+      }
+      enum PHL {
+        description
+          "Philippines";
+      }
+      enum PLW {
+        description
+          "Palau";
+      }
+      enum PNG {
+        description
+          "Papua New Guinea";
+      }
+      enum POL {
+        description
+          "Poland";
+      }
+      enum PRI {
+        description
+          "Puerto Rico";
+      }
+      enum PRK {
+        description
+          "Korea (Democratic People's Republic of)";
+      }
+      enum PRT {
+        description
+          "Portugal";
+      }
+      enum PRY {
+        description
+          "Paraguay";
+      }
+      enum PSE {
+        description
+          "Palestine, State of";
+      }
+      enum PYF {
+        description
+          "French Polynesia";
+      }
+      enum QAT {
+        description
+          "Qatar";
+      }
+      enum REU {
+        description
+          "Réunion";
+      }
+      enum ROU {
+        description
+          "Romania";
+      }
+      enum RUS {
+        description
+          "Russian Federation";
+      }
+      enum RWA {
+        description
+          "Rwanda";
+      }
+      enum SAU {
+        description
+          "Saudi Arabia";
+      }
+      enum SDN {
+        description
+          "Sudan";
+      }
+      enum SEN {
+        description
+          "Senegal";
+      }
+      enum SGP {
+        description
+          "Singapore";
+      }
+      enum SGS {
+        description
+          "South Georgia and the South Sandwich Islands";
+      }
+      enum SHN {
+        description
+          "Saint Helena, Ascension and Tristan da Cunha";
+      }
+      enum SJM {
+        description
+          "Svalbard and Jan Mayen";
+      }
+      enum SLB {
+        description
+          "Solomon Islands";
+      }
+      enum SLE {
+        description
+          "Sierra Leone";
+      }
+      enum SLV {
+        description
+          "El Salvador";
+      }
+      enum SMR {
+        description
+          "San Marino";
+      }
+      enum SOM {
+        description
+          "Somalia";
+      }
+      enum SPM {
+        description
+          "Saint Pierre and Miquelon";
+      }
+      enum SRB {
+        description
+          "Serbia";
+      }
+      enum SSD {
+        description
+          "South Sudan";
+      }
+      enum STP {
+        description
+          "Sao Tome and Principe";
+      }
+      enum SUR {
+        description
+          "Suriname";
+      }
+      enum SVK {
+        description
+          "Slovakia";
+      }
+      enum SVN {
+        description
+          "Slovenia";
+      }
+      enum SWE {
+        description
+          "Sweden";
+      }
+      enum SWZ {
+        description
+          "Eswatini";
+      }
+      enum SXM {
+        description
+          "Sint Maarten (Dutch part)";
+      }
+      enum SYC {
+        description
+          "Seychelles";
+      }
+      enum SYR {
+        description
+          "Syrian Arab Republic";
+      }
+      enum TCA {
+        description
+          "Turks and Caicos Islands";
+      }
+      enum TCD {
+        description
+          "Chad";
+      }
+      enum TGO {
+        description
+          "Togo";
+      }
+      enum THA {
+        description
+          "Thailand";
+      }
+      enum TJK {
+        description
+          "Tajikistan";
+      }
+      enum TKL {
+        description
+          "Tokelau";
+      }
+      enum TKM {
+        description
+          "Turkmenistan";
+      }
+      enum TLS {
+        description
+          "Timor-Leste";
+      }
+      enum TON {
+        description
+          "Tonga";
+      }
+      enum TTO {
+        description
+          "Trinidad and Tobago";
+      }
+      enum TUN {
+        description
+          "Tunisia";
+      }
+      enum TUR {
+        description
+          "Turkey";
+      }
+      enum TUV {
+        description
+          "Tuvalu";
+      }
+      enum TWN {
+        description
+          "Taiwan, Province of China";
+      }
+      enum TZA {
+        description
+          "Tanzania, United Republic of";
+      }
+      enum UGA {
+        description
+          "Uganda";
+      }
+      enum UKR {
+        description
+          "Ukraine";
+      }
+      enum UMI {
+        description
+          "United States Minor Outlying Islands";
+      }
+      enum URY {
+        description
+          "Uruguay";
+      }
+      enum USA {
+        description
+          "United States of America";
+      }
+      enum UZB {
+        description
+          "Uzbekistan";
+      }
+      enum VAT {
+        description
+          "Holy See";
+      }
+      enum VCT {
+        description
+          "Saint Vincent and the Grenadines";
+      }
+      enum VEN {
+        description
+          "Venezuela (Bolivarian Republic of)";
+      }
+      enum VGB {
+        description
+          "Virgin Islands (British)";
+      }
+      enum VIR {
+        description
+          "Virgin Islands (U.S.)";
+      }
+      enum VNM {
+        description
+          "Viet Nam";
+      }
+      enum VUT {
+        description
+          "Vanuatu";
+      }
+      enum WLF {
+        description
+          "Wallis and Futuna";
+      }
+      enum WSM {
+        description
+          "Samoa";
+      }
+      enum YEM {
+        description
+          "Yemen";
+      }
+      enum ZAF {
+        description
+          "South Africa";
+      }
+      enum ZMB {
+        description
+          "Zambia";
+      }
+      enum ZWE {
+        description
+          "Zimbabwe";
+      }
+    }
+  }
+
+  typedef model-construct {
+    type enumeration {
+      enum indirect;
+      enum cli;
+      enum yang;
+    }
+  }
+
+  typedef management-protocol {
+    type enumeration {
+      enum parent;
+      enum cli-ssh;
+      enum netconf;
+    }
+  }
+
+  typedef nf-config-delivery-result {
+    type enumeration {
+      enum ok {
+        value 0;
+      }
+      enum error {
+        value 1;
+      }
+      enum warning {
+        value 2;
+      }
+      enum retry {
+        value 3;
+      }
+      enum unreachable {
+        value 4;
+      }
+      enum unaccessible {
+        value 5;
+      }
+      enum timeout {
+        value 6;
+      }
+      enum validate-ok {
+        value 7;
+      }
+      enum validate-fail {
+        value 8;
+      }
+      enum reserved {
+        value 9;
+      }
+    }
+  }
+
+  typedef l3-mpls-routing-mode {
+    type enumeration {
+      enum p {
+        description
+          "provider core";
+        value 0;
+      }
+      enum pe {
+        description
+          "provider edge";
+        value 1;
+      }
+      enum ce {
+        description
+          "customer edge";
+        value 2;
+      }
+    }
+  }
+
+  typedef l2-operational-mode {
+    type enumeration {
+      enum core {
+        description
+          "core unit";
+        value 0;
+      }
+      enum aggregation {
+        description
+          "aggregation unit";
+        value 1;
+      }
+      enum access {
+        description
+          "access unit";
+        value 2;
+      }
+      enum spine {
+        description
+          "spine switch (CLOS architecture)";
+        value 3;
+      }
+      enum leaf {
+        description
+          "leaf switch (CLOS architecture)";
+        value 4;
+      }
+      enum tor {
+        description
+          "Top-of-Rack, ToR (data center architecture)";
+        value 5;
+      }
+      enum mor {
+        description
+          "Middle-of-Row, MoR (data center architecture)";
+        value 6;
+      }
+      enum eor {
+        description
+          "End-of-Row, EoR (data center architecture)";
+        value 7;
+      }
+      enum mct {
+        description
+          "multi-Chassis Trunking, based on spine-leaf architecture";
+        value 8;
+      }
+      enum stack {
+        description
+          "2 through to 12 ICX devices, of the same model type, forming single logical unit, in active-standby mode";
+        value 9;
+      }
+      enum fabric {
+        description
+          "similar to stack but mixed types of ICX model types";
+        value 10;
+      }
+      enum mixed {
+        description
+          "mixed/generic/multi-purpose operational mode";
+        value 11;
+      }
+    }
+  }
+
+  typedef rxd-operational-mode {
+    description
+      "The RF Operational Mode of the RxD; For Arris RD2322 - 1x1, 1x2, 2x2";
+    type enumeration {
+      enum 1x1 {
+        value 0;
+      }
+      enum 1x2 {
+        value 1;
+      }
+      enum 2x2 {
+        value 2;
+      }
+    }
+    default "1x1";
+  }
+
+  typedef sha-256 {
+    description
+      "SHA-256 Checksum RFC 2104";
+    type string {
+      length "64";
+      pattern '[a-f0-9]+';
+    }
+  }
+
+  typedef snmp-object-identifier {
+    description
+      "example: 1.3.6.1.4.868.2.4.1.2.1.1.1.3.3562.3";
+    type string {
+      length "2..128";
+      pattern '([0-2])((\.0)|(\.[1-9][0-9]*))*';
+    }
+  }
+
+  typedef snmp-wildcard-object-identifier {
+    type string;
+    description
+      "The wildcard-object-identifier type represents an SNMP object
+       identifier where subidentifiers can be given either as a label,
+       in numeric form, or a wildcard, represented by an asterisk
+       ('*').";
+  }
+
+  typedef snmp-object-identifier-name {
+    description
+      "example: .iso.org.dod.internet.mgmt.mib-2.system.sysDescr";
+    type string {
+      length "2..max";
+      pattern '([\.])([A-Za-z0-9\.-]*)*';
+    }
+  }
+
+  typedef snmp-tag-value {
+    type string {
+      length "0..255";
+    }
+    description
+      "Represents SnmpTagValue as defined in RFC 3413.
+       Note that the size of an SnmpTagValue is measured in
+       octets, not characters.";
+    reference
+      "RFC 3413: Simple Network Management Protocol (SNMP)
+         Applications.
+         SNMP-TARGET-MIB.SnmpTagValue";
+  }
+
+  typedef snmp-community-name {
+    type string {
+      length "1..64";
+      pattern '([A-Za-z0-9\-_]+)';
+    }
+  }
+
+  typedef snmp-transmission-type {
+    type enumeration {
+      enum encrypted;
+      enum unencrypted;
+    }
+  }
+
+  typedef snmp-version {
+    type enumeration {
+      enum v1;
+      enum v2c;
+      enum v3;
+    }
+  }
+
+  typedef snmp-engine-id {
+    type yang:hex-string {
+      pattern '([0-9a-fA-F]){2}(:([0-9a-fA-F]){2}){4,31}';
+    }
+    description
+      "The engine ID specified as a list of colon-specified
+       hexadecimal octets, e.g., '80:00:02:b8:04:61:62:63'.";
+    reference
+      "RFC 3411: An Architecture for Describing Simple Network
+         Management Protocol (SNMP) Management Frameworks";
+  }
+
+  typedef snmp-access-type {
+    type enumeration {
+      enum ro;
+      enum rw;
+    }
+  }
+
+  typedef snmp-authentication-method {
+    type enumeration {
+      enum no-auth-no-priv {
+        value 1;
+      }
+      enum auth-no-priv {
+        value 2;
+      }
+      enum auth-priv {
+        value 3;
+      }
+    }
+  }
+
+  typedef snmp-username {
+    type string {
+      length "1..32";
+      pattern '([A-Za-z0-9]+)';
+    }
+  }
+
+  typedef snmp-authentication-encryption-protocol {
+    type enumeration {
+      enum md5;
+      enum des;
+    }
+  }
+
+  typedef snmp-security-model {
+    type enumeration {
+      enum v1 {
+        value 1;
+      }
+      enum v2c {
+        value 2;
+      }
+      enum usm {
+        value 3;
+      }
+      enum tsm {
+        value 4;
+      }
+    }
+  }
+
+  typedef snmp-authentication-password {
+    type string {
+      length "8..12";
+      pattern '([A-Za-z0-9]+)';
+    }
+  }
+
+  typedef snmp-privacy-password {
+    type string {
+      length "8";
+      pattern '([A-Za-z0-9]+)';
+    }
+  }
+
+  typedef snmp-set-commands {
+    type enumeration {
+      enum SetRequest;
+    }
+  }
+
+  typedef snmp-get-commands {
+    type enumeration {
+      enum GetRequest;
+      enum GetNextRequest;
+      enum GetBulkRequest;
+    }
+  }
+
+  typedef snmp-other-commands {
+    type enumeration {
+      enum Response;
+      enum Trap;
+      enum InformRequest;
+    }
+  }
+
+  typedef snmp-commands {
+    type union {
+      type ct:snmp-set-commands;
+      type ct:snmp-get-commands;
+      type ct:snmp-other-commands;
+    }
+  }
+
+  typedef snmp-notify-filter-type {
+    type enumeration {
+      enum included;
+      enum excluded;
+    }
+  }
+
+  typedef telemetry-classification {
+    type enumeration {
+      enum general;
+      enum environmental;
+      enum rf;
+      enum traffic;
+      enum management;
+      enum other;
+      enum reserved;
+    }
+  }
+
+  typedef ip-protocol-type {
+    type enumeration {
+      enum tcp;
+      enum udp;
+    }
+  }
+
+  typedef ip-dhcp-priority {
+    type enumeration {
+      enum primary;
+      enum secondary;
+      enum tertiary;
+    }
+  }
+
+  typedef ipv4-network-usage {
+    type enumeration {
+      enum reserved;
+      enum unicast;
+      enum anycast;
+      enum multicast;
+      enum loopback;
+    }
+  }
+
+  typedef ipv4-subnet-mask {
+    type yang:dotted-quad;
+  }
+
+  typedef ipv4-subnet-bits {
+    type uint8 {
+      range "8..32";
+    }
+  }
+
+  typedef ip-metric {
+    type uint8 {
+      range "0..255";
+    }
+  }
+
+  typedef ip-ttl {
+    type uint8 {
+      range "1..255";
+    }
+  }
+
+  typedef ipv6-address-type {
+    type enumeration {
+      enum unspecified;
+      enum loopback;
+      enum multicast;
+      enum link-local;
+      enum global;
+    }
+  }
+
+  typedef ipv6-network-scope {
+    type enumeration {
+      enum interface-local;
+      enum link-local;
+      enum realm-local;
+      enum admin-local;
+      enum site-local;
+      enum organization-local;
+      enum global;
+      enum reserved;
+    }
+  }
+
+  typedef ipv6-prefix {
+    type uint8 {
+      range "1..128";
+    }
+  }
+
+  typedef ipv6-network-usage {
+    type enumeration {
+      enum reserved;
+      enum unicast;
+      enum anycast;
+      enum multicast;
+      enum loopback;
+    }
+  }
+
+  typedef ip-vrf {
+    type string {
+      length "1..15";
+      pattern '([A-Za-z0-9\-_]+)';
+    }
+  }
+
+  typedef ip-vrf-type {
+    type enumeration {
+      enum vrf;
+      enum vrf-lite;
+    }
+  }
+
+  typedef ip-vlan-id {
+    type uint16 {
+      range "1..4095";
+    }
+  }
+
+  typedef ip-vlan-classification {
+    type enumeration {
+      enum reserved;
+      enum normal;
+      enum extended;
+    }
+  }
+
+  typedef ip-vlan-type {
+    type enumeration {
+      enum default {
+        description
+          "default/native VLAN, typically VLAN-ID 1";
+        value 0;
+      }
+      enum untagged {
+        value 1;
+      }
+      enum tagged {
+        value 2;
+      }
+      enum dot1q {
+        value 3;
+      }
+      enum qinq {
+        value 4;
+      }
+      enum port {
+        value 5;
+      }
+    }
+  }
+
+  typedef ip-vlan-group {
+    type enumeration {
+      enum 1x1;
+      enum Nx1;
+    }
+  }
+
+  typedef ip-vlan-tagmode {
+    type enumeration {
+      enum double;
+      enum single;
+      enum Nx1;
+    }
+  }
+
+  typedef ip-vxlan-vni {
+    type uint64 {
+      range "4096..16777215";
+    }
+  }
+
+  typedef ip-vxlan-scope {
+    type enumeration {
+      enum reserved;
+      enum network-wide;
+      enum local;
+    }
+  }
+
+  typedef ip-vrid {
+    type uint8 {
+      range "1..255";
+    }
+  }
+
+  typedef ip-rt-type {
+    type enumeration {
+      enum existing;
+      enum 0x00;
+      enum 0x01;
+      enum 0x02;
+      enum 0x06;
+      enum generic;
+      enum ipv6;
+    }
+  }
+
+  typedef ip-rd-type {
+    type enumeration {
+      enum existing;
+      enum 0;
+      enum 1;
+      enum 2;
+      enum 6;
+      enum generic;
+    }
+  }
+
+  typedef ip-asn {
+    description
+      "Autonomous System Number (ASN)
+       0-0 Reserved for RPKI unallocated space invalidation RFC 6483, RFC 7607
+       1-23455 Public ASNs
+       23456-23456 Reserved for AS Pool Transition RFC 6793
+       23457-64511 Public ASNs
+       64512-65534 Reserved for private use RFC 1930, RFC 6996
+       65535-65535 Reserved RFC 7300
+       65536-65551 Reserved for private use RFC 1930, RFC 6996
+       65552-131071 Reserved
+       131072-4199999999 Public 32-bit ASNs
+       4200000000-4294967294 Reserved for private use RFC 6996
+       4294967295-4294967295 Reserved RFC 7300";
+    type uint64 {
+      range "0..4294967295";
+    }
+  }
+
+  typedef ip-asn-type {
+    type enumeration {
+      enum reserved;
+      enum public;
+      enum private;
+    }
+  }
+
+  typedef ip-macsec-mode {
+    type enumeration {
+      enum single-host;
+      enum multi-host;
+      enum multi-domain;
+    }
+  }
+
+  typedef ip-l2tp-version {
+    type enumeration {
+      enum v3;
+    }
+  }
+
+  typedef docsis-version {
+    type enumeration {
+      enum docsis-30;
+      enum docsis-31;
+      enum docsis-40;
+    }
+  }
+
+  typedef docsis-annex-type {
+    description
+      "Annex B=DOCSIS/EuroDOCSIS 1.1, Annex A=DVB EuroModem, Annex C=Japanese DOCSIS 1.1, Annex F=EuroDOCSIS 2.0, Annex J=Japanese DOCSIS 2.0";
+    type enumeration {
+      enum na;
+      enum a;
+      enum b;
+      enum c;
+      enum f;
+      enum j;
+    }
+  }
+
+  typedef docsis-license-entitlement {
+    type enumeration {
+      enum downstream-service-group;
+      enum upstream-service-group;
+      enum mac-docsis-ds-30-B;
+      enum mac-docsis-ds-ofdm;
+      enum mac-docsis-us-30;
+      enum mac-docsis-us-ofdma;
+      enum system-calea;
+      enum system-laes;
+      enum system-legal-intercept;
+    }
+  }
+
+  typedef docsis-cable-direction {
+    type enumeration {
+      enum downstream;
+      enum upstream;
+    }
+  }
+
+  typedef docsis-modulation-carrier {
+    type enumeration {
+      enum single;
+      enum ofdm;
+    }
+  }
+
+  typedef docsis-modulation-profile {
+    type enumeration {
+      enum qpsk;
+      enum 8qam;
+      enum 16qam;
+      enum 32qam;
+      enum 64qam;
+      enum 128qam;
+      enum 256qam;
+      enum 512qam;
+      enum 1024qam;
+      enum 2048qam;
+      enum 4096qam;
+    }
+  }
+
+  typedef docsis-forward-error-correction {
+    type enumeration {
+      enum "Reed Solomon";
+      enum LDPC/BCH;
+    }
+  }
+
+  typedef docsis-modulation-type {
+    type enumeration {
+      enum tdma;
+      enum s-cdma;
+      enum atdma;
+    }
+  }
+
+  typedef docsis-modulation-multiple-method {
+    type enumeration {
+      enum tdma;
+      enum s-cdma;
+      enum ofdma;
+    }
+  }
+
+  typedef docsis-packetcable-pcmm-version {
+    type enumeration {
+      enum I02;
+      enum I03;
+      enum I04;
+      enum I05;
+    }
+  }
+
+  typedef ntp-version {
+    type enumeration {
+      enum 4;
+      enum 3;
+      enum 2;
+      enum 1;
+    }
+  }
+
+  typedef oui-prefix {
+    type string {
+      length "8";
+      pattern '[0-9a-f][0-9a-f].[0-9a-f][0-9a-f].[0-9a-f][0-9a-f]';
+    }
+  }
+
+  //typedef mac-address {
+  //  description
+  //    "multiple layouts for common mac addresses.
+  //     While mac addresses are case insensitive they are expected
+  //     to be case consistent, which means supporting patterns can
+  //     not be reduced to mixed-case.
+  //
+  //     Option 1 : FE:54:00:A0:D0:52
+  //     Option 2 : fe:54:00:a0:d0:52
+  //     Option 3 : FE-54-00-A0-D0-52
+  //     Option 4 : fe-54-00-a0-d0-52
+  //     Option 5 : fe54.00a0.d052
+  //     Option 6 : FE54.00A0.D052
+  //     Option 7 : fe5400a0d052
+  //     Option 8 : FE5400A0D052
+  //    ";
+  //  type string {
+  //    length "12..17";
+  //    pattern '('
+  //          + '([0-9A-F]{2}(:[0-9A-F]{2}){5})|'
+  //          + '([0-9a-f]{2}(:[0-9a-f]{2}){5})|'
+  //          + '([0-9a-f]{2}(-[0-9a-f]{2}){5})'
+  //          + '([0-9A-F]{2}(-[0-9A-F]{2}){5})|'
+  //          + '([0-9a-f]{4}(.[0-9a-f]{4}){2})|'
+  //          + '([0-9A-F]{4}(.[0-9A-F]{4}){2})|'
+  //          + '([0-9a-f]{12})|'
+  //          + '([0-9A-F]{12}))';
+  //  }
+  //}
+
+  typedef mac-address {
+    description
+      "single layout for internal storage of mac addresses.
+       example : fe5400a0d052
+      ";
+    type string {
+      length "12..17";
+      pattern '[0-9a-f]{12}';
+    }
+  }
+
+  typedef nf-identifier {
+    description
+      "Primary identifier such as serial number, default MAC address or other unique definable attribute";
+    type union {
+      type ct:mac-address;
+      type string {
+        length "8..64";
+      }
+    }
+  }
+
+  typedef ip-rd {
+    description
+      "A Route Distinguisher is an 8-octet value used to
+       distinguish routes from different BGP VPNs (RFC 4364).
+       A Route Distinguisher will have the same format as a
+       Route Target as per RFC 4360 and will consist of
+       two or three fields: a 2-octet Type field, an administrator
+       field, and, optionally, an assigned number field.
+
+       According to the data formats for types 0, 1, 2, and 6 as
+       defined in RFC 4360, RFC 5668, and RFC 7432, the encoding
+       pattern is defined as:
+
+       0:2-octet-asn:4-octet-number
+       1:4-octet-ipv4addr:2-octet-number
+       2:4-octet-asn:2-octet-number
+       6:6-octet-mac-address
+
+       Additionally, a generic pattern is defined for future
+       route discriminator types:
+
+       2-octet-other-hex-number:6-octet-hex-number
+
+       All alpha hex digits now must be lowercase
+
+       Some valid examples are 0:100:100, 1:1.1.1.1:100,
+       2:1234567890:203, and 6:26:00:08:92:78:00.";
+    reference
+      "RFC 4360: BGP Extended Communities Attribute.
+       RFC 4364: BGP/MPLS IP Virtual Private Networks (VPNs).
+       RFC 5668: 4-Octet AS Specific BGP Extended Community.
+       RFC 7432: BGP MPLS-Based Ethernet VPN.";
+    type string {
+      pattern '(0:(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0):(429496729[0-5]|'
+            + '42949672[0-8][0-9]|'
+            + '4294967[01][0-9]{2}|429496[0-6][0-9]{3}|'
+            + '42949[0-5][0-9]{4}|'
+            + '4294[0-8][0-9]{5}|429[0-3][0-9]{6}|'
+            + '42[0-8][0-9]{7}|4[01][0-9]{8}|'
+            + '[1-3][0-9]{9}|[1-9][0-9]{0,8}|0))|'
+            + '(1:((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|'
+            + '25[0-5])\.){3}([0-9]|[1-9][0-9]|'
+            + '1[0-9]{2}|2[0-4][0-9]|25[0-5])):(6553[0-5]|'
+            + '655[0-2][0-9]|'
+            + '65[0-4][0-9]{2}|6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0))|'
+            + '(2:(429496729[0-5]|42949672[0-8][0-9]|'
+            + '4294967[01][0-9]{2}|'
+            + '429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|'
+            + '4294[0-8][0-9]{5}|'
+            + '429[0-3][0-9]{6}|42[0-8][0-9]{7}|4[01][0-9]{8}|'
+            + '[1-3][0-9]{9}|[1-9][0-9]{0,8}|0):'
+            + '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0))|'
+            + '(6:([a-f0-9]{2}){6})|'
+            + '(([3-57-9a-f]|[1-9a-f])[0-9a-f]:[0-9a-f]{6})';
+    }
+  }
+
+  typedef ipv4-route-target {
+    description
+      "A Route Target is an 8-octet BGP extended community
+       initially identifying a set of sites in a BGP VPN
+       (RFC 4364).  However, it has since taken on a more general
+       role in BGP route filtering.  A Route Target consists of two
+       or three fields: a 2-octet Type field, an administrator
+       field, and, optionally, an assigned number field.
+
+       According to the data formats for types 0, 1, 2, and 6 as
+       defined in RFC 4360, RFC 5668, and RFC 7432, the encoding
+       pattern is defined as:
+
+       0:2-octet-asn:4-octet-number
+       1:4-octet-ipv4addr:2-octet-number
+       2:4-octet-asn:2-octet-number
+       6:6-octet-mac-address
+
+       All alpha hex digits must be lowercase
+
+       Additionally, a generic pattern is defined for future
+       Route Target types:
+
+       2-octet-other-hex-number:6-octet-hex-number
+
+       Some valid examples are 0:100:100, 1:1.1.1.1:100,
+       2:1234567890:203, and 6:26:00:08:92:78:00.";
+    reference
+      "RFC 4360: BGP Extended Communities Attribute.
+       RFC 4364: BGP/MPLS IP Virtual Private Networks (VPNs).
+       RFC 5668: 4-Octet AS Specific BGP Extended Community.
+       RFC 7432: BGP MPLS-Based Ethernet VPN.";
+    type string {
+      pattern '(0:(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0):(429496729[0-5]|'
+            + '42949672[0-8][0-9]|'
+            + '4294967[01][0-9]{2}|429496[0-6][0-9]{3}|'
+            + '42949[0-5][0-9]{4}|'
+            + '4294[0-8][0-9]{5}|429[0-3][0-9]{6}|'
+            + '42[0-8][0-9]{7}|4[01][0-9]{8}|'
+            + '[1-3][0-9]{9}|[1-9][0-9]{0,8}|0))|'
+            + '(1:((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|'
+            + '25[0-5])\.){3}([0-9]|[1-9][0-9]|'
+            + '1[0-9]{2}|2[0-4][0-9]|25[0-5])):(6553[0-5]|'
+            + '655[0-2][0-9]|'
+            + '65[0-4][0-9]{2}|6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0))|'
+            + '(2:(429496729[0-5]|42949672[0-8][0-9]|'
+            + '4294967[01][0-9]{2}|'
+            + '429496[0-6][0-9]{3}|42949[0-5][0-9]{4}|'
+            + '4294[0-8][0-9]{5}|'
+            + '429[0-3][0-9]{6}|42[0-8][0-9]{7}|4[01][0-9]{8}|'
+            + '[1-3][0-9]{9}|[1-9][0-9]{0,8}|0):'
+            + '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0))|'
+            + '(6:([a-f0-9]{2}){6})|'
+            + '(([3-57-9a-f]|[1-9a-f])[0-9a-f]:[0-9a-f]{6})';
+    }
+  }
+
+  typedef ipv6-route-target {
+    description
+      "An IPv6 Route Target is a 20-octet BGP IPv6 Address
+       Specific Extended Community serving the same function
+       as a standard 8-octet Route Target, except that it only
+       allows an IPv6 address as the global administrator.
+       The format is <ipv6-address:2-octet-number>.
+
+       All alpha hex digits must be lowercase
+
+       Two valid examples are 2001:db8::1:6544 and
+       2001:db8::5eb1:791:6b37:17958.";
+    reference
+      "RFC 5701: IPv6 Address Specific BGP Extended Community
+       Attribute.";
+    type string {
+      pattern '((:|[0-9a-f]{0,4}):)([0-9a-f]{0,4}:){0,5}'
+            + '((([0-9a-f]{0,4}:)?(:|[0-9a-f]{0,4}))|'
+            + '(((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}'
+            + '(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])))'
+            + ':'
+            + '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0)';
+      pattern '((([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|'
+            + '((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))'
+            + ':'
+            + '(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|'
+            + '6[0-4][0-9]{3}|'
+            + '[1-5][0-9]{4}|[1-9][0-9]{0,3}|0)';
+    }
+  }
+
+  typedef ip-rt {
+    type union {
+      type ct:ipv4-route-target;
+      type ct:ipv6-route-target;
+    }
+  }
+
+  typedef iana-timezones {
+    description
+      "A timezone location as defined by the IANA timezone
+       database (http://www.iana.org/time-zones)";
+    type enumeration {
+      enum Europe/Andorra {
+        value 0;
+      }
+      enum Asia/Dubai {
+        value 1;
+      }
+      enum Asia/Kabul {
+        value 2;
+      }
+      enum America/Antigua {
+        value 3;
+      }
+      enum America/Anguilla {
+        value 4;
+      }
+      enum Europe/Tirane {
+        value 5;
+      }
+      enum Asia/Yerevan {
+        value 6;
+      }
+      enum Africa/Luanda {
+        value 7;
+      }
+      enum Antarctica/McMurdo {
+        value 8;
+        description
+          "McMurdo, South Pole, Scott (New Zealand time)";
+      }
+      enum Antarctica/Rothera {
+        value 9;
+        description
+          "Rothera Station, Adelaide Island";
+      }
+      enum Antarctica/Palmer {
+        value 10;
+        description
+          "Palmer Station, Anvers Island";
+      }
+      enum Antarctica/Mawson {
+        value 11;
+        description
+          "Mawson Station, Holme Bay";
+      }
+      enum Antarctica/Davis {
+        value 12;
+        description
+          "Davis Station, Vestfold Hills";
+      }
+      enum Antarctica/Casey {
+        value 13;
+        description
+          "Casey Station, Bailey Peninsula";
+      }
+      enum Antarctica/Vostok {
+        value 14;
+        description
+          "Vostok Station, Lake Vostok";
+      }
+      enum Antarctica/DumontDUrville {
+        value 15;
+        description
+          "Dumont-d'Urville Station, Terre Adelie";
+      }
+      enum Antarctica/Syowa {
+        value 16;
+        description
+          "Syowa Station, E Ongul I";
+      }
+      enum America/Argentina/Buenos_Aires {
+        value 17;
+        description
+          "Buenos Aires (BA, CF)";
+      }
+      enum America/Argentina/Cordoba {
+        value 18;
+        description
+          "most locations (CB, CC, CN, ER, FM, MN, SE, SF)";
+      }
+      enum America/Argentina/Salta {
+        value 19;
+        description
+          "(SA, LP, NQ, RN)";
+      }
+      enum America/Argentina/Jujuy {
+        value 20;
+        description
+          "Jujuy (JY)";
+      }
+      enum America/Argentina/Tucuman {
+        value 21;
+        description
+          "Tucuman (TM)";
+      }
+      enum America/Argentina/Catamarca {
+        value 22;
+        description
+          "Catamarca (CT), Chubut (CH)";
+      }
+      enum America/Argentina/La_Rioja {
+        value 23;
+        description
+          "La Rioja (LR)";
+      }
+      enum America/Argentina/San_Juan {
+        value 24;
+        description
+          "San Juan (SJ)";
+      }
+      enum America/Argentina/Mendoza {
+        value 25;
+        description
+          "Mendoza (MZ)";
+      }
+      enum America/Argentina/San_Luis {
+        value 26;
+        description
+          "San Luis (SL)";
+      }
+      enum America/Argentina/Rio_Gallegos {
+        value 27;
+        description
+          "Santa Cruz (SC)";
+      }
+      enum America/Argentina/Ushuaia {
+        value 28;
+        description
+          "Tierra del Fuego (TF)";
+      }
+      enum Pacific/Pago_Pago {
+        value 29;
+      }
+      enum Europe/Vienna {
+        value 30;
+      }
+      enum Australia/Lord_Howe {
+        value 31;
+        description
+          "Lord Howe Island";
+      }
+      enum Antarctica/Macquarie {
+        value 32;
+        description
+          "Macquarie Island";
+      }
+      enum Australia/Hobart {
+        value 33;
+        description
+          "Tasmania - most locations";
+      }
+      enum Australia/Currie {
+        value 34;
+        description
+          "Tasmania - King Island";
+      }
+      enum Australia/Melbourne {
+        value 35;
+        description
+          "Victoria";
+      }
+      enum Australia/Sydney {
+        value 36;
+        description
+          "New South Wales - most locations";
+      }
+      enum Australia/Broken_Hill {
+        value 37;
+        description
+          "New South Wales - Yancowinna";
+      }
+      enum Australia/Brisbane {
+        value 38;
+        description
+          "Queensland - most locations";
+      }
+      enum Australia/Lindeman {
+        value 39;
+        description
+          "Queensland - Holiday Islands";
+      }
+      enum Australia/Adelaide {
+        value 40;
+        description
+          "South Australia";
+      }
+      enum Australia/Darwin {
+        value 41;
+        description
+          "Northern Territory";
+      }
+      enum Australia/Perth {
+        value 42;
+        description
+          "Western Australia - most locations";
+      }
+      enum Australia/Eucla {
+        value 43;
+        description
+          "Western Australia - Eucla area";
+      }
+      enum America/Aruba {
+        value 44;
+      }
+      enum Europe/Mariehamn {
+        value 45;
+      }
+      enum Asia/Baku {
+        value 46;
+      }
+      enum Europe/Sarajevo {
+        value 47;
+      }
+      enum America/Barbados {
+        value 48;
+      }
+      enum Asia/Dhaka {
+        value 49;
+      }
+      enum Europe/Brussels {
+        value 50;
+      }
+      enum Africa/Ouagadougou {
+        value 51;
+      }
+      enum Europe/Sofia {
+        value 52;
+      }
+      enum Asia/Bahrain {
+        value 53;
+      }
+      enum Africa/Bujumbura {
+        value 54;
+      }
+      enum Africa/Porto-Novo {
+        value 55;
+      }
+      enum America/St_Barthelemy {
+        value 56;
+      }
+      enum Atlantic/Bermuda {
+        value 57;
+      }
+      enum Asia/Brunei {
+        value 58;
+      }
+      enum America/La_Paz {
+        value 59;
+      }
+      enum America/Kralendijk {
+        value 60;
+      }
+      enum America/Noronha {
+        value 61;
+        description
+          "Atlantic islands";
+      }
+      enum America/Belem {
+        value 62;
+        description
+          "Amapa, E Para";
+      }
+      enum America/Fortaleza {
+        value 63;
+        description
+          "NE Brazil (MA, PI, CE, RN, PB)";
+      }
+      enum America/Recife {
+        value 64;
+        description
+          "Pernambuco";
+      }
+      enum America/Araguaina {
+        value 65;
+        description
+          "Tocantins";
+      }
+      enum America/Maceio {
+        value 66;
+        description
+          "Alagoas, Sergipe";
+      }
+      enum America/Bahia {
+        value 67;
+        description
+          "Bahia";
+      }
+      enum America/Sao_Paulo {
+        value 68;
+        description
+          "S & SE Brazil (GO, DF, MG, ES, RJ, SP, PR, SC, RS)";
+      }
+      enum America/Campo_Grande {
+        value 69;
+        description
+          "Mato Grosso do Sul";
+      }
+      enum America/Cuiaba {
+        value 70;
+        description
+          "Mato Grosso";
+      }
+      enum America/Santarem {
+        value 71;
+        description
+          "W Para";
+      }
+      enum America/Porto_Velho {
+        value 72;
+        description
+          "Rondonia";
+      }
+      enum America/Boa_Vista {
+        value 73;
+        description
+          "Roraima";
+      }
+      enum America/Manaus {
+        value 74;
+        description
+          "E Amazonas";
+      }
+      enum America/Eirunepe {
+        value 75;
+        description
+          "W Amazonas";
+      }
+      enum America/Rio_Branco {
+        value 76;
+        description
+          "Acre";
+      }
+      enum America/Nassau {
+        value 77;
+      }
+      enum Asia/Thimphu {
+        value 78;
+      }
+      enum Africa/Gaborone {
+        value 79;
+      }
+      enum Europe/Minsk {
+        value 80;
+      }
+      enum America/Belize {
+        value 81;
+      }
+      enum America/St_Johns {
+        value 82;
+        description
+          "Newfoundland Time, including SE Labrador";
+      }
+      enum America/Halifax {
+        value 83;
+        description
+          "Atlantic Time - Nova Scotia (most places), PEI";
+      }
+      enum America/Glace_Bay {
+        value 84;
+        description
+          "Atlantic Time - Nova Scotia - places that did not observe DST
+           1966-1971";
+      }
+      enum America/Moncton {
+        value 85;
+        description
+          "Atlantic Time - New Brunswick";
+      }
+      enum America/Goose_Bay {
+        value 86;
+        description
+          "Atlantic Time - Labrador - most locations";
+      }
+      enum America/Blanc-Sablon {
+        value 87;
+        description
+          "Atlantic Standard Time - Quebec - Lower North Shore";
+      }
+      enum America/Toronto {
+        value 88;
+        description
+          "Eastern Time - Ontario & Quebec - most locations";
+      }
+      enum America/Nipigon {
+        value 89;
+        description
+          "Eastern Time - Ontario & Quebec - places that did not observe
+           DST 1967-1973";
+      }
+      enum America/Thunder_Bay {
+        value 90;
+        description
+          "Eastern Time - Thunder Bay, Ontario";
+      }
+      enum America/Iqaluit {
+        value 91;
+        description
+          "Eastern Time - east Nunavut - most locations";
+      }
+      enum America/Pangnirtung {
+        value 92;
+        description
+          "Eastern Time - Pangnirtung, Nunavut";
+      }
+      enum America/Resolute {
+        value 93;
+        description
+          "Central Standard Time - Resolute, Nunavut";
+      }
+      enum America/Atikokan {
+        value 94;
+        description
+          "Eastern Standard Time - Atikokan, Ontario and Southampton I,
+           Nunavut";
+      }
+      enum America/Rankin_Inlet {
+        value 95;
+        description
+          "Central Time - central Nunavut";
+      }
+      enum America/Winnipeg {
+        value 96;
+        description
+          "Central Time - Manitoba & west Ontario";
+      }
+      enum America/Rainy_River {
+        value 97;
+        description
+          "Central Time - Rainy River & Fort Frances, Ontario";
+      }
+      enum America/Regina {
+        value 98;
+        description
+          "Central Standard Time - Saskatchewan - most locations";
+      }
+      enum America/Swift_Current {
+        value 99;
+        description
+          "Central Standard Time - Saskatchewan - midwest";
+      }
+      enum America/Edmonton {
+        value 100;
+        description
+          "Mountain Time - Alberta, east British Columbia & west
+           Saskatchewan";
+      }
+      enum America/Cambridge_Bay {
+        value 101;
+        description
+          "Mountain Time - west Nunavut";
+      }
+      enum America/Yellowknife {
+        value 102;
+        description
+          "Mountain Time - central Northwest Territories";
+      }
+      enum America/Inuvik {
+        value 103;
+        description
+          "Mountain Time - west Northwest Territories";
+      }
+      enum America/Creston {
+        value 104;
+        description
+          "Mountain Standard Time - Creston, British Columbia";
+      }
+      enum America/Dawson_Creek {
+        value 105;
+        description
+          "Mountain Standard Time - Dawson Creek & Fort Saint John,
+           British Columbia";
+      }
+      enum America/Vancouver {
+        value 106;
+        description
+          "Pacific Time - west British Columbia";
+      }
+      enum America/Whitehorse {
+        value 107;
+        description
+          "Pacific Time - south Yukon";
+      }
+      enum America/Dawson {
+        value 108;
+        description
+          "Pacific Time - north Yukon";
+      }
+      enum Indian/Cocos {
+        value 109;
+      }
+      enum Africa/Kinshasa {
+        value 110;
+        description
+          "west Dem. Rep. of Congo";
+      }
+      enum Africa/Lubumbashi {
+        value 111;
+        description
+          "east Dem. Rep. of Congo";
+      }
+      enum Africa/Bangui {
+        value 112;
+      }
+      enum Africa/Brazzaville {
+        value 113;
+      }
+      enum Europe/Zurich {
+        value 114;
+      }
+      enum Africa/Abidjan {
+        value 115;
+      }
+      enum Pacific/Rarotonga {
+        value 116;
+      }
+      enum America/Santiago {
+        value 117;
+        description
+          "most locations";
+      }
+      enum Pacific/Easter {
+        value 118;
+        description
+          "Easter Island & Sala y Gomez";
+      }
+      enum Africa/Douala {
+        value 119;
+      }
+      enum Asia/Shanghai {
+        value 120;
+        description
+          "east China - Beijing, Guangdong, Shanghai, etc.";
+      }
+      enum Asia/Harbin {
+        value 121;
+        description
+          "Heilongjiang (except Mohe), Jilin";
+      }
+      enum Asia/Chongqing {
+        value 122;
+        description
+          "central China - Sichuan, Yunnan, Guangxi, Shaanxi, Guizhou,
+           etc.";
+      }
+      enum Asia/Urumqi {
+        value 123;
+        description
+          "most of Tibet & Xinjiang";
+      }
+      enum Asia/Kashgar {
+        value 124;
+        description
+          "west Tibet & Xinjiang";
+      }
+      enum America/Bogota {
+        value 125;
+      }
+      enum America/Costa_Rica {
+        value 126;
+      }
+      enum America/Havana {
+        value 127;
+      }
+      enum Atlantic/Cape_Verde {
+        value 128;
+      }
+      enum America/Curacao {
+        value 129;
+      }
+      enum Indian/Christmas {
+        value 130;
+      }
+      enum Asia/Nicosia {
+        value 131;
+      }
+      enum Europe/Prague {
+        value 132;
+      }
+      enum Europe/Berlin {
+        value 133;
+        description
+          "most locations";
+      }
+      enum Europe/Busingen {
+        value 134;
+        description
+          "Busingen";
+      }
+      enum Africa/Djibouti {
+        value 135;
+      }
+      enum Europe/Copenhagen {
+        value 136;
+      }
+      enum America/Dominica {
+        value 137;
+      }
+      enum America/Santo_Domingo {
+        value 138;
+      }
+      enum Africa/Algiers {
+        value 139;
+      }
+      enum America/Guayaquil {
+        value 140;
+        description
+          "mainland";
+      }
+      enum Pacific/Galapagos {
+        value 141;
+        description
+          "Galapagos Islands";
+      }
+      enum Europe/Tallinn {
+        value 142;
+      }
+      enum Africa/Cairo {
+        value 143;
+      }
+      enum Africa/El_Aaiun {
+        value 144;
+      }
+      enum Africa/Asmara {
+        value 145;
+      }
+      enum Europe/Madrid {
+        value 146;
+        description
+          "mainland";
+      }
+      enum Africa/Ceuta {
+        value 147;
+        description
+          "Ceuta & Melilla";
+      }
+      enum Atlantic/Canary {
+        value 148;
+        description
+          "Canary Islands";
+      }
+      enum Africa/Addis_Ababa {
+        value 149;
+      }
+      enum Europe/Helsinki {
+        value 150;
+      }
+      enum Pacific/Fiji {
+        value 151;
+      }
+      enum Atlantic/Stanley {
+        value 152;
+      }
+      enum Pacific/Chuuk {
+        value 153;
+        description
+          "Chuuk (Truk) and Yap";
+      }
+      enum Pacific/Pohnpei {
+        value 154;
+        description
+          "Pohnpei (Ponape)";
+      }
+      enum Pacific/Kosrae {
+        value 155;
+        description
+          "Kosrae";
+      }
+      enum Atlantic/Faroe {
+        value 156;
+      }
+      enum Europe/Paris {
+        value 157;
+      }
+      enum Africa/Libreville {
+        value 158;
+      }
+      enum Europe/London {
+        value 159;
+      }
+      enum America/Grenada {
+        value 160;
+      }
+      enum Asia/Tbilisi {
+        value 161;
+      }
+      enum America/Cayenne {
+        value 162;
+      }
+      enum Europe/Guernsey {
+        value 163;
+      }
+      enum Africa/Accra {
+        value 164;
+      }
+      enum Europe/Gibraltar {
+        value 165;
+      }
+      enum America/Godthab {
+        value 166;
+        description
+          "most locations";
+      }
+      enum America/Danmarkshavn {
+        value 167;
+        description
+          "east coast, north of Scoresbysund";
+      }
+      enum America/Scoresbysund {
+        value 168;
+        description
+          "Scoresbysund / Ittoqqortoormiit";
+      }
+      enum America/Thule {
+        value 169;
+        description
+          "Thule / Pituffik";
+      }
+      enum Africa/Banjul {
+        value 170;
+      }
+      enum Africa/Conakry {
+        value 171;
+      }
+      enum America/Guadeloupe {
+        value 172;
+      }
+      enum Africa/Malabo {
+        value 173;
+      }
+      enum Europe/Athens {
+        value 174;
+      }
+      enum Atlantic/South_Georgia {
+        value 175;
+      }
+      enum America/Guatemala {
+        value 176;
+      }
+      enum Pacific/Guam {
+        value 177;
+      }
+      enum Africa/Bissau {
+        value 178;
+      }
+      enum America/Guyana {
+        value 179;
+      }
+      enum Asia/Hong_Kong {
+        value 180;
+      }
+      enum America/Tegucigalpa {
+        value 181;
+      }
+      enum Europe/Zagreb {
+        value 182;
+      }
+      enum America/Port-au-Prince {
+        value 183;
+      }
+      enum Europe/Budapest {
+        value 184;
+      }
+      enum Asia/Jakarta {
+        value 185;
+        description
+          "Java & Sumatra";
+      }
+      enum Asia/Pontianak {
+        value 186;
+        description
+          "west & central Borneo";
+      }
+      enum Asia/Makassar {
+        value 187;
+        description
+          "east & south Borneo, Sulawesi (Celebes), Bali, Nusa Tengarra,
+           west Timor";
+      }
+      enum Asia/Jayapura {
+        value 188;
+        description
+          "west New Guinea (Irian Jaya) & Malukus (Moluccas)";
+      }
+      enum Europe/Dublin {
+        value 189;
+      }
+      enum Asia/Jerusalem {
+        value 190;
+      }
+      enum Europe/Isle_of_Man {
+        value 191;
+      }
+      enum Asia/Kolkata {
+        value 192;
+      }
+      enum Indian/Chagos {
+        value 193;
+      }
+      enum Asia/Baghdad {
+        value 194;
+      }
+      enum Asia/Tehran {
+        value 195;
+      }
+      enum Atlantic/Reykjavik {
+        value 196;
+      }
+      enum Europe/Rome {
+        value 197;
+      }
+      enum Europe/Jersey {
+        value 198;
+      }
+      enum America/Jamaica {
+        value 199;
+      }
+      enum Asia/Amman {
+        value 200;
+      }
+      enum Asia/Tokyo {
+        value 201;
+      }
+      enum Africa/Nairobi {
+        value 202;
+      }
+      enum Asia/Bishkek {
+        value 203;
+      }
+      enum Asia/Phnom_Penh {
+        value 204;
+      }
+      enum Pacific/Tarawa {
+        value 205;
+        description
+          "Gilbert Islands";
+      }
+      enum Pacific/Enderbury {
+        value 206;
+        description
+          "Phoenix Islands";
+      }
+      enum Pacific/Kiritimati {
+        value 207;
+        description
+          "Line Islands";
+      }
+      enum Indian/Comoro {
+        value 208;
+      }
+      enum America/St_Kitts {
+        value 209;
+      }
+      enum Asia/Pyongyang {
+        value 210;
+      }
+      enum Asia/Seoul {
+        value 211;
+      }
+      enum Asia/Kuwait {
+        value 212;
+      }
+      enum America/Cayman {
+        value 213;
+      }
+      enum Asia/Almaty {
+        value 214;
+        description
+          "most locations";
+      }
+      enum Asia/Qyzylorda {
+        value 215;
+        description
+          "Qyzylorda (Kyzylorda, Kzyl-Orda)";
+      }
+      enum Asia/Aqtobe {
+        value 216;
+        description
+          "Aqtobe (Aktobe)";
+      }
+      enum Asia/Aqtau {
+        value 217;
+        description
+          "Atyrau (Atirau, Gur'yev), Mangghystau (Mankistau)";
+      }
+      enum Asia/Oral {
+        value 218;
+        description
+          "West Kazakhstan";
+      }
+      enum Asia/Vientiane {
+        value 219;
+      }
+      enum Asia/Beirut {
+        value 220;
+      }
+      enum America/St_Lucia {
+        value 221;
+      }
+      enum Europe/Vaduz {
+        value 222;
+      }
+      enum Asia/Colombo {
+        value 223;
+      }
+      enum Africa/Monrovia {
+        value 224;
+      }
+      enum Africa/Maseru {
+        value 225;
+      }
+      enum Europe/Vilnius {
+        value 226;
+      }
+      enum Europe/Luxembourg {
+        value 227;
+      }
+      enum Europe/Riga {
+        value 228;
+      }
+      enum Africa/Tripoli {
+        value 229;
+      }
+      enum Africa/Casablanca {
+        value 230;
+      }
+      enum Europe/Monaco {
+        value 231;
+      }
+      enum Europe/Chisinau {
+        value 232;
+      }
+      enum Europe/Podgorica {
+        value 233;
+      }
+      enum America/Marigot {
+        value 234;
+      }
+      enum Indian/Antananarivo {
+        value 235;
+      }
+      enum Pacific/Majuro {
+        value 236;
+        description
+          "most locations";
+      }
+      enum Pacific/Kwajalein {
+        value 237;
+        description
+          "Kwajalein";
+      }
+      enum Europe/Skopje {
+        value 238;
+      }
+      enum Africa/Bamako {
+        value 239;
+      }
+      enum Asia/Rangoon {
+        value 240;
+      }
+      enum Asia/Ulaanbaatar {
+        value 241;
+        description
+          "most locations";
+      }
+      enum Asia/Hovd {
+        value 242;
+        description
+          "Bayan-Olgiy, Govi-Altai, Hovd, Uvs, Zavkhan";
+      }
+      enum Asia/Choibalsan {
+        value 243;
+        description
+          "Dornod, Sukhbaatar";
+      }
+      enum Asia/Macau {
+        value 244;
+      }
+      enum Pacific/Saipan {
+        value 245;
+      }
+      enum America/Martinique {
+        value 246;
+      }
+      enum Africa/Nouakchott {
+        value 247;
+      }
+      enum America/Montserrat {
+        value 248;
+      }
+      enum Europe/Malta {
+        value 249;
+      }
+      enum Indian/Mauritius {
+        value 250;
+      }
+      enum Indian/Maldives {
+        value 251;
+      }
+      enum Africa/Blantyre {
+        value 252;
+      }
+      enum America/Mexico_City {
+        value 253;
+        description
+          "Central Time - most locations";
+      }
+      enum America/Cancun {
+        value 254;
+        description
+          "Central Time - Quintana Roo";
+      }
+      enum America/Merida {
+        value 255;
+        description
+          "Central Time - Campeche, Yucatan";
+      }
+      enum America/Monterrey {
+        value 256;
+        description
+          "Mexican Central Time - Coahuila, Durango, Nuevo Leon,
+           Tamaulipas away from US border";
+      }
+      enum America/Matamoros {
+        value 257;
+        description
+          "US Central Time - Coahuila, Durango, Nuevo Leon, Tamaulipas
+           near US border";
+      }
+      enum America/Mazatlan {
+        value 258;
+        description
+          "Mountain Time - S Baja, Nayarit, Sinaloa";
+      }
+      enum America/Chihuahua {
+        value 259;
+        description
+          "Mexican Mountain Time - Chihuahua away from US border";
+      }
+      enum America/Ojinaga {
+        value 260;
+        description
+          "US Mountain Time - Chihuahua near US border";
+      }
+      enum America/Hermosillo {
+        value 261;
+        description
+          "Mountain Standard Time - Sonora";
+      }
+      enum America/Tijuana {
+        value 262;
+        description
+          "US Pacific Time - Baja California near US border";
+      }
+      enum America/Santa_Isabel {
+        value 263;
+        description
+          "Mexican Pacific Time - Baja California away from US border";
+      }
+      enum America/Bahia_Banderas {
+        value 264;
+        description
+          "Mexican Central Time - Bahia de Banderas";
+      }
+      enum Asia/Kuala_Lumpur {
+        value 265;
+        description
+          "peninsular Malaysia";
+      }
+      enum Asia/Kuching {
+        value 266;
+        description
+          "Sabah & Sarawak";
+      }
+      enum Africa/Maputo {
+        value 267;
+      }
+      enum Africa/Windhoek {
+        value 268;
+      }
+      enum Pacific/Noumea {
+        value 269;
+      }
+      enum Africa/Niamey {
+        value 270;
+      }
+      enum Pacific/Norfolk {
+        value 271;
+      }
+      enum Africa/Lagos {
+        value 272;
+      }
+      enum America/Managua {
+        value 273;
+      }
+      enum Europe/Amsterdam {
+        value 274;
+      }
+      enum Europe/Oslo {
+        value 275;
+      }
+      enum Asia/Kathmandu {
+        value 276;
+      }
+      enum Pacific/Nauru {
+        value 277;
+      }
+      enum Pacific/Niue {
+        value 278;
+      }
+      enum Pacific/Auckland {
+        value 279;
+        description
+          "most locations";
+      }
+      enum Pacific/Chatham {
+        value 280;
+        description
+          "Chatham Islands";
+      }
+      enum Asia/Muscat {
+        value 281;
+      }
+      enum America/Panama {
+        value 282;
+      }
+      enum America/Lima {
+        value 283;
+      }
+      enum Pacific/Tahiti {
+        value 284;
+        description
+          "Society Islands";
+      }
+      enum Pacific/Marquesas {
+        value 285;
+        description
+          "Marquesas Islands";
+      }
+      enum Pacific/Gambier {
+        value 286;
+        description
+          "Gambier Islands";
+      }
+      enum Pacific/Port_Moresby {
+        value 287;
+      }
+      enum Asia/Manila {
+        value 288;
+      }
+      enum Asia/Karachi {
+        value 289;
+      }
+      enum Europe/Warsaw {
+        value 290;
+      }
+      enum America/Miquelon {
+        value 291;
+      }
+      enum Pacific/Pitcairn {
+        value 292;
+      }
+      enum America/Puerto_Rico {
+        value 293;
+      }
+      enum Asia/Gaza {
+        value 294;
+        description
+          "Gaza Strip";
+      }
+      enum Asia/Hebron {
+        value 295;
+        description
+          "West Bank";
+      }
+      enum Europe/Lisbon {
+        value 296;
+        description
+          "mainland";
+      }
+      enum Atlantic/Madeira {
+        value 297;
+        description
+          "Madeira Islands";
+      }
+      enum Atlantic/Azores {
+        value 298;
+        description
+          "Azores";
+      }
+      enum Pacific/Palau {
+        value 299;
+      }
+      enum America/Asuncion {
+        value 300;
+      }
+      enum Asia/Qatar {
+        value 301;
+      }
+      enum Indian/Reunion {
+        value 302;
+      }
+      enum Europe/Bucharest {
+        value 303;
+      }
+      enum Europe/Belgrade {
+        value 304;
+      }
+      enum Europe/Kaliningrad {
+        value 305;
+        description
+          "Moscow-01 - Kaliningrad";
+      }
+      enum Europe/Moscow {
+        value 306;
+        description
+          "Moscow+00 - west Russia";
+      }
+      enum Europe/Volgograd {
+        value 307;
+        description
+          "Moscow+00 - Caspian Sea";
+      }
+      enum Europe/Samara {
+        value 308;
+        description
+          "Moscow+00 - Samara, Udmurtia";
+      }
+      enum Asia/Yekaterinburg {
+        value 309;
+        description
+          "Moscow+02 - Urals";
+      }
+      enum Asia/Omsk {
+        value 310;
+        description
+          "Moscow+03 - west Siberia";
+      }
+      enum Asia/Novosibirsk {
+        value 311;
+        description
+          "Moscow+03 - Novosibirsk";
+      }
+      enum Asia/Novokuznetsk {
+        value 312;
+        description
+          "Moscow+03 - Novokuznetsk";
+      }
+      enum Asia/Krasnoyarsk {
+        value 313;
+        description
+          "Moscow+04 - Yenisei River";
+      }
+      enum Asia/Irkutsk {
+        value 314;
+        description
+          "Moscow+05 - Lake Baikal";
+      }
+      enum Asia/Yakutsk {
+        value 315;
+        description
+          "Moscow+06 - Lena River";
+      }
+      enum Asia/Khandyga {
+        value 316;
+        description
+          "Moscow+06 - Tomponsky, Ust-Maysky";
+      }
+      enum Asia/Vladivostok {
+        value 317;
+        description
+          "Moscow+07 - Amur River";
+      }
+      enum Asia/Sakhalin {
+        value 318;
+        description
+          "Moscow+07 - Sakhalin Island";
+      }
+      enum Asia/Ust-Nera {
+        value 319;
+        description
+          "Moscow+07 - Oymyakonsky";
+      }
+      enum Asia/Magadan {
+        value 320;
+        description
+          "Moscow+08 - Magadan";
+      }
+      enum Asia/Kamchatka {
+        value 321;
+        description
+          "Moscow+08 - Kamchatka";
+      }
+      enum Asia/Anadyr {
+        value 322;
+        description
+          "Moscow+08 - Bering Sea";
+      }
+      enum Africa/Kigali {
+        value 323;
+      }
+      enum Asia/Riyadh {
+        value 324;
+      }
+      enum Pacific/Guadalcanal {
+        value 325;
+      }
+      enum Indian/Mahe {
+        value 326;
+      }
+      enum Africa/Khartoum {
+        value 327;
+      }
+      enum Europe/Stockholm {
+        value 328;
+      }
+      enum Asia/Singapore {
+        value 329;
+      }
+      enum Atlantic/St_Helena {
+        value 330;
+      }
+      enum Europe/Ljubljana {
+        value 331;
+      }
+      enum Arctic/Longyearbyen {
+        value 332;
+      }
+      enum Europe/Bratislava {
+        value 333;
+      }
+      enum Africa/Freetown {
+        value 334;
+      }
+      enum Europe/San_Marino {
+        value 335;
+      }
+      enum Africa/Dakar {
+        value 336;
+      }
+      enum Africa/Mogadishu {
+        value 337;
+      }
+      enum America/Paramaribo {
+        value 338;
+      }
+      enum Africa/Juba {
+        value 339;
+      }
+      enum Africa/Sao_Tome {
+        value 340;
+      }
+      enum America/El_Salvador {
+        value 341;
+      }
+      enum America/Lower_Princes {
+        value 342;
+      }
+      enum Asia/Damascus {
+        value 343;
+      }
+      enum Africa/Mbabane {
+        value 344;
+      }
+      enum America/Grand_Turk {
+        value 345;
+      }
+      enum Africa/Ndjamena {
+        value 346;
+      }
+      enum Indian/Kerguelen {
+        value 347;
+      }
+      enum Africa/Lome {
+        value 348;
+      }
+      enum Asia/Bangkok {
+        value 349;
+      }
+      enum Asia/Dushanbe {
+        value 350;
+      }
+      enum Pacific/Fakaofo {
+        value 351;
+      }
+      enum Asia/Dili {
+        value 352;
+      }
+      enum Asia/Ashgabat {
+        value 353;
+      }
+      enum Africa/Tunis {
+        value 354;
+      }
+      enum Pacific/Tongatapu {
+        value 355;
+      }
+      enum Europe/Istanbul {
+        value 356;
+      }
+      enum America/Port_of_Spain {
+        value 357;
+      }
+      enum Pacific/Funafuti {
+        value 358;
+      }
+      enum Asia/Taipei {
+        value 359;
+      }
+      enum Africa/Dar_es_Salaam {
+        value 360;
+      }
+      enum Europe/Kiev {
+        value 361;
+        description
+          "most locations";
+      }
+      enum Europe/Uzhgorod {
+        value 362;
+        description
+          "Ruthenia";
+      }
+      enum Europe/Zaporozhye {
+        value 363;
+        description
+          "Zaporozh'ye, E Lugansk / Zaporizhia, E Luhansk";
+      }
+      enum Europe/Simferopol {
+        value 364;
+        description
+          "central Crimea";
+      }
+      enum Africa/Kampala {
+        value 365;
+      }
+      enum Pacific/Johnston {
+        value 366;
+        description
+          "Johnston Atoll";
+      }
+      enum Pacific/Midway {
+        value 367;
+        description
+          "Midway Islands";
+      }
+      enum Pacific/Wake {
+        value 368;
+        description
+          "Wake Island";
+      }
+      enum America/New_York {
+        value 369;
+        description
+          "Eastern Time";
+      }
+      enum America/Detroit {
+        value 370;
+        description
+          "Eastern Time - Michigan - most locations";
+      }
+      enum America/Kentucky/Louisville {
+        value 371;
+        description
+          "Eastern Time - Kentucky - Louisville area";
+      }
+      enum America/Kentucky/Monticello {
+        value 372;
+        description
+          "Eastern Time - Kentucky - Wayne County";
+      }
+      enum America/Indiana/Indianapolis {
+        value 373;
+        description
+          "Eastern Time - Indiana - most locations";
+      }
+      enum America/Indiana/Vincennes {
+        value 374;
+        description
+          "Eastern Time - Indiana - Daviess, Dubois, Knox & Martin
+           Counties";
+      }
+      enum America/Indiana/Winamac {
+        value 375;
+        description
+          "Eastern Time - Indiana - Pulaski County";
+      }
+      enum America/Indiana/Marengo {
+        value 376;
+        description
+          "Eastern Time - Indiana - Crawford County";
+      }
+      enum America/Indiana/Petersburg {
+        value 377;
+        description
+          "Eastern Time - Indiana - Pike County";
+      }
+      enum America/Indiana/Vevay {
+        value 378;
+        description
+          "Eastern Time - Indiana - Switzerland County";
+      }
+      enum America/Chicago {
+        value 379;
+        description
+          "Central Time";
+      }
+      enum America/Indiana/Tell_City {
+        value 380;
+        description
+          "Central Time - Indiana - Perry County";
+      }
+      enum America/Indiana/Knox {
+        value 381;
+        description
+          "Central Time - Indiana - Starke County";
+      }
+      enum America/Menominee {
+        value 382;
+        description
+          "Central Time - Michigan - Dickinson, Gogebic, Iron & Menominee
+           Counties";
+      }
+      enum America/North_Dakota/Center {
+        value 383;
+        description
+          "Central Time - North Dakota - Oliver County";
+      }
+      enum America/North_Dakota/New_Salem {
+        value 384;
+        description
+          "Central Time - North Dakota - Morton County (except Mandan
+           area)";
+      }
+      enum America/North_Dakota/Beulah {
+        value 385;
+        description
+          "Central Time - North Dakota - Mercer County";
+      }
+      enum America/Denver {
+        value 386;
+        description
+          "Mountain Time";
+      }
+      enum America/Boise {
+        value 387;
+        description
+          "Mountain Time - south Idaho & east Oregon";
+      }
+      enum America/Phoenix {
+        value 388;
+        description
+          "Mountain Standard Time - Arizona (except Navajo)";
+      }
+      enum America/Los_Angeles {
+        value 389;
+        description
+          "Pacific Time";
+      }
+      enum America/Anchorage {
+        value 390;
+        description
+          "Alaska Time";
+      }
+      enum America/Juneau {
+        value 391;
+        description
+          "Alaska Time - Alaska panhandle";
+      }
+      enum America/Sitka {
+        value 392;
+        description
+          "Alaska Time - southeast Alaska panhandle";
+      }
+      enum America/Yakutat {
+        value 393;
+        description
+          "Alaska Time - Alaska panhandle neck";
+      }
+      enum America/Nome {
+        value 394;
+        description
+          "Alaska Time - west Alaska";
+      }
+      enum America/Adak {
+        value 395;
+        description
+          "Aleutian Islands";
+      }
+      enum America/Metlakatla {
+        value 396;
+        description
+          "Metlakatla Time - Annette Island";
+      }
+      enum Pacific/Honolulu {
+        value 397;
+        description
+          "Hawaii";
+      }
+      enum America/Montevideo {
+        value 398;
+      }
+      enum Asia/Samarkand {
+        value 399;
+        description
+          "west Uzbekistan";
+      }
+      enum Asia/Tashkent {
+        value 400;
+        description
+          "east Uzbekistan";
+      }
+      enum Europe/Vatican {
+        value 401;
+      }
+      enum America/St_Vincent {
+        value 402;
+      }
+      enum America/Caracas {
+        value 403;
+      }
+      enum America/Tortola {
+        value 404;
+      }
+      enum America/St_Thomas {
+        value 405;
+      }
+      enum Asia/Ho_Chi_Minh {
+        value 406;
+      }
+      enum Pacific/Efate {
+        value 407;
+      }
+      enum Pacific/Wallis {
+        value 408;
+      }
+      enum Pacific/Apia {
+        value 409;
+      }
+      enum Asia/Aden {
+        value 410;
+      }
+      enum Indian/Mayotte {
+        value 411;
+      }
+      enum Africa/Johannesburg {
+        value 412;
+      }
+      enum Africa/Lusaka {
+        value 413;
+      }
+      enum Africa/Harare {
+        value 414;
+      }
+    }
+  }
+
+  // BBF XPON
+
+  typedef string-hex14 {
+    type string {
+      pattern '[a-fA-F0-9]{14}';
+    }
+    description
+      "A string representing 7 hexadecimal octets expressed in
+       ASCII.";
+  }
+
+  typedef pon-id-display-type {
+    type union {
+      type uint32;
+      type string-hex14;
+    }
+    description
+      "A type meant for the different formats of the PON-ID for the
+       various channel-pair types. The 'unint' is meant for NG-PON2,
+       XGS-PON and XG-PON and the 'string7only' is meant for G-PON.";
+  }
+
+  typedef composite-channel-id-type {
+    type union {
+      type uint8 {
+        range "0..7";
+      }
+      type enumeration {
+        enum xgs {
+          description
+            "To be used in case of XGS-PON, rather than 0.";
+        }
+      }
+    }
+    description
+      "A composite type strictly meant for leaves reflecting the
+       already allocated downstream or upstream channel-id on a
+       channel-group.
+       Such leaves are used to prevent conflicts when allocating
+       a channel-pair to a channel-group. For NG-PON2, the applicable
+       values are in [0..7], for XGS-PON a dedicated value 'xgs'
+       is used rather than '0' to prevent ambiguity between this and
+       the valid value '0' for NG-PON2.";
+  }
+
+  typedef pon-port-mode {
+    type enumeration {
+      enum gpon;
+      enum epon;
+      enum xgs;
+      enum xgpon;
+      enum xgspon;
+      enum ngpon2;
+    }
+  }
+
+  typedef composite-downstream-wavelength-type {
+    type union {
+      type uint32 {
+        range "0 | 156000..161000";
+      }
+      type enumeration {
+        enum xgs {
+          description
+            "To be used in case of XGS-PON.";
+        }
+        enum xgpon {
+          description
+            "To be used in case of XG-PON.";
+        }
+        enum gpon {
+          description
+            "To be used in case of G-PON.";
+        }
+      }
+    }
+    description
+      "A composite type strictly meant for leaves reflecting the
+       already allocated downstream or upstream channel-id on a
+       channel-group.
+       Such leaves are used to prevent conflicts when allocating a
+       channel-pair to a channel-group. For NG-PON2, the applicable
+       values are in [0..8], for XGS-PON a dedicated value 'xgs'
+       is applicable rather than value '0': this is not to a priori
+       forbid in yang model the coexistence of XGS-PON with NG-PON2
+       using channel-id=0.";
+  }
+
+  typedef auth-method-type {
+    type enumeration {
+      enum serial-number {
+        description
+          "Authentication based on ONU serial number.";
+        reference
+          "ITU-T G.984.3 clause VI.1";
+      }
+      enum loid {
+        description
+          "Authentication based on the Logical ONU ID (LOID).";
+        reference
+          "ITU-T G.988 clause 9.1.1";
+      }
+      enum registration-id {
+        description
+          "Authentication based on ONU registration ID.";
+        reference
+          "ITU-T G.984.3 clause VI.2";
+      }
+      enum omci {
+        description
+          "Authentication by use of the enhanced security control
+           managed entity (ME) over OMCI.";
+        reference
+          "ITU-T G.987.3 Annex C";
+      }
+      enum dot1x {
+        description
+          "Authentication according to IEEE 802.1x.";
+        reference
+          "ITU-T G.987.3 Annex D";
+      }
+      enum as-per-v-ani-expected {
+        description
+          "Authentication according to the expected configuration
+           of virtual ANIs. In that case an ONU will be considered
+           authenticated with a given virtual ANI when it matches
+           *all* expected authentication data configured in this
+           virtual ANI or the 'learned-serial-number' in the virtual
+           ANI state data. For instance, if a virtual ANI is
+           configured with an 'expected-serial-number' and an
+           'expected-registration-id', an ONU can be considered
+           authenticated with this virtual ANI only when it
+           matches both the 'expected-serial-number' and the
+           'expected-registration-id' of this virtual ANI.";
+      }
+    }
+    description
+      "Method for authenticating an ONU.";
+  }
+
+  typedef raman-mitigation-type {
+    type enumeration {
+      enum raman-none {
+        description
+          "No Raman mitigation is performed.";
+      }
+      enum raman-8b10b {
+        description
+          "For Raman mitigation, the 8B10B sublayer is introduced
+           between the downstream NG-PON2 physical interface (PHY)
+           adaptation interface and the optical interface.";
+        reference
+          "ITU-T G.989.2 clause IX.1";
+      }
+      enum raman-miller {
+        description
+          "For Raman mitigation, Miller code is used.";
+        reference
+          "ITU-T G.989.2 clause IX.2";
+      }
+    }
+    description
+      "NG-PON2 Raman mitigation coding schemes when using RF video
+       overlay.";
+    reference
+      "ITU-T G.989.2 Appendix IX";
+  }
+
+  typedef ip-address-or-unresolved {
+    type union {
+      type inet:ip-address;
+      type enumeration {
+        enum unresolved {
+          description
+            "To be used when the URL cannot be resolved into an
+             IP address.";
+        }
+      }
+    }
+    description
+      "A type meant for a leaf which is either an IP address or
+       reflects that no IP address is available.";
+  }
+
+  typedef onu-id {
+    type uint32 {
+      range "0..1020";
+    }
+    description
+      "A type meant for ONU-IDs.";
+  }
+
+  typedef onu-serial-number {
+    type string {
+      pattern '[a-zA-Z]{4}[0-9a-fA-F]{8}';
+    }
+    description
+      "A type meant for the serial number of an ONU.";
+  }
+
+  typedef int16-or-unknown {
+    type union {
+      type int16;
+      type enumeration {
+        enum unknown {
+          description
+            "To be used when a numerical value could not be
+             determined.";
+        }
+      }
+    }
+    description
+      "A type meant for a leaf which indicates an int16 numerical
+       value or that indicates that a numerical value could not be
+       determined.";
+  }
+
+  // BBF YANG
+
+  typedef name-string {
+    type string {
+      length "1..64";
+    }
+    description
+      "Used where a string is needed which has a maximum length of
+       64 characters and a minimum length of 1 character.";
+  }
+
+  typedef percent {
+    type uint8 {
+      range "0..100";
+    }
+    description
+      "A percentage.";
+  }
+
+  typedef performance-counter32 {
+    type uint32;
+    description
+      "The 'performance-counter32' type represents a non-negative
+       integer that monotonically increases until it reaches a maximum
+       value of 2^32-1 (4294967295 decimal), but does not wrap around
+       once the maximum value is reached.";
+  }
+
+  typedef performance-counter32-or-inactive {
+    type union {
+      type uint32;
+      type enumeration {
+        enum inactive {
+          description
+            "Indicates that this counter is not active.";
+        }
+      }
+    }
+    description
+      "The 'performance-counter32-or-inactive' type represents a
+       non-negative integer that monotonically increases until it
+       reaches a maximum value of 2^32-1 (4294967295 decimal), but
+       does not wrap around once the maximum value is reached.
+
+       A special value (enum inactive) indicates that this counter
+       is not active.";
+  }
+
+  typedef performance-counter64 {
+    type uint64;
+    description
+      "The 'performance-counter64' type represents a non-negative
+       integer that monotonically increases until it reaches a maximum
+       value of 2^64-1 (18446744073709551615 decimal), but does not
+       wrap around once the maximum value is reached.";
+  }
+
+  typedef string-ascii63-or-empty {
+    type string {
+      length "0..63";
+      pattern '[ -~]*';
+      // allows the 95 printable ASCII characters
+    }
+    description
+      "Used where a string is needed which has a maximum length of
+       63 characters and also allows for a null string (length = 0).
+
+       The character set is limited to the 95 printable ASCII
+       characters.";
+  }
+
+  typedef string-ascii64 {
+    type string {
+      length "1..64";
+      pattern '[ -~]*';
+    }
+    description
+      "Used where a string is represented using at least 1 and no more
+       than 64 ASCII characters.
+
+       The character set is limited to the 95 printable ASCII
+       characters.";
+  }
+
+  typedef string-ascii64-or-empty {
+    type string {
+      length "0..64";
+      pattern '[ -~]*';
+    }
+    description
+      "Used where a string is represented using at least 1 and no more
+       than 64 ASCII characters.
+
+       The character set is limited to the 95 printable ASCII
+       characters.";
+  }
+
+  typedef undetermined {
+    type enumeration {
+      enum undetermined {
+        description
+          "Indicates the value is not determined.";
+      }
+    }
+    description
+      "A type which defines an enumeration respresenting when
+       the value for an object is not determined. Often, this is
+       combined with other data via a union acting as a special value
+       to indicate the undetermined state.";
+  }
+
+  typedef data-rate32 {
+    type uint32;
+    units "kbits/second";
+    description
+      "A type which represents the rate at which data is being
+       transferred.";
+  }
+
+  typedef data-rate32-or-undetermined {
+    type union {
+      type undetermined;
+      type data-rate32;
+    }
+    units "kbits/second";
+    description
+      "A type which represents the rate at which data is being
+       transferred. A special value, 'undetermined', is used to
+       indicate the data rate is undetermined.";
+  }
+
+  // BBF OLT and ONU specific
+
+  typedef alloc-id-values {
+    type string {
+      pattern '((25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]|[1-9][0-9][0-'
+            + '9][0-9]|1[0-6][0-3][0-8][0-3])([,-](25[6-9]|2[6-9]['
+            + '0-9]|[3-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|1[0-6][0-'
+            + '3][0-8][0-3]))*)?';
+    }
+    description
+      "A list of non-overlapping Allocation Identifier (Alloc-ID)
+       values in ascending order, between 1024 to 16383 for G.9807.1
+       XGS-PON/G.989.3 NGPON2 compliant Optical Line Terminations
+       (OLT) and 256 to 4095 for G.984.3 GPON-compliant Optical Line
+       Terminations (OLT).
+
+       The format of this string can be any of the following:
+
+         single value
+           Example: '1024'
+         comma separated list of values
+           Example: '1024,1030,16000'
+         range of values
+           Example: '1024-1300'
+         comma separated list of ranges
+           Example: '1025-1300,1301-1400,1500-1600'
+         comma separated list of values and ranges
+           Example: '1024-1300,1301,1303-1310'.";
+  }
+
+  typedef ip-gemport-type {
+    type enumeration {
+      enum point-to-point {
+        description
+          "represent unicast type.";
+      }
+      enum point-to-multipoint {
+        description
+          "represent multicast type.";
+      }
+    }
+  }
+
+  typedef ip-allocation-strategy {
+    type enumeration {
+      enum increment {
+        description
+          "indicates increment from starting range.";
+      }
+      enum decrement {
+        description
+          "indicates decrement from end range.";
+      }
+    }
+  }
+
+  typedef gemport-values {
+    type string {
+      pattern '((25[4-9]|2[6-9][0-9]|[3-9][0-9][0-9]|[1-9][0-9][0-'
+            + '9][0-9]|[1-6][0-5][0-5][0-3][0-4])([,-](25[4-9]|2[6-'
+            + '9][0-9]|[3-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-6]['
+            + '0-5][0-5][0-3][0-4]))*)?';
+    }
+    description
+      "A list of non-overlapping xGEM/G-PON Encapsulation Method (GEM)
+       port-ID values in ascending order, between 1021 to 65534 for
+       G.9807.1 XGS-PON/G.989.3 NGPON2 compliant Optical Line
+       Terminations (OLT) and 254 to 4095 for G.984.3 GPON-compliant
+       Optical Line Terminations (OLT).
+
+       The format of this string can be any of the following:
+
+         single value
+           Example: '1024'
+         comma separated list of values
+           Example: '1024,1030,16000'
+         range of values
+           Example: '1024-1300'
+         comma separated list of ranges
+           Example: '1025-1300,1301-1400,1500-1600'
+         comma separated list of values and ranges
+           Example: '1024-1300,1301,1303-1310'.";
+  }
+
+  typedef onu-id-values {
+    type string {
+      pattern '(([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|10[0-2]0)([,-](['
+            + '0-9]|[1-9][0-9]|[1-9][0-9][0-9]|10[0-2]0))*)?';
+    }
+    description
+      "A list of non-overlapping Optical Network Unit Identifier
+       (ONU-ID) values in ascending order, between 0 to 1020 for
+       G.9807.1 XGS-PON/G.989.3 NGPON2 compliant Optical Line
+       Terminations (OLT) and 0 to 253 for G.984.3 GPON-compliant
+       Optical Line Terminations (OLT).
+
+       The format of this string can be any of the following:
+
+         single value
+           Example: '1020'
+         comma separated list of values
+           Example: '1,30,600'
+         range of values
+           Example: '30-60'
+         comma separated list of ranges
+           Example: '30-60,80-90'
+         comma separated list of values and ranges
+           Example: '1,30-60,70,90-100'.";
+  }
+
+  typedef vomci-entity-state {
+    type enumeration {
+      enum disabled-general {
+        description
+          "Indicates the entity is disabled";
+      }
+      enum enabled {
+        description
+          "Indicates the entity is enabled";
+      }
+    }
+    description
+      "The vOMCI entity state.";
+  }
+
+  typedef onu-alignment-status {
+    type enumeration {
+      enum aligned {
+        value 1;
+        description
+          "The ONU state is aligned.";
+      }
+      enum unaligned {
+        value 2;
+        description
+          "The ONU state is unaligned.";
+      }
+    }
+    description
+      "The types of ONU alignment status";
+  }
+
+  typedef onu-discovery-result {
+    type enumeration {
+      enum successful {
+        value 1;
+        description
+          "The ONU discovery procedure was successful.";
+      }
+      enum failed-connectivity {
+        value 2;
+        description
+          "The ONU discovery procedure failed to discover the ONU
+           because the ONU is not reachable.";
+      }
+      enum failed-unknown {
+        value 3;
+        description
+          "The ONU discovery procedure failed to discover the ONU
+           because the ONU is not known to the vOLTMF.";
+      }
+    }
+    //enumeration
+    description
+      "The types of ONU discover results";
+  }
+
+  typedef onu-password {
+    type string {
+      length "0..10";
+    }
+    description
+      "The TC Layer ONU password.";
+  }
+
+  typedef onu-vendor-id {
+    type string {
+      pattern '[a-zA-Z]{4}';
+    }
+    description
+      "The vendor id portion of the TC layer ONU-id.";
+  }
+
+  typedef onu-name {
+    type ct:string-ascii64;
+    description
+      "The name assigned to an ONU for use in communication between
+       the vOLTMF and vOMCI function.";
+  }
+
+  typedef omci-sequence-number {
+    type uint16;
+    description
+      "The omci command sequence number for the OMCI message.";
+  }
+
+  typedef olt-name {
+    type ct:string-ascii64;
+    description
+      "The name assigned to the OLT device.";
+  }
+
+  typedef pon-nf-type {
+    type enumeration {
+      enum access-vnf-type;
+      enum vomci-function-type;
+      enum vomci-proxy-type;
+      enum voltmf-type;
+      enum dpu;
+      enum msan;
+      enum dslam;
+      enum olt;
+      enum onu;
+      enum fast-cpe;
+      enum vdsl2-cpe;
+    }
+  }
+
+  typedef broadband-line-characteristics {
+    type bits {
+      bit actual-data-rate-upstream {
+        description
+          "Sub-option type 0x81 - Actual upstream data rate of an
+           access loop.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x81
+           ITU-T G.997.1 Section 7.5.2.1
+           TR-301i2 Table 14-1, sub-TLV 129
+           ITU-T G.997.2 Section 7.11.1.1";
+      }
+      bit actual-data-rate-downstream {
+        description
+          "Sub-option type 0x82 - Actual downstream data rate of an
+           access loop.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x82
+           ITU-T G.997.1 Section 7.5.2.1
+           TR-301i2 Table 14-1, sub-TLV 130
+           ITU-T G.997.2 Section 7.11.1.1";
+      }
+      bit min-data-rate-upstream {
+        description
+          "Sub-option type 0x83 - Minimum upstream data rate at which
+           the loop is set to operate.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x83
+           ITU-T G.997.1 Section 7.3.2.1.1";
+      }
+      bit min-data-rate-downstream {
+        description
+          "Sub-option type 0x84 - Minimum downstream data rate at
+           which the loop is set to operate.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x84
+           ITU-T G.997.1 Section 7.3.2.1.1";
+      }
+      bit attainable-data-rate-upstream {
+        description
+          "Sub-option type 0x85 - Maximum upstream data rate that can
+           be achieved.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x85
+           ITU-T G.997.1 Section 7.5.1.20 (ATTNDRus)
+           TR-301i2 Table 14-1, sub-TLV 133
+           ITU-T G.997.2 Section 7.11.2.1";
+      }
+      bit attainable-data-rate-downstream {
+        description
+          "Sub-option type 0x86 - Maximum downstream data rate that
+           can be achieved.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x86
+           ITU-T G.997.1 Section 7.5.1.19 (ATTNDRds)
+           TR-301i2 Table 14-1, sub-TLV 134
+           ITU-T G.997.2 Section 7.11.2.1";
+      }
+      bit max-data-rate-upstream {
+        description
+          "Sub-option type 0x87 - Maximum upstream data rate at which
+           the loop is set to operate.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x87
+           ITU-T G.997.1 Section 7.3.2.1.3";
+      }
+      bit max-data-rate-downstream {
+        description
+          "Sub-option type 0x88 - Maximum downstream data rate at
+           which the loop is set to operate.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x88
+           ITU-T G.997.1 Section 7.3.2.1.3";
+      }
+      bit min-data-rate-upstream-low-power-state {
+        description
+          "Sub-option type 0x89 - Minimum upstream data rate at which
+           the loop is set to operate during the low power state
+           (L1/L2).";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x89
+           ITU-T G.997.1 Section 7.3.2.1.5";
+      }
+      bit min-data-rate-downstream-low-power-state {
+        description
+          "Sub-option type 0x8A - Minimum downstream data rate at
+           which the loop is set to operate during the low power
+           state (L1/L2).";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x8A
+           ITU-T G.997.1 Section 7.3.2.1.5";
+      }
+      bit max-interleaving-delay-upstream {
+        description
+          "Sub-option type 0x8B - Maximum one-way interleaving delay
+           in upstream.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x8B
+           ITU-T G.997.1 Section 7.3.2.2";
+      }
+      bit actual-interleaving-delay-upstream {
+        description
+          "Sub-option type 0x8C - Actual one-way interleaving delay
+           value in milliseconds corresponding to the interleaver
+           setting in upstream.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x8C
+           ITU-T G.997.1 Section 7.5.2.3";
+      }
+      bit max-interleaving-delay-downstream {
+        description
+          "Sub-option type 0x8D - Maximum one-way interleaving delay
+           in downstream.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x8D
+           ITU-T G.997.1 Section 7.3.2.2";
+      }
+      bit actual-interleaving-delay-downstream {
+        description
+          "Sub-option type 0x8E - Actual one-way interleaving delay
+           value in milliseconds corresponding to the interleaver
+           setting in downstream.";
+        reference
+          "TR-101i2 Table 3, sub-TLV 0x8E
+           ITU-T G.997.1 Section 7.5.2.3";
+      }
+      bit access-loop-encapsulation {
+        description
+          "Sub-option type 0x90 - the data link protocol and the
+           encapsulation overhead on the access loop.";
+        reference
+          "TR-101i2 - R164";
+      }
+      bit expected-throughput-upstream {
+        description
+          "Expected throughput (ETR) upstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 155
+           ITU-T G.997.2 Section 7.11.1.2";
+      }
+      bit expected-throughput-downstream {
+        description
+          "Expected throughput (ETR) downstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 156
+           ITU-T G.997.2 Section 7.11.1.2";
+      }
+      bit attainable-expected-throughput-upstream {
+        description
+          "Attainable expected throughput (ETR) upstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 157
+           ITU-T G.997.2 Section 7.11.2.2";
+      }
+      bit attainable-expected-throughput-downstream {
+        description
+          "Attainable expected throughput (ETR) downstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 158
+           ITU-T G.997.2 Section 7.11.2.2";
+      }
+      bit gamma-data-rate-upstream {
+        description
+          "Attainable gamma data rate (GDR) upstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 159
+           ITU-T G.997.2 Section 7.11.1.3.";
+      }
+      bit gamma-data-rate-downstream {
+        description
+          "Gamma data rate (GDR) downstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 160
+           ITU-T G.997.2 Section 7.11.1.3";
+      }
+      bit attainable-gamma-data-rate-upstream {
+        description
+          "Gamma data rate (GDR) upstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 161
+           ITU-T G.997.2 Section 7.11.2.3";
+      }
+      bit attainable-gamma-data-rate-downstream {
+        description
+          "Attainable gamma data rate (GDR) downstream.";
+        reference
+          "TR-301i2 Table 14-1, sub-TLV 162
+           ITU-T G.997.2 Section 7.11.2.3";
+      }
+    }
+    description
+      "The type defined for the broadband line characteristics
+       listed in TR-101i2 and TR-301i2";
+    reference
+      "TR-101i2 - R158, TR-301i2 - R119";
+  }
+
+  // IETF Interfaces
+
+  typedef interface-ref {
+    type leafref {
+      path "/if:interfaces/if:interface/if:name";
+    }
+    description
+      "This type is used by data models that need to reference
+       interfaces.";
+  }
+
+  typedef element-name {
+    type string {
+      length "3..255";
+    }
+  }
+
+  typedef element-family {
+    type enumeration {
+      enum RMD;
+      enum auxCore;
+      enum Server;
+      enum OLT;
+    }
+  }
+
+  typedef element-vendor {
+    type enumeration {
+      enum CommScope;
+      enum CiscoSystems;
+      enum JuniperNetworks;
+      enum Adtran;
+      enum Nokia;
+      enum HiSense;
+      enum CIG;
+      enum ExtremeNetworks;
+      enum Ruckus;
+      enum Generic;
+    }
+  }
+
+  typedef element-model {
+    type enumeration {
+      enum RD2322;
+      enum VUE;
+      enum DHCP;
+    }
+  }
+
+  typedef element-management-protocol {
+    type enumeration {
+      enum SSH;
+      enum NETCONF;
+      enum RESTCONF;
+    }
+  }
+
+  typedef element-traffic-types {
+    type enumeration {
+      enum cable-modem;
+      enum host;
+      enum cpe;
+      enum mta;
+      enum cable-home-ps;
+      enum dsg-stb;
+      enum embeddded-rtr;
+      enum any;
+    }
+  }
+
+  typedef element-vendor-classes {
+    type string {
+      pattern '([0-9]|[12][0-9]|3[01])$|^(([0-9]|[12][0-9]|30)-([0-9]|[12][0-9]|3[01]))';
+    }
+  }
+}

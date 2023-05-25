@@ -1,0 +1,33 @@
+module [ halo-{{...}} {{device-family}}-{{device-model}} ] {
+  yang-version 1.1;
+  // halo core urn:com:vendor:yang:halo:...
+  // device models urn:com:vendor:yang:{{family}}:{{model}}
+  namespace "urn:com:vendor:yang:halo:...";
+  prefix h...;
+
+  import halo-... {
+    prefix h...;
+    revision-date yyyy-mm-dd;
+  }
+
+  organization
+    "CommScope, Inc.";
+  contact
+    "x.y@commscope.com";
+  description
+    "HALO ...
+
+     CommScope © 2020-2021 All Rights Reserved
+
+     This program is confidential and proprietary to CommScope, Inc. 
+     (CommScope), and may not be copied, reproduced, modified, disclosed
+     to others, published or used, in whole or in part, without the express
+     prior written permission of CommScope.
+    ";
+
+  revision yyyy-mm-dd {
+    description
+      "initial";
+  }
+
+}

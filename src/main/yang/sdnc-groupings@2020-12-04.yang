@@ -1,0 +1,96 @@
+module sdnc-groupings {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:groupings";
+  prefix cg;
+
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc YANG Common Groupings";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  grouping common-hardware {
+    leaf unit-name {
+      type ct:name;
+    }
+    leaf unit-version {
+      type string {
+        pattern '\d{1,2}.\d{1,2}(.\d{1,2})?(.\d{1,4})?';
+      }
+    }
+    leaf unit-timestamp {
+      type yang:date-and-time;
+    }
+    leaf serial-number {
+      description
+        "Unit serial number (Serial  #: BZT0415J02P)";
+      type string;
+    }
+  }
+
+  grouping common-notification-event {
+    notification event {
+      leaf module {
+        type ct:name;
+        mandatory true;
+      }
+      leaf class {
+        type string {
+          pattern '([A-Za-z0-9\-_]+)';
+          length "2 .. max";
+        }
+        mandatory true;
+      }
+      leaf severity {
+        type enumeration {
+          enum emergency {
+            value 0;
+          }
+          enum alert {
+            value 1;
+          }
+          enum critical {
+            value 2;
+          }
+          enum error {
+            value 3;
+          }
+          enum warning {
+            value 4;
+          }
+          enum notification {
+            value 5;
+          }
+          enum information {
+            value 6;
+          }
+          enum debug {
+            value 7;
+          }
+          enum reserved {
+            value 8;
+          }
+        }
+        mandatory true;
+      }
+      anyxml report;
+    }
+  }
+}

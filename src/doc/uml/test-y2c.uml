@@ -1,0 +1,158 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/test-y2c.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title test-y2c 
+package "c:sdnc" as c_sdnc { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cg:sdnc-groupings" as cg_sdnc_groupings { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of ty_test_y2c : <b>Namespace: </b> urn:com:vendor:yang:test:yang \n<b>Prefix: </b> ty \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-09-24 \n
+package "ty:test-y2c" as ty_test_y2c { 
+c_sdnc +-- ty_test_y2c
+cs_sdnc_sku +-- ty_test_y2c
+cnf_sdnc_xnf +-- ty_test_y2c
+cg_sdnc_groupings +-- ty_test_y2c
+inet_ietf_inet_types +-- ty_test_y2c
+class "test-y2c" as test_y2c << (M, #33CCFF) module>> 
+test_y2c : feature : y2c_test 
+class "grp-hostname" as test_y2c_I_grp_hostname_grouping <<(G,Lime) grouping>> 
+test_y2c_I_grp_hostname_grouping : hostname : inet:host  
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+test_y2c *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cs:sdnc-sku
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+class "cli-header" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header
+<b>Config = </b>false
+end note 
+class "hardware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : cg:common-hardware {uses} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : grp-hostname {uses} 
+class "list-wth-child-values" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values 
+class "acl" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl : ordered-by : user
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl : +sequence : uint16 [1..max]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl : outer : enumeration : {value0,value1,no-value,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl : inner : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_wth_child_values_I_acl
+<b>When</b> (inner):
+../outer = 'value0' or ../outer = 'value1'
+
+end note 
+class "types" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type1 : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type2 : decimal64  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type3 : boolean  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type4 : enumeration : {alpha,beta,gamma,...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type5 : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type6 : identityref {y2c}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type7 : leafref : ...hostname  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type8 : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type9 : binary {length = 6}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types : type10 : bits   = zero 
+class "def-with-mixed-child-values" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_def_with_mixed_child_values <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_def_with_mixed_child_values 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_def_with_mixed_child_values : mandatory-value : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_def_with_mixed_child_values : optional-value : uint8  
+class "block-within-list-begin-end-only" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only 
+class "bwlbeo" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only_I_bwlbeo << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only_I_bwlbeo 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only_I_bwlbeo : +name : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_block_within_list_begin_end_only_I_bwlbeo : text : string  
+class "list-with-begin-end-child" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child 
+class "lwbec" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child_I_lwbec << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child_I_lwbec 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child_I_lwbec : +name : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_list_with_begin_end_child_I_lwbec : child : uint8  
+class "simple-leaf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_simple_leaf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_simple_leaf 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_simple_leaf : simple-leaf-enable-modify-disable : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_simple_leaf : simple-leaf-enable-disable-only : string  
+class "multi-optionals" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals : index : uint8   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals : option1 : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals : option2 : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_multi_optionals : option3 : uint8   = 1 
+class "things" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things : variant : uint8   = 0 
+class "level1" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1 
+class "things" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things : +name : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things : comment : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things : variant : leafref : ...variant   {mandatory}
+class "level2" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2 
+class "things" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things : +name : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things : comment : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things : variant : leafref : ...variant   {mandatory}
+class "level3" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things_I_level3 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things_I_level3 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things_I_level3 : identity-of : identityref {y2c}  
+class "clobs" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clobs <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clobs 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clobs : xml anyxml 
+class "cli-footer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer
+<b>Config = </b>false
+end note 
+class "y2c" as y2c << (I,Silver) identity>> 
+class "items" as items << (I,Silver) identity>> 
+y2c <|-- items 
+class "thing1" as thing1 << (I,Silver) identity>> 
+items <|-- thing1 
+class "thing2" as thing2 << (I,Silver) identity>> 
+items <|-- thing2 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types-->y2c: type6
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things_I_level3-->y2c: identity-of
+} 
+
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config --> test_y2c_I_grp_hostname_grouping : uses 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types-->"hostname"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config: type7
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things: variant
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things: variant
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

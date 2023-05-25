@@ -1,0 +1,61 @@
+BOF
+hostname "bef6575a-6db4-43f4-9b7e-7c8e5b1e13e5"
+list 10 value0 0value
+list 20 value1 1value
+list 30 no-value
+type1 256
+type2 9223372036854.73
+type3 false
+type4 delta
+type5 "stringy"
+type6 items
+type7 bef6575a-6db4-43f4-9b7e-7c8e5b1e13e5
+type8
+type9 SGVsbG8h 
+type10 00001111
+mixed-value 64 128
+block-with-begin-end-only "Lorem"
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+/end
+block-with-begin-end-only "Ipsum"
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+/end
+block-with-begin-end-only "Marcus Tullius Cicero"
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+/end
+start list-with-begin-end-child
+add Adam
+child 0
+end list-with-begin-end-child
+start list-with-begin-end-child
+add Eve
+child 1
+end list-with-begin-end-child
+simple-leaf-emd "forest"
+simple-leaf-edo "branch"
+multi-optionals 0 16 32 64
+things
+thing
+"ground"
+comment "n/a"
+level2-variant 1
+thing
+"first"
+comment "n/a"
+level2-variant 12
+identity thing1
+end thing
+thing
+"second"
+comment "n/a"
+level2-variant 24
+identity thing2
+end thing
+end thing
+end things
+<?xml version="1.0" encoding="UTF-8" standalone="yes">
+<y2c src="xml" xmlns="urn:com:vendor:yang:y2c:test">
+<contact-info><name>Tanmay Patil</name><company>TutorialsPoint</company><phone>(011) 123-4567</phone>lt;/contact-info>
+</y2c>
+<!-- y2c xml -->
+EOF

@@ -1,0 +1,167 @@
+module sdnc-clinf-tasks {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:clinf:tasks";
+  prefix cct;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc YANG Publish/Subscribe (PubSub)";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-clinf-tasks {
+    status current;
+  }
+
+  rpc add {
+    if-feature "c:sdnc";
+    if-feature "cct:sdnc-clinf-tasks";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf instance-slice {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs/cnf:config-slices/cnf:instance-slice";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf task {
+        type leafref {
+          path "/c:sdnc/cct:clinf/cct:tasks/cct:task";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc list-nf {
+    if-feature "c:sdnc";
+    if-feature "cct:sdnc-clinf-tasks";
+    output {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc list-tasks-by-nf {
+    if-feature "c:sdnc";
+    if-feature "cct:sdnc-clinf-tasks";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      leaf task {
+        type leafref {
+          path "/c:sdnc/cct:clinf/cct:tasks/cct:task";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf instance-slice {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs/cnf:config-slices/cnf:instance-slice";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf timestamp {
+        type yang:date-and-time;
+        mandatory true;
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container clinf {
+      list tasks {
+        key "task";
+        leaf task {
+          type yang:uuid;
+          mandatory true;
+        }
+        action empty {
+          description
+            "remove all tasks";
+        }
+        list xnf {
+          key "instance";
+          leaf instance {
+            type leafref {
+              path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+              require-instance true;
+            }
+            mandatory true;
+          }
+          action purge {
+            description
+              "purge all instance tasks associated nf instance";
+          }
+          container slices {
+            list slices {
+              key "instance-slice";
+              leaf instance-slice {
+                type leafref {
+                  path "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs/cnf:config-slices/cnf:instance-slice";
+                  require-instance true;
+                }
+                mandatory true;
+              }
+              leaf timestamp {
+                description
+                  "timestamp of task was added to tasks list.";
+                type yang:date-and-time;
+                mandatory true;
+              }
+              action delete {
+                description
+                  "remove config-slice task";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

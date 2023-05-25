@@ -1,0 +1,161 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-sku.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-sku 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of cs_sdnc_sku : <b>Namespace: </b> urn:com:vendor:yang:sdnc:sku \n<b>Prefix: </b> cs \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+c_sdnc +-- cs_sdnc_sku
+ct_sdnc_types +-- cs_sdnc_sku
+inet_ietf_inet_types +-- cs_sdnc_sku
+class "sdnc-sku" as sdnc_sku << (M, #33CCFF) module>> 
+sdnc_sku : feature : sdnc_sku 
+sdnc_sku : list-model-revision-by-vendor( in: sku_vendor out: models_revisions)
+sdnc_sku : list-model-revision-by-vendor-model-family( in: sku_vendor in: sku_model_family out: models_revisions)
+sdnc_sku : list-model-revision-by-vendor-model-family-type( in: sku_vendor in: sku_model_family in: sku_model_type out: models_revisions)
+sdnc_sku : list-model-revision-by-model-family( in: sku_model_family out: models_revisions)
+sdnc_sku : list-model-revision-by-model-family-type( in: sku_model_family in: sku_model_type out: models_revisions)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_sku *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "sku" as  sdnc_I_sdnc_I_sku <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_sku 
+class "models" as sdnc_I_sdnc_I_sku_I_models << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku *-- "0..N" sdnc_I_sdnc_I_sku_I_models 
+sdnc_I_sdnc_I_sku_I_models : +model-namespace : ct:module-namespace  {key}  {mandatory}
+class "versions" as sdnc_I_sdnc_I_sku_I_models_I_versions << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions 
+sdnc_I_sdnc_I_sku_I_models_I_versions : +model-revision : ct:module-revision  {key}  {mandatory}
+sdnc_I_sdnc_I_sku_I_models_I_versions : model-yang : string {length = 10..max}   {mandatory} {Config : false}
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions
+<b>Must</b> (model-yang):
+(starts-with(current(),'module ') or starts-with(current(),'submodule '))
+
+end note 
+sdnc_I_sdnc_I_sku_I_models_I_versions : yang-version : enumeration : {1,1.1,}   {Config : false}
+sdnc_I_sdnc_I_sku_I_models_I_versions : module-name : string   {Config : false}
+sdnc_I_sdnc_I_sku_I_models_I_versions : prefix : string   {Config : false}
+class "imports" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports
+<b>Config = </b>false
+end note 
+class "import" as sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import : +module-name : string  {key} 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import : prefix : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import : revision-date : string {pattern = \d{4}-\d{2}-\d{2}}  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import : description : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_imports_I_import : reference : string  
+class "includes" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes
+<b>Config = </b>false
+end note 
+class "include" as sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include : +submodule-name : string  {key} 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include : revision-date : string {pattern = \d{4}-\d{2}-\d{2}}  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include : description : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_includes_I_include : reference : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions : organization : string   {Config : false}
+sdnc_I_sdnc_I_sku_I_models_I_versions : contact : string   {Config : false}
+sdnc_I_sdnc_I_sku_I_models_I_versions : description : string   {Config : false}
+sdnc_I_sdnc_I_sku_I_models_I_versions : reference : string   {Config : false}
+class "submodels" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels
+<b>Config = </b>false
+end note 
+class "submodule" as sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : +submodule-name : string  {key} 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : submodel-yang : string {length = 10..max}  
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule
+<b>Must</b> (submodel-yang):
+starts-with(current(),'submodule ')
+
+end note 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : belongs-to : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : belongs-to-xmlns : leafref : ...cs:model-namespace  
+class "imports" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports 
+class "import" as sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import : +module-name : string  {key} 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import : prefix : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import : revision-date : string {pattern = \d{4}-\d{2}-\d{2}}  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import : description : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule_I_imports_I_import : reference : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : organization : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : contact : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : description : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule : reference : string  
+class "properties" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties
+<b>Config = </b>false
+end note 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties
+<b>When: </b>starts-with(../../model-namespace,"urn:com:vendor:yang:")
+end note 
+class "product" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_product <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_product 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_product : vendor : string {length = 3..max}  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_product : model-family : string {length = 3..max}  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_product : model-type : string {length = 3..max}  
+class "firmware" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware
+<b>When: </b>starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-") or starts-with(../../../model-namespace,"urn:com:vendor:yang:pon-")
+end note 
+class "revisions" as sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware_I_revisions << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware *-- "0..N" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware_I_revisions : ordered-by : user
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware_I_revisions : +name : string {length = 3..max}  {key} 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_firmware_I_revisions : version : string {pattern = \d{1,2}.\d{1,2}.\d{1...}  
+class "factory-credentials" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials
+<b>When: </b>starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-")
+end note 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials : username : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials : password : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials : enable-username : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_factory_credentials : enable-password : string  
+class "cli-helpers" as  sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers <<container>> 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties *-- "1" sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers 
+note bottom of sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers
+<b>When: </b>starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-")
+end note 
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : config-erase-cli : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : config-reset-cli : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : config-save-to-memory-cli : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : config-copy-to-remote : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : config-remote-endpoint : inet:uri  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : ssh-idle-cli : string  
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_properties_I_cli_helpers : ssh-idle-timeout-duration : uint64  
+class "../../../.." as sdnc_I_sdnc_I_sku_I_models <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_sku_I_models_I_versions_I_submodels_I_submodule-->"cs:model-namespace"sdnc_I_sdnc_I_sku_I_models: belongs-to-xmlns
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

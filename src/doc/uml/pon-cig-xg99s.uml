@@ -1,0 +1,58 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/pon-cig-xg99s.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title pon-cig-xg99s 
+package "c:sdnc" as c_sdnc { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cg:sdnc-groupings" as cg_sdnc_groupings { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of cxg99s_pon_cig_xg99s : <b>Namespace: </b> urn:com:vendor:yang:pon:cig:xg99s \n<b>Prefix: </b> cxg99s \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-09-01 \n
+package "cxg99s:pon-cig-xg99s" as cxg99s_pon_cig_xg99s { 
+c_sdnc +-- cxg99s_pon_cig_xg99s
+cnf_sdnc_xnf +-- cxg99s_pon_cig_xg99s
+cg_sdnc_groupings +-- cxg99s_pon_cig_xg99s
+cs_sdnc_sku +-- cxg99s_pon_cig_xg99s
+inet_ietf_inet_types +-- cxg99s_pon_cig_xg99s
+class "pon-cig-xg99s" as pon_cig_xg99s << (M, #33CCFF) module>> 
+pon_cig_xg99s : feature : pon_onu 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+pon_cig_xg99s *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host  
+class "hardware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : cg:common-hardware {uses} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : vendor : string {length = 3..max} {pattern = ([A-Za-z0-9.-]+)((\s...}   = VENDOR 
+} 
+
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

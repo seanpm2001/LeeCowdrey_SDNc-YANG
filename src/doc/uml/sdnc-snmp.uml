@@ -1,0 +1,135 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-snmp.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-snmp 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of css_sdnc_snmp : <b>Namespace: </b> urn:com:vendor:yang:sdnc:snmp \n<b>Prefix: </b> css \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "css:sdnc-snmp" as css_sdnc_snmp { 
+c_sdnc +-- css_sdnc_snmp
+ct_sdnc_types +-- css_sdnc_snmp
+yang_ietf_yang_types +-- css_sdnc_snmp
+inet_ietf_inet_types +-- css_sdnc_snmp
+class "sdnc-snmp" as sdnc_snmp << (M, #33CCFF) module>> 
+sdnc_snmp : feature : sdnc_snmp 
+sdnc_snmp : snmp-security-group-define( in: version in: udp_port in: timeout in: retry in: access_type in: v1_v2c in: v3 out: identifier)
+sdnc_snmp : snmp-request-define( in: identifier in: frequency in: retention in: oids out: identifier)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_snmp *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "snmp" as  sdnc_I_sdnc_I_snmp <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_snmp 
+note bottom of sdnc_I_sdnc_I_snmp
+<b>Config = </b>true
+end note 
+class "security-groups" as  sdnc_I_sdnc_I_snmp_I_security_groups <<container>> 
+sdnc_I_sdnc_I_snmp *-- "1" sdnc_I_sdnc_I_snmp_I_security_groups 
+class "security-group" as sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_snmp_I_security_groups *-- "0..N" sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : +identifier : yang:uuid  {key} 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : destroy()
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : version : ct:snmp-version   = v2c 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : udp-port : inet:port-number   = 161 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : timeout : uint16   = 1000 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : retry : uint16   = 5 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group : access-type : ct:snmp-access-type   = ro  {Config : false}
+class "v1-v2c" as  sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v1_v2c <<container>> 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group *-- "1" sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v1_v2c 
+note bottom of sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v1_v2c
+<b>When: </b>(../version='v1') or (../version='v2c')
+end note 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v1_v2c : community : ct:snmp-community-name  
+class "v3" as  sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 <<container>> 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group *-- "1" sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 
+note bottom of sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3
+<b>When: </b>../version='v3'
+end note 
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : username : ct:snmp-username  
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : encryption-protocol : ct:snmp-authentication-encryption-protocol  
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : authentication-protocol : ct:snmp-authentication-encryption-protocol  
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : authentication-password : ct:snmp-authentication-password  
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : privacy-password : ct:snmp-privacy-password  
+sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group_I_v3 : snmp-transmission-type : ct:snmp-transmission-type   = unencrypted 
+class "requests" as  sdnc_I_sdnc_I_snmp_I_requests <<container>> 
+sdnc_I_sdnc_I_snmp *-- "1" sdnc_I_sdnc_I_snmp_I_requests 
+class "request-groups" as sdnc_I_sdnc_I_snmp_I_requests_I_request_groups << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_snmp_I_requests *-- "0..N" sdnc_I_sdnc_I_snmp_I_requests_I_request_groups 
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups : +identifier : yang:uuid  {key} 
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups : undefine()
+class "oids" as sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups *-- "0..N" sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids 
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids : +oid : ct:snmp-object-identifier  {key}  {mandatory}
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids : remove()
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids : oid-name : ct:snmp-object-identifier-name   {Config : false}
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids : frequency : uint32 [1..max]   = 5  {minutes}
+sdnc_I_sdnc_I_snmp_I_requests_I_request_groups_I_oids : retention : uint32 [1..max]   = 365  {days}
+class "snmp-security-group-added" as sdnc_snmp_I_snmp_security_group_added << (N,#00D1B2) notification>> 
+sdnc_snmp -- sdnc_snmp_I_snmp_security_group_added : notification 
+note bottom of sdnc_snmp_I_snmp_security_group_added
+<b>if-feature: </b>c:sdnc
+end note 
+sdnc_snmp_I_snmp_security_group_added : identifier : leafref : ...css:identifier   {mandatory}
+class "snmp-security-group-modified" as sdnc_snmp_I_snmp_security_group_modified << (N,#00D1B2) notification>> 
+sdnc_snmp -- sdnc_snmp_I_snmp_security_group_modified : notification 
+note bottom of sdnc_snmp_I_snmp_security_group_modified
+<b>if-feature: </b>c:sdnc
+end note 
+sdnc_snmp_I_snmp_security_group_modified : identifier : leafref : ...css:identifier   {mandatory}
+class "snmp-security-group-deleted" as sdnc_snmp_I_snmp_security_group_deleted << (N,#00D1B2) notification>> 
+sdnc_snmp -- sdnc_snmp_I_snmp_security_group_deleted : notification 
+note bottom of sdnc_snmp_I_snmp_security_group_deleted
+<b>if-feature: </b>c:sdnc
+end note 
+sdnc_snmp_I_snmp_security_group_deleted : identifier : leafref : ...css:identifier   {mandatory}
+class "snmp-request-oid-added" as sdnc_snmp_I_snmp_request_oid_added << (N,#00D1B2) notification>> 
+sdnc_snmp -- sdnc_snmp_I_snmp_request_oid_added : notification 
+note bottom of sdnc_snmp_I_snmp_request_oid_added
+<b>if-feature: </b>c:sdnc
+end note 
+sdnc_snmp_I_snmp_request_oid_added : identifier : leafref : ...css:identifier   {mandatory}
+class "oids" as sdnc_snmp_I_snmp_request_oid_added_I_oids << (L, #FF7700) list>> 
+sdnc_snmp_I_snmp_request_oid_added *-- "0..N" sdnc_snmp_I_snmp_request_oid_added_I_oids 
+sdnc_snmp_I_snmp_request_oid_added_I_oids : +oid : ct:snmp-object-identifier  {key}  {mandatory}
+class "snmp-request-oid-deleted" as sdnc_snmp_I_snmp_request_oid_deleted << (N,#00D1B2) notification>> 
+sdnc_snmp -- sdnc_snmp_I_snmp_request_oid_deleted : notification 
+note bottom of sdnc_snmp_I_snmp_request_oid_deleted
+<b>if-feature: </b>c:sdnc
+end note 
+sdnc_snmp_I_snmp_request_oid_deleted : identifier : leafref : ...css:identifier   {mandatory}
+class "oids" as sdnc_snmp_I_snmp_request_oid_deleted_I_oids << (L, #FF7700) list>> 
+sdnc_snmp_I_snmp_request_oid_deleted *-- "0..N" sdnc_snmp_I_snmp_request_oid_deleted_I_oids 
+sdnc_snmp_I_snmp_request_oid_deleted_I_oids : +oid : ct:snmp-object-identifier  {key}  {mandatory}
+class "/c:sdnc/css:snmp/css:security-groups/css:security-group" as sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group <<leafref>> 
+class "/c:sdnc/css:snmp/css:security-groups/css:security-group" as sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group <<leafref>> 
+class "/c:sdnc/css:snmp/css:security-groups/css:security-group" as sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group <<leafref>> 
+class "/c:sdnc/css:snmp/css:requests/css:request-groups" as sdnc_I_sdnc_I_snmp_I_requests_I_request_groups <<leafref>> 
+class "/c:sdnc/css:snmp/css:requests/css:request-groups" as sdnc_I_sdnc_I_snmp_I_requests_I_request_groups <<leafref>> 
+} 
+
+sdnc_snmp_I_snmp_security_group_added-->"css:identifier"sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group: identifier
+sdnc_snmp_I_snmp_security_group_modified-->"css:identifier"sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group: identifier
+sdnc_snmp_I_snmp_security_group_deleted-->"css:identifier"sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group: identifier
+sdnc_snmp_I_snmp_request_oid_added-->"css:identifier"sdnc_I_sdnc_I_snmp_I_requests_I_request_groups: identifier
+sdnc_snmp_I_snmp_request_oid_deleted-->"css:identifier"sdnc_I_sdnc_I_snmp_I_requests_I_request_groups: identifier
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

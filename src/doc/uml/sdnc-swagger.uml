@@ -1,0 +1,552 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-swagger.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-swagger 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of csw_sdnc_swagger : <b>Namespace: </b> urn:com:vendor:yang:sdnc:swagger \n<b>Prefix: </b> csw \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "csw:sdnc-swagger" as csw_sdnc_swagger { 
+c_sdnc +-- csw_sdnc_swagger
+ct_sdnc_types +-- csw_sdnc_swagger
+inet_ietf_inet_types +-- csw_sdnc_swagger
+class "sdnc-swagger" as sdnc_swagger << (M, #33CCFF) module>> 
+sdnc_swagger : feature : sdnc_swagger 
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_swagger *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "swagger" as  sdnc_I_sdnc_I_swagger <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_swagger 
+note bottom of sdnc_I_sdnc_I_swagger
+<b>Config = </b>true
+end note 
+class "openapi" as  sdnc_I_sdnc_I_swagger_I_openapi <<container>> 
+sdnc_I_sdnc_I_swagger *-- "1" sdnc_I_sdnc_I_swagger_I_openapi 
+sdnc_I_sdnc_I_swagger_I_openapi : version : string {pattern = \d{1,2}.\d{1,2}.\d{1...}   = 3.0.0 
+class "info" as  sdnc_I_sdnc_I_swagger_I_info <<container>> 
+sdnc_I_sdnc_I_swagger *-- "1" sdnc_I_sdnc_I_swagger_I_info 
+sdnc_I_sdnc_I_swagger_I_info : title : string  
+sdnc_I_sdnc_I_swagger_I_info : version : string {pattern = \d{1,2}.\d{1,2}.\d{1...}   = 1.0.0 
+sdnc_I_sdnc_I_swagger_I_info : description : string  
+class "contact" as  sdnc_I_sdnc_I_swagger_I_info_I_contact <<container>> 
+sdnc_I_sdnc_I_swagger_I_info *-- "1" sdnc_I_sdnc_I_swagger_I_info_I_contact 
+sdnc_I_sdnc_I_swagger_I_info_I_contact : name : string  
+sdnc_I_sdnc_I_swagger_I_info_I_contact : email : ct:email-address  
+class "server" as  sdnc_I_sdnc_I_swagger_I_server <<container>> 
+sdnc_I_sdnc_I_swagger *-- "1" sdnc_I_sdnc_I_swagger_I_server 
+class "servers" as sdnc_I_sdnc_I_swagger_I_server_I_servers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_server *-- "0..N" sdnc_I_sdnc_I_swagger_I_server_I_servers : ordered-by : user
+sdnc_I_sdnc_I_swagger_I_server_I_servers : +url : inet:uri  {key} 
+note bottom of sdnc_I_sdnc_I_swagger_I_server_I_servers
+<b>Must</b> (url):
+starts-with(current(),'http:') or starts-with(current(),'https:') or starts-with(current(),'ws:') or starts-with(current(),'wss:') or starts-with(current(),'/')
+
+end note 
+sdnc_I_sdnc_I_swagger_I_server_I_servers : description : string  
+class "components" as  sdnc_I_sdnc_I_swagger_I_components <<container>> 
+sdnc_I_sdnc_I_swagger *-- "1" sdnc_I_sdnc_I_swagger_I_components 
+class "schemas" as sdnc_I_sdnc_I_swagger_I_components_I_schemas << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_components *-- "0..N" sdnc_I_sdnc_I_swagger_I_components_I_schemas 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas : +ref-name : string  {key} 
+class "schema" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "list-of" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of
+<b>When: </b>(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')
+end note 
+class "ofs" as sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of_I_ofs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of *-- "1..N" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of_I_ofs 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_list_of_I_ofs : +ref : string  {key} 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema : callback-url : inet:uri  
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema
+<b>When</b> (callback-url):
+../type = 'callbackUrl'
+
+end note 
+class "property" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_schemas_I_schema_I_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "security" as  sdnc_I_sdnc_I_swagger_I_components_I_security <<container>> 
+sdnc_I_sdnc_I_swagger_I_components *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_security 
+sdnc_I_sdnc_I_swagger_I_components_I_security : type : enumeration : {http-basic,http-bearer,}  
+class "http-basic-auth" as  sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_security *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth
+<b>When: </b>../type = 'http-basic'
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth : auth-name : string   = basicAuth 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth : type : enumeration : {http,}   = http 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_basic_auth : schema : enumeration : {basic,}   = basic 
+class "http-bearer-auth" as  sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth <<container>> 
+sdnc_I_sdnc_I_swagger_I_components_I_security *-- "1" sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth 
+note bottom of sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth
+<b>When: </b>../type = 'http-bearer'
+end note 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth : auth-name : string   = bearerAuth 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth : type : enumeration : {http,}   = http 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth : schema : enumeration : {bearer,}   = bearer 
+sdnc_I_sdnc_I_swagger_I_components_I_security_I_http_bearer_auth : format : string  
+class "path" as  sdnc_I_sdnc_I_swagger_I_path <<container>> 
+sdnc_I_sdnc_I_swagger *-- "1" sdnc_I_sdnc_I_swagger_I_path 
+class "paths" as sdnc_I_sdnc_I_swagger_I_path_I_paths << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths 
+sdnc_I_sdnc_I_swagger_I_path_I_paths : +path : string  {key} 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths
+<b>Must</b> (path):
+starts-with(current(),'/')
+
+end note 
+class "endpoints" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints : +method : enumeration : {get,head,post,...}  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints : summary : string  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints : description : string  
+class "request-body" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body : description : string  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body : required : boolean   = false 
+class "content" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content : mime-type : string {pattern = \w+/[-+.\w]+}  
+class "schema" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "list-of" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of
+<b>When: </b>(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')
+end note 
+class "ofs" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of_I_ofs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of *-- "1..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of_I_ofs 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_list_of_I_ofs : +ref : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema : callback-url : inet:uri  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema
+<b>When</b> (callback-url):
+../type = 'callbackUrl'
+
+end note 
+class "property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "request-property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "list-of" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of
+<b>When: </b>(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')
+end note 
+class "ofs" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of_I_ofs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of *-- "1..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of_I_ofs 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_list_of_I_ofs : +ref : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties : callback-url : inet:uri  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties
+<b>When</b> (callback-url):
+../type = 'callbackUrl'
+
+end note 
+class "property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_request_property_I_properties_I_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "required-property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_request_body_I_content_I_schema_I_required_property_I_properties : +property-name : string  {key} 
+class "response" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response 
+class "responses" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses : +code : union{uint16, enumeration}  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses : description : string  
+class "content" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content : mime-type : string {pattern = \w+/[-+.\w]+}  
+class "schema" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "list-of" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of
+<b>When: </b>(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')
+end note 
+class "ofs" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of_I_ofs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of *-- "1..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of_I_ofs 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_list_of_I_ofs : +ref : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema : callback-url : inet:uri  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema
+<b>When</b> (callback-url):
+../type = 'callbackUrl'
+
+end note 
+class "property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "response-property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+class "list-of" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of
+<b>When: </b>(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')
+end note 
+class "ofs" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of_I_ofs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of *-- "1..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of_I_ofs 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_list_of_I_ofs : +ref : string  {key} 
+class "property" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property 
+class "properties" as sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property *-- "0..N" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties : +property-name : string  {key} 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties : type : enumeration : {string,number,integer,...}  
+class "string" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_string <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_string 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_string
+<b>When: </b>(../type = 'string') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_string : format : enumeration : {date,date-time,password,...}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_string : default : string  
+class "number" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number
+<b>When: </b>(../type = 'number') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number : format : enumeration : {float,double,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number : minimum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number : maximum : decimal64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_number : default : decimal64  
+class "integer" as  sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer <<container>> 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties *-- "1" sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer 
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer
+<b>When: </b>(../type = 'integer') or (../type = '{}')
+end note 
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer : format : enumeration : {int32,int64,}  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer : minimum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer : maximum : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties_I_integer : default : uint64  
+sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties : ref : string  
+note bottom of sdnc_I_sdnc_I_swagger_I_path_I_paths_I_endpoints_I_response_I_responses_I_content_I_schema_I_response_property_I_properties_I_property_I_properties
+<b>When</b> (ref):
+../type = '$ref'
+
+end note 
+} 
+
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

@@ -1,0 +1,448 @@
+module test-y2c {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:test:yang";
+  prefix ty;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "YANG-to-CLI (Y2C) Test Model for verification/acceptance purposes
+
+     Everything generated through this definition using YANG-to-CLI should
+     exist have a final representation of unicode string.
+    ";
+
+  revision 2021-09-24 {
+    description
+      "Initial";
+  }
+
+  feature y2c-test {
+    status current;
+  }
+
+  cs:sku-model-revision "2021-09-24";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "TEST";
+  cs:sku-model-type "YANG-to-CLI (Y2C) Test Model";
+
+  // cs:cli-process when existing and has a value of true
+  // should indicate YANG-to-CLI should be process any
+  // instantiated data associated with this model.
+  // If cs:cli-process is false, or does not exist then
+  // associated data of this model, should not be processed
+  cs:cli-process "true";
+
+  identity y2c {
+    description
+      "base identity";
+  }
+
+  identity items {
+    base y2c;
+    description
+      "items of y2c identities";
+  }
+
+  identity thing1 {
+    base items;
+  }
+
+  identity thing2 {
+    base items;
+  }
+
+  grouping grp-hostname {
+    leaf hostname {
+      cs:cli-enable-cmd "hostname \"{{.}}\"";
+      cs:cli-modify-cmd "hostname \"{{.}}\"";
+      cs:cli-disable-cmd "no hostname \"{{.}}\"";
+      type inet:host;
+    }
+  }
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      container cli-header {
+        description
+          "if included, should contain the first generated line before any/all generation.
+           if included, should only appear once.
+          ";
+        config false;
+        cs:cli-begin "BOF";
+      }
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "Y2C Test Model";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "1.2.3.4567";
+            mandatory false;
+          }
+        }
+      }
+      uses grp-hostname;
+      container list-wth-child-values {
+        list acl {
+          cs:cli-enable-cmd "list {{./sequence}} {{./outer}}[[ {{./inner}}]]";
+          cs:cli-disable-cmd "no list {{./sequence}} {{./outer}}[[ {{./inner}}]]";
+          key "sequence";
+          ordered-by user;
+          leaf sequence {
+            type uint16 {
+              range "1..max";
+            }
+          }
+          leaf outer {
+            type enumeration {
+              enum value0;
+              enum value1;
+              enum no-value;
+            }
+          }
+          leaf inner {
+            when "../outer = 'value0' or ../outer = 'value1'";
+            type string;
+          }
+        }
+      }
+      container types {
+        description
+          "YANG 1.0 and 1.1 built-in types
+           - enumerations will always use enumeration name, regardless of optional value
+           - identifyref should use the specified identity value
+           - integers should be as used as is
+           - decimals should be as specified whole decimal point and fractional part
+           - booleans should be generated as true or false, lowercase
+           - leafrefs should be generated as referenced type
+           - binary should be generated as unicode equivalent value,
+             i.e. SGVsbG8h is output as SGVsbG8h AND NOT the decode unicode string of Hello!
+           - bits should be generated as binary value, 0's and 1's only and least significant bit (LSB),
+             i.e. <three> <two> <one> <zero> is output as 00001111
+           - anyxml is supported
+           - anydata is not supported
+          ";
+        leaf type1 {
+          cs:cli-enable-cmd "type1 {{.}}";
+          cs:cli-modify-cmd "type1 modify {{.}}";
+          cs:cli-disable-cmd "no type1";
+          type uint8;
+        }
+        leaf type2 {
+          cs:cli-enable-cmd "type2 {{.}}";
+          cs:cli-modify-cmd "type2 modify {{.}}";
+          cs:cli-disable-cmd "no type2";
+          type decimal64 {
+            fraction-digits 2;
+          }
+        }
+        leaf type3 {
+          cs:cli-enable-cmd "type3 {{.}}";
+          cs:cli-disable-cmd "no type3";
+          type boolean;
+        }
+        leaf type4 {
+          cs:cli-enable-cmd "type4 {{.}}";
+          cs:cli-modify-cmd "type4 modify {{.}}";
+          cs:cli-disable-cmd "no type4";
+          type enumeration {
+            enum alpha;
+            enum beta;
+            enum gamma;
+            enum delta;
+            enum epsilon;
+            enum zeta;
+          }
+        }
+        leaf type5 {
+          cs:cli-enable-cmd "type5 \"{{.}}\"";
+          cs:cli-modify-cmd "type5 modify \"{{.}}\"";
+          cs:cli-disable-cmd "no type5";
+          type string;
+        }
+        leaf type6 {
+          cs:cli-enable-cmd "type6 {{.}}";
+          cs:cli-modify-cmd "type6 modify {{.}}";
+          cs:cli-disable-cmd "no type6";
+          type identityref {
+            base y2c;
+          }
+        }
+        leaf type7 {
+          cs:cli-enable-cmd "type7 {{.}}";
+          cs:cli-modify-cmd "type7 modify {{.}}";
+          cs:cli-disable-cmd "no type7";
+          type leafref {
+            path "../../hostname";
+            require-instance true;
+          }
+        }
+        leaf type8 {
+          cs:cli-enable-cmd "type8";
+          cs:cli-disable-cmd "no type8";
+          type empty;
+        }
+        leaf type9 {
+          cs:cli-enable-cmd "type9 {{.}}";
+          cs:cli-modify-cmd "type9 modify {{.}}";
+          cs:cli-disable-cmd "no type9";
+          type binary {
+            length "6";
+          }
+        }
+        leaf type10 {
+          cs:cli-enable-cmd "type10 {{.}}";
+          cs:cli-modify-cmd "type10 modify {{.}}";
+          cs:cli-disable-cmd "no type10";
+          type bits {
+            bit zero {
+              position 0;
+            }
+            bit one {
+              position 1;
+            }
+            bit two {
+              position 2;
+            }
+            bit three {
+              position 3;
+            }
+            bit four {
+              position 4;
+            }
+            bit five {
+              position 5;
+            }
+            bit six {
+              position 6;
+            }
+            bit seven {
+              position 7;
+            }
+          }
+          default "zero";
+        }
+      }
+      container def-with-mixed-child-values {
+        cs:cli-enable-cmd "mixed-value {{./mandatory-value}}[[ {{./optional-value}}]]";
+        cs:cli-disable-cmd "no mixed-value {{./mandatory-value}}[[ {{./optional-value}}]]";
+        leaf mandatory-value {
+          type uint8;
+        }
+        leaf optional-value {
+          type uint8;
+        }
+      }
+      container block-within-list-begin-end-only {
+        description
+          "cli-begin and cli-end should be repeated for each list entry";
+        list bwlbeo {
+          key "name";
+          cs:cli-begin "block-with-begin-end-only \"{{./name}}\"";
+          cs:cli-enable-cmd "{{./text}}";
+          cs:cli-end "/end";
+          cs:cli-disable-cmd "no block-with-begin-end-only \"{{./name}}\"";
+          leaf name {
+            type string;
+            cs:cli-enable-cmd "name \"{{.}}\"";
+            cs:cli-disable-cmd "no name \"{{.}}\"";
+          }
+          leaf text {
+            type string;
+            cs:cli-enable-cmd "text \"{{.}}\"";
+            cs:cli-disable-cmd "no text";
+          }
+        }
+      }
+      container list-with-begin-end-child {
+        description
+          "cli-begin and cli-end should occur once and wrap entire list
+           container cli-disable-cmd should only occur when last entry removed from list";
+        cs:cli-disable-cmd "disable start-with-begin-end-child";
+        list lwbec {
+          cs:cli-begin "start list-with-begin-end-child";
+          cs:cli-end "end list-with-begin-end-child";
+          cs:cli-disable-cmd "no list-with-begin-end-child";
+          key "name";
+          leaf name {
+            type string;
+            cs:cli-enable-cmd "add \"{{.}}\"";
+            cs:cli-disable-cmd "delete \"{{.}}\"";
+          }
+          leaf child {
+            cs:cli-enable-cmd "child {{.}}";
+            cs:cli-modify-cmd "child {{.}} modify";
+            cs:cli-disable-cmd "no child {{.}}";
+            type uint8;
+          }
+        }
+      }
+      container simple-leaf {
+        leaf simple-leaf-enable-modify-disable {
+          cs:cli-enable-cmd "simple-leaf-emd \"{{.}}\"";
+          cs:cli-modify-cmd "change-simple-leaf-emd \"{{.}}\"";
+          cs:cli-disable-cmd "no simple-leaf-emd \"{{.}}\"";
+          type string;
+        }
+        leaf simple-leaf-enable-disable-only {
+          cs:cli-enable-cmd "simple-leaf-edo \"{{.}}\"";
+          cs:cli-disable-cmd "no simple-leaf-edo \"{{.}}\"";
+          type string;
+        }
+      }
+      container multi-optionals {
+        cs:cli-enable-cmd "multi-optionals {{./index}}[[ {{./option1}}]][[ {{./option2}}]] {{./option3}}";
+        cs:cli-disable-cmd "no multi-optionals {{./index}}[[ {{./option1}}]][[ {{./option2}}]] {{./option3}}";
+        leaf index {
+          type uint8;
+          default "0";
+        }
+        leaf option1 {
+          type uint8;
+        }
+        leaf option2 {
+          type uint8;
+        }
+        leaf option3 {
+          type uint8;
+          default "1";
+        }
+      }
+      container things {
+        cs:cli-begin "things";
+        cs:cli-end "end things";
+        cs:cli-disable-cmd "no things";
+        leaf variant {
+          type uint8;
+          default "0";
+        }
+        container level1 {
+          cs:cli-begin "thing \"{{./name}}\"";
+          cs:cli-end "end thing \"{{./name}}\"";
+          cs:cli-disable-cmd "no thing \"{{./name}}\"";
+          list things {
+            key "name";
+            leaf name {
+              type string;
+            }
+            leaf comment {
+              type string;
+              cs:cli-enable-cmd "comment \"{{.}}\"";
+              cs:cli-disable-cmd "no comment";
+            }
+            leaf variant {
+              type leafref {
+                path "../../../variant";
+              }
+              mandatory true;
+              cs:cli-enable-cmd "level2-variant {{.}}";
+              cs:cli-disable-cmd "no level2-variant {{../../../variant}}";
+            }
+            container level2 {
+              cs:cli-begin "thing";
+              cs:cli-end "end thing";
+              cs:cli-disable-cmd "no thing";
+              list things {
+                key "name";
+                leaf name {
+                  type string;
+                  cs:cli-enable-cmd "\"{{.}}\"";
+                  cs:cli-disable-cmd "no \"{{.}}\"";
+                }
+                leaf comment {
+                  type string;
+                  cs:cli-enable-cmd "comment \"{{.}}\"";
+                  cs:cli-disable-cmd "no comment";
+                }
+                leaf variant {
+                  cs:cli-enable-cmd "level2-variant {{.}}";
+                  cs:cli-disable-cmd "no level2-variant {{../../../variant}}";
+                  type leafref {
+                    path "../../../variant";
+                  }
+                  mandatory true;
+                }
+                container level3 {
+                  leaf identity-of {
+                    cs:cli-enable-cmd "identity {{.}}";
+                    cs:cli-disable-cmd "no identity {{.}}";
+                    type identityref {
+                      base y2c;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      container clobs {
+        description
+          "XML type, anyxml, should be generated as textual equivalent
+           including any required escaping prefixes for and unicode encoding (UTF-8)
+           \" &quote (escaping here soley for this YANG comment only)
+           '  &apos
+           <  &lt
+           >  &rt
+           &  &amp
+
+           ANYDATA type is not supported.
+
+           Any such characters contained within cx extension definitions, should not
+           be processed and escaped, as should already be compliant due to YANG
+           definition itself.
+          ";
+        cs:cli-begin "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\">";
+        cs:cli-end "<!-- y2c xml -->";
+        anyxml xml {
+          cs:cli-begin "<y2c xmlns=\"urn:com:vendor:yang:y2c:test\">";
+          cs:cli-enable-cmd "{{.}}";
+          cs:cli-end "</y2c>";
+          cs:cli-disable-cmd "<y2c xmlns=\"urn:com:vendor:yang:y2c:test\"/>";
+        }
+      }
+      container cli-footer {
+        description
+          "if included, should contain the last generated line after any/all generation.
+           if included, should only appear once.
+          ";
+        config false;
+        cs:cli-end "EOF";
+      }
+    }
+  }
+}

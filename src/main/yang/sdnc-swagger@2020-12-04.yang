@@ -1,0 +1,1112 @@
+module sdnc-swagger {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:swagger";
+  prefix csw;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Swagger";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-swagger {
+    status current;
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container swagger {
+      config true;
+      container openapi {
+        leaf version {
+          type string {
+            pattern '\d{1,2}.\d{1,2}.\d{1,2}(.\d{1,4})?';
+          }
+          default "3.0.0";
+        }
+      }
+      container info {
+        leaf title {
+          type string;
+        }
+        leaf version {
+          type string {
+            pattern '\d{1,2}.\d{1,2}.\d{1,2}(.\d{1,4})?';
+          }
+          default "1.0.0";
+        }
+        leaf description {
+          type string;
+        }
+        container contact {
+          leaf name {
+            type string;
+          }
+          leaf email {
+            type ct:email-address;
+          }
+        }
+      }
+      container server {
+        list servers {
+          key "url";
+          ordered-by user;
+          leaf url {
+            type inet:uri;
+            description
+              "server and base path";
+            must "starts-with(current(),'http:') or "
+               + "starts-with(current(),'https:') or "
+               + "starts-with(current(),'ws:') or "
+               + "starts-with(current(),'wss:') or "
+               + "starts-with(current(),'/')" {
+              error-app-tag "server-protocol-invalid";
+              error-message "server URL must start with http:, https:, ws: or wss:";
+            }
+          }
+          leaf description {
+            type string;
+          }
+        }
+      }
+      container components {
+        list schemas {
+          key "ref-name";
+          leaf ref-name {
+            type string;
+          }
+          container schema {
+            leaf type {
+              type enumeration {
+                enum string;
+                enum number;
+                enum integer;
+                enum boolean;
+                enum array;
+                enum object;
+                enum "{}";
+                enum $ref;
+                enum allOf;
+                enum anyOf;
+                enum oneOf;
+                enum callbackUrl;
+              }
+            }
+            container string {
+              when "(../type = 'string') or (../type = '{}')";
+              leaf format {
+                type enumeration {
+                  enum date;
+                  enum date-time;
+                  enum password;
+                  enum byte;
+                  enum binary;
+                }
+              }
+              leaf default {
+                type string;
+              }
+            }
+            container number {
+              when "(../type = 'number') or (../type = '{}')";
+              leaf format {
+                type enumeration {
+                  enum float;
+                  enum double;
+                }
+              }
+              leaf minimum {
+                type decimal64 {
+                  fraction-digits 4;
+                }
+              }
+              leaf maximum {
+                type decimal64 {
+                  fraction-digits 4;
+                }
+              }
+              leaf default {
+                type decimal64 {
+                  fraction-digits 4;
+                }
+              }
+            }
+            container integer {
+              when "(../type = 'integer') or (../type = '{}')";
+              leaf format {
+                type enumeration {
+                  enum int32;
+                  enum int64;
+                }
+              }
+              leaf minimum {
+                type uint64;
+              }
+              leaf maximum {
+                type uint64;
+              }
+              leaf default {
+                type uint64;
+              }
+            }
+            leaf ref {
+              when "../type = '$ref'";
+              type string;
+            }
+            container list-of {
+              when "(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')";
+              list ofs {
+                key "ref";
+                min-elements 1;
+                leaf ref {
+                  type string;
+                }
+              }
+            }
+            leaf callback-url {
+              when "../type = 'callbackUrl'";
+              type inet:uri;
+            }
+            container property {
+              list properties {
+                key "property-name";
+                leaf property-name {
+                  type string;
+                }
+                leaf type {
+                  type enumeration {
+                    enum string;
+                    enum number;
+                    enum integer;
+                    enum boolean;
+                    enum array;
+                    enum object;
+                    enum "{}";
+                    enum $ref;
+                  }
+                }
+                container string {
+                  when "(../type = 'string') or (../type = '{}')";
+                  leaf format {
+                    type enumeration {
+                      enum date;
+                      enum date-time;
+                      enum password;
+                      enum byte;
+                      enum binary;
+                    }
+                  }
+                  leaf default {
+                    type string;
+                  }
+                }
+                container number {
+                  when "(../type = 'number') or (../type = '{}')";
+                  leaf format {
+                    type enumeration {
+                      enum float;
+                      enum double;
+                    }
+                  }
+                  leaf minimum {
+                    type decimal64 {
+                      fraction-digits 4;
+                    }
+                  }
+                  leaf maximum {
+                    type decimal64 {
+                      fraction-digits 4;
+                    }
+                  }
+                  leaf default {
+                    type decimal64 {
+                      fraction-digits 4;
+                    }
+                  }
+                }
+                container integer {
+                  when "(../type = 'integer') or (../type = '{}')";
+                  leaf format {
+                    type enumeration {
+                      enum int32;
+                      enum int64;
+                    }
+                  }
+                  leaf minimum {
+                    type uint64;
+                  }
+                  leaf maximum {
+                    type uint64;
+                  }
+                  leaf default {
+                    type uint64;
+                  }
+                }
+                leaf ref {
+                  when "../type = '$ref'";
+                  type string;
+                }
+              }
+            }
+          }
+        }
+        container security {
+          leaf type {
+            type enumeration {
+              enum http-basic;
+              enum http-bearer;
+            }
+          }
+          container http-basic-auth {
+            when "../type = 'http-basic'";
+            leaf auth-name {
+              type string;
+              default "basicAuth";
+            }
+            leaf type {
+              type enumeration {
+                enum http;
+              }
+              default "http";
+            }
+            leaf schema {
+              type enumeration {
+                enum basic;
+              }
+              default "basic";
+            }
+          }
+          container http-bearer-auth {
+            when "../type = 'http-bearer'";
+            leaf auth-name {
+              type string;
+              default "bearerAuth";
+            }
+            leaf type {
+              type enumeration {
+                enum http;
+              }
+              default "http";
+            }
+            leaf schema {
+              type enumeration {
+                enum bearer;
+              }
+              default "bearer";
+            }
+            leaf format {
+              type string;
+            }
+          }
+        }
+      }
+      container path {
+        list paths {
+          key "path";
+          leaf path {
+            type string;
+            must "starts-with(current(),'/')" {
+              error-app-tag "path-invalid";
+              error-message "path must start with /";
+            }
+          }
+          list endpoints {
+            key "method";
+            leaf method {
+              type enumeration {
+                enum get;
+                enum head;
+                enum post;
+                enum put;
+                enum delete;
+                enum connect;
+                enum options;
+                enum trace;
+                enum patch;
+              }
+            }
+            leaf summary {
+              type string;
+            }
+            leaf description {
+              type string;
+            }
+            container request-body {
+              leaf description {
+                type string;
+              }
+              leaf required {
+                type boolean;
+                default "false";
+              }
+              container content {
+                leaf mime-type {
+                  type string {
+                    pattern '\w+/[-+.\w]+';
+                  }
+                }
+                container schema {
+                  leaf type {
+                    type enumeration {
+                      enum string;
+                      enum number;
+                      enum integer;
+                      enum boolean;
+                      enum array;
+                      enum object;
+                      enum "{}";
+                      enum $ref;
+                      enum allOf;
+                      enum anyOf;
+                      enum oneOf;
+                      enum callbackUrl;
+                    }
+                  }
+                  container string {
+                    when "(../type = 'string') or (../type = '{}')";
+                    leaf format {
+                      type enumeration {
+                        enum date;
+                        enum date-time;
+                        enum password;
+                        enum byte;
+                        enum binary;
+                      }
+                    }
+                    leaf default {
+                      type string;
+                    }
+                  }
+                  container number {
+                    when "(../type = 'number') or (../type = '{}')";
+                    leaf format {
+                      type enumeration {
+                        enum float;
+                        enum double;
+                      }
+                    }
+                    leaf minimum {
+                      type decimal64 {
+                        fraction-digits 4;
+                      }
+                    }
+                    leaf maximum {
+                      type decimal64 {
+                        fraction-digits 4;
+                      }
+                    }
+                    leaf default {
+                      type decimal64 {
+                        fraction-digits 4;
+                      }
+                    }
+                  }
+                  container integer {
+                    when "(../type = 'integer') or (../type = '{}')";
+                    leaf format {
+                      type enumeration {
+                        enum int32;
+                        enum int64;
+                      }
+                    }
+                    leaf minimum {
+                      type uint64;
+                    }
+                    leaf maximum {
+                      type uint64;
+                    }
+                    leaf default {
+                      type uint64;
+                    }
+                  }
+                  leaf ref {
+                    when "../type = '$ref'";
+                    type string;
+                  }
+                  container list-of {
+                    when "(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')";
+                    list ofs {
+                      key "ref";
+                      min-elements 1;
+                      leaf ref {
+                        type string;
+                      }
+                    }
+                  }
+                  leaf callback-url {
+                    when "../type = 'callbackUrl'";
+                    type inet:uri;
+                  }
+                  container property {
+                    list properties {
+                      key "property-name";
+                      leaf property-name {
+                        type string;
+                      }
+                      leaf type {
+                        type enumeration {
+                          enum string;
+                          enum number;
+                          enum integer;
+                          enum boolean;
+                          enum array;
+                          enum object;
+                          enum "{}";
+                          enum $ref;
+                        }
+                      }
+                      container string {
+                        when "(../type = 'string') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum date;
+                            enum date-time;
+                            enum password;
+                            enum byte;
+                            enum binary;
+                          }
+                        }
+                        leaf default {
+                          type string;
+                        }
+                      }
+                      container number {
+                        when "(../type = 'number') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum float;
+                            enum double;
+                          }
+                        }
+                        leaf minimum {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                        leaf maximum {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                        leaf default {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                      }
+                      container integer {
+                        when "(../type = 'integer') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum int32;
+                            enum int64;
+                          }
+                        }
+                        leaf minimum {
+                          type uint64;
+                        }
+                        leaf maximum {
+                          type uint64;
+                        }
+                        leaf default {
+                          type uint64;
+                        }
+                      }
+                      leaf ref {
+                        when "../type = '$ref'";
+                        type string;
+                      }
+                    }
+                  }
+                  container request-property {
+                    list properties {
+                      key "property-name";
+                      leaf property-name {
+                        type string;
+                      }
+                      leaf type {
+                        type enumeration {
+                          enum string;
+                          enum number;
+                          enum integer;
+                          enum boolean;
+                          enum array;
+                          enum object;
+                          enum "{}";
+                          enum $ref;
+                          enum allOf;
+                          enum anyOf;
+                          enum oneOf;
+                          enum callbackUrl;
+                        }
+                      }
+                      container string {
+                        when "(../type = 'string') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum date;
+                            enum date-time;
+                            enum password;
+                            enum byte;
+                            enum binary;
+                          }
+                        }
+                        leaf default {
+                          type string;
+                        }
+                      }
+                      container number {
+                        when "(../type = 'number') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum float;
+                            enum double;
+                          }
+                        }
+                        leaf minimum {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                        leaf maximum {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                        leaf default {
+                          type decimal64 {
+                            fraction-digits 4;
+                          }
+                        }
+                      }
+                      container integer {
+                        when "(../type = 'integer') or (../type = '{}')";
+                        leaf format {
+                          type enumeration {
+                            enum int32;
+                            enum int64;
+                          }
+                        }
+                        leaf minimum {
+                          type uint64;
+                        }
+                        leaf maximum {
+                          type uint64;
+                        }
+                        leaf default {
+                          type uint64;
+                        }
+                      }
+                      leaf ref {
+                        when "../type = '$ref'";
+                        type string;
+                      }
+                      container list-of {
+                        when "(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')";
+                        list ofs {
+                          key "ref";
+                          min-elements 1;
+                          leaf ref {
+                            type string;
+                          }
+                        }
+                      }
+                      leaf callback-url {
+                        when "../type = 'callbackUrl'";
+                        type inet:uri;
+                      }
+                      container property {
+                        list properties {
+                          key "property-name";
+                          leaf property-name {
+                            type string;
+                          }
+                          leaf type {
+                            type enumeration {
+                              enum string;
+                              enum number;
+                              enum integer;
+                              enum boolean;
+                              enum array;
+                              enum object;
+                              enum "{}";
+                              enum $ref;
+                            }
+                          }
+                          container string {
+                            when "(../type = 'string') or (../type = '{}')";
+                            leaf format {
+                              type enumeration {
+                                enum date;
+                                enum date-time;
+                                enum password;
+                                enum byte;
+                                enum binary;
+                              }
+                            }
+                            leaf default {
+                              type string;
+                            }
+                          }
+                          container number {
+                            when "(../type = 'number') or (../type = '{}')";
+                            leaf format {
+                              type enumeration {
+                                enum float;
+                                enum double;
+                              }
+                            }
+                            leaf minimum {
+                              type decimal64 {
+                                fraction-digits 4;
+                              }
+                            }
+                            leaf maximum {
+                              type decimal64 {
+                                fraction-digits 4;
+                              }
+                            }
+                            leaf default {
+                              type decimal64 {
+                                fraction-digits 4;
+                              }
+                            }
+                          }
+                          container integer {
+                            when "(../type = 'integer') or (../type = '{}')";
+                            leaf format {
+                              type enumeration {
+                                enum int32;
+                                enum int64;
+                              }
+                            }
+                            leaf minimum {
+                              type uint64;
+                            }
+                            leaf maximum {
+                              type uint64;
+                            }
+                            leaf default {
+                              type uint64;
+                            }
+                          }
+                          leaf ref {
+                            when "../type = '$ref'";
+                            type string;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  container required-property {
+                    list properties {
+                      key "property-name";
+                      leaf property-name {
+                        type string;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            container response {
+              list responses {
+                key "code";
+                leaf code {
+                  type union {
+                    type uint16 {
+                      range "100..599";
+                    }
+                    type enumeration {
+                      enum default;
+                    }
+                  }
+                }
+                leaf description {
+                  type string;
+                }
+                container content {
+                  leaf mime-type {
+                    type string {
+                      pattern '\w+/[-+.\w]+';
+                    }
+                  }
+                  container schema {
+                    leaf type {
+                      type enumeration {
+                        enum string;
+                        enum number;
+                        enum integer;
+                        enum boolean;
+                        enum array;
+                        enum object;
+                        enum "{}";
+                        enum $ref;
+                        enum allOf;
+                        enum anyOf;
+                        enum oneOf;
+                        enum callbackUrl;
+                      }
+                    }
+                    container string {
+                      when "(../type = 'string') or (../type = '{}')";
+                      leaf format {
+                        type enumeration {
+                          enum date;
+                          enum date-time;
+                          enum password;
+                          enum byte;
+                          enum binary;
+                        }
+                      }
+                      leaf default {
+                        type string;
+                      }
+                    }
+                    container number {
+                      when "(../type = 'number') or (../type = '{}')";
+                      leaf format {
+                        type enumeration {
+                          enum float;
+                          enum double;
+                        }
+                      }
+                      leaf minimum {
+                        type decimal64 {
+                          fraction-digits 4;
+                        }
+                      }
+                      leaf maximum {
+                        type decimal64 {
+                          fraction-digits 4;
+                        }
+                      }
+                      leaf default {
+                        type decimal64 {
+                          fraction-digits 4;
+                        }
+                      }
+                    }
+                    container integer {
+                      when "(../type = 'integer') or (../type = '{}')";
+                      leaf format {
+                        type enumeration {
+                          enum int32;
+                          enum int64;
+                        }
+                      }
+                      leaf minimum {
+                        type uint64;
+                      }
+                      leaf maximum {
+                        type uint64;
+                      }
+                      leaf default {
+                        type uint64;
+                      }
+                    }
+                    leaf ref {
+                      when "../type = '$ref'";
+                      type string;
+                    }
+                    container list-of {
+                      when "(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')";
+                      list ofs {
+                        key "ref";
+                        min-elements 1;
+                        leaf ref {
+                          type string;
+                        }
+                      }
+                    }
+                    leaf callback-url {
+                      when "../type = 'callbackUrl'";
+                      type inet:uri;
+                    }
+                    container property {
+                      list properties {
+                        key "property-name";
+                        leaf property-name {
+                          type string;
+                        }
+                        leaf type {
+                          type enumeration {
+                            enum string;
+                            enum number;
+                            enum integer;
+                            enum boolean;
+                            enum array;
+                            enum object;
+                            enum "{}";
+                            enum $ref;
+                          }
+                        }
+                        container string {
+                          when "(../type = 'string') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum date;
+                              enum date-time;
+                              enum password;
+                              enum byte;
+                              enum binary;
+                            }
+                          }
+                          leaf default {
+                            type string;
+                          }
+                        }
+                        container number {
+                          when "(../type = 'number') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum float;
+                              enum double;
+                            }
+                          }
+                          leaf minimum {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                          leaf maximum {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                          leaf default {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                        }
+                        container integer {
+                          when "(../type = 'integer') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum int32;
+                              enum int64;
+                            }
+                          }
+                          leaf minimum {
+                            type uint64;
+                          }
+                          leaf maximum {
+                            type uint64;
+                          }
+                          leaf default {
+                            type uint64;
+                          }
+                        }
+                        leaf ref {
+                          when "../type = '$ref'";
+                          type string;
+                        }
+                      }
+                    }
+                    container response-property {
+                      list properties {
+                        key "property-name";
+                        leaf property-name {
+                          type string;
+                        }
+                        leaf type {
+                          type enumeration {
+                            enum string;
+                            enum number;
+                            enum integer;
+                            enum boolean;
+                            enum array;
+                            enum object;
+                            enum "{}";
+                            enum $ref;
+                            enum allOf;
+                            enum anyOf;
+                            enum oneOf;
+                          }
+                        }
+                        container string {
+                          when "(../type = 'string') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum date;
+                              enum date-time;
+                              enum password;
+                              enum byte;
+                              enum binary;
+                            }
+                          }
+                          leaf default {
+                            type string;
+                          }
+                        }
+                        container number {
+                          when "(../type = 'number') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum float;
+                              enum double;
+                            }
+                          }
+                          leaf minimum {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                          leaf maximum {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                          leaf default {
+                            type decimal64 {
+                              fraction-digits 4;
+                            }
+                          }
+                        }
+                        container integer {
+                          when "(../type = 'integer') or (../type = '{}')";
+                          leaf format {
+                            type enumeration {
+                              enum int32;
+                              enum int64;
+                            }
+                          }
+                          leaf minimum {
+                            type uint64;
+                          }
+                          leaf maximum {
+                            type uint64;
+                          }
+                          leaf default {
+                            type uint64;
+                          }
+                        }
+                        leaf ref {
+                          when "../type = '$ref'";
+                          type string;
+                        }
+                        container list-of {
+                          when "(../type = 'anyOf') or (../type = 'oneOf') or (../type = 'allOf')";
+                          list ofs {
+                            key "ref";
+                            min-elements 1;
+                            leaf ref {
+                              type string;
+                            }
+                          }
+                        }
+                        container property {
+                          list properties {
+                            key "property-name";
+                            leaf property-name {
+                              type string;
+                            }
+                            leaf type {
+                              type enumeration {
+                                enum string;
+                                enum number;
+                                enum integer;
+                                enum boolean;
+                                enum array;
+                                enum object;
+                                enum "{}";
+                                enum $ref;
+                              }
+                            }
+                            container string {
+                              when "(../type = 'string') or (../type = '{}')";
+                              leaf format {
+                                type enumeration {
+                                  enum date;
+                                  enum date-time;
+                                  enum password;
+                                  enum byte;
+                                  enum binary;
+                                }
+                              }
+                              leaf default {
+                                type string;
+                              }
+                            }
+                            container number {
+                              when "(../type = 'number') or (../type = '{}')";
+                              leaf format {
+                                type enumeration {
+                                  enum float;
+                                  enum double;
+                                }
+                              }
+                              leaf minimum {
+                                type decimal64 {
+                                  fraction-digits 4;
+                                }
+                              }
+                              leaf maximum {
+                                type decimal64 {
+                                  fraction-digits 4;
+                                }
+                              }
+                              leaf default {
+                                type decimal64 {
+                                  fraction-digits 4;
+                                }
+                              }
+                            }
+                            container integer {
+                              when "(../type = 'integer') or (../type = '{}')";
+                              leaf format {
+                                type enumeration {
+                                  enum int32;
+                                  enum int64;
+                                }
+                              }
+                              leaf minimum {
+                                type uint64;
+                              }
+                              leaf maximum {
+                                type uint64;
+                              }
+                              leaf default {
+                                type uint64;
+                              }
+                            }
+                            leaf ref {
+                              when "../type = '$ref'";
+                              type string;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

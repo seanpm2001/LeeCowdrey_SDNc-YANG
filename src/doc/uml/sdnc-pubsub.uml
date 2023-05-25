@@ -1,0 +1,91 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-pubsub.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-pubsub 
+package "c:sdnc" as c_sdnc { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of cps_sdnc_pubsub : <b>Namespace: </b> urn:com:vendor:yang:sdnc:pubsub \n<b>Prefix: </b> cps \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "cps:sdnc-pubsub" as cps_sdnc_pubsub { 
+c_sdnc +-- cps_sdnc_pubsub
+inet_ietf_inet_types +-- cps_sdnc_pubsub
+class "sdnc-pubsub" as sdnc_pubsub << (M, #33CCFF) module>> 
+sdnc_pubsub : feature : sdnc_pubsub 
+sdnc_pubsub : listen( in: yang_notification)
+sdnc_pubsub : publish( in: yang_notification in: data)
+sdnc_pubsub : subscribe( in: retries in: retry_delay in: max_life_retries in: username in: password in: security_protocol in: subscriptions)
+sdnc_pubsub : kafka-broker-register( in: brokers)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_pubsub *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "pubsub" as  sdnc_I_sdnc_I_pubsub <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_pubsub 
+class "kafka" as  sdnc_I_sdnc_I_pubsub_I_kafka <<container>> 
+sdnc_I_sdnc_I_pubsub *-- "1" sdnc_I_sdnc_I_pubsub_I_kafka 
+class "brokers" as sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pubsub_I_kafka *-- "0..N" sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : +host : inet:host  {key} 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : +port : inet:port-number  {key} 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : unregister()
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : client-id : string   = sdnc 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : retries : uint8 [0..8]   {mandatory}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : retry-delay : uint64 [0..max]   = 10000  {Milliseconds}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : username : string  
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : password : string  
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : security-protocol : enumeration : {none,basic,digest,...}   = none 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : acks : enumeration : {all,0,1,}   = 1 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : linger : uint64 [0..max]   = 0  {Milliseconds}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : batch-size : uint64 [0..max]   = 16  {KB}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : buffer-memory : uint64 [0..max]   = 32  {MB}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : max-request-size : uint64 [0..max]   = 1  {MB}
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : max-inflight-requests-per-connection : uint8 [1..255]   = 5 
+sdnc_I_sdnc_I_pubsub_I_kafka_I_brokers : compression-method : enumeration : {none,gzip,lz4,...}   = none 
+class "listener" as  sdnc_I_sdnc_I_pubsub_I_listener <<container>> 
+sdnc_I_sdnc_I_pubsub *-- "1" sdnc_I_sdnc_I_pubsub_I_listener 
+class "notifications" as sdnc_I_sdnc_I_pubsub_I_listener_I_notifications << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pubsub_I_listener *-- "0..N" sdnc_I_sdnc_I_pubsub_I_listener_I_notifications 
+sdnc_I_sdnc_I_pubsub_I_listener_I_notifications : +yang-notification : string {pattern = (\()?([A-Za-z_][A-Za...}  {key}  {mandatory}
+sdnc_I_sdnc_I_pubsub_I_listener_I_notifications : unlisten()
+class "subscriptions" as  sdnc_I_sdnc_I_pubsub_I_subscriptions <<container>> 
+sdnc_I_sdnc_I_pubsub *-- "1" sdnc_I_sdnc_I_pubsub_I_subscriptions 
+class "subscription" as sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pubsub_I_subscriptions *-- "0..N" sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription : +yang-notification : leafref : ...yang-notification  {key}  {mandatory}
+class "consumers" as sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription *-- "0..N" sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers : +endpoint : inet:uri  {key}  {mandatory}
+note bottom of sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers
+<b>Must</b> (endpoint):
+starts-with(current(),'http:') or starts-with(current(),'https:')
+
+end note 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers : unsubscribe()
+class "options" as  sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options <<container>> 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers *-- "1" sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : retries : uint8 [1..8]   {mandatory}
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : retry-delay : uint64 [0..max]   {mandatory} {Milliseconds}
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : life-retries : uint8 [0..255]   = 0  {Config : false}
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : max-life-retries : uint8 [0..255]   = 16 
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : username : string  
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : password : string  
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : security-protocol : enumeration : {none,basic,digest,}   {mandatory}
+} 
+
+sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription-->"yang-notification"sdnc_I_sdnc_I_pubsub_I_listener_I_notifications: yang-notification
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

@@ -1,0 +1,8 @@
+src/doc/img/* linguist-documentation
+src/doc/uml/* linguist-generated
+src/doc/tree/* linguist-documentation
+src/doc/jstree/* linguist-documentation
+build/* linguist-vendored
+*.md linguist-documentation
+*.yang linguist-detectable=true
+*.xml linguist-generated

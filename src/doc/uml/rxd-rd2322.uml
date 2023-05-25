@@ -1,0 +1,1537 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/rxd-rd2322.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title rxd-rd2322 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "cp:sdnc-pools" as cp_sdnc_pools { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cg:sdnc-groupings" as cg_sdnc_groupings { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of rd2322_rxd_rd2322 : <b>Namespace: </b> urn:com:vendor:yang:rxd:rd2322 \n<b>Prefix: </b> rd2322 \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-04-01 \n
+package "rd2322:rxd-rd2322" as rd2322_rxd_rd2322 { 
+c_sdnc +-- rd2322_rxd_rd2322
+ct_sdnc_types +-- rd2322_rxd_rd2322
+cs_sdnc_sku +-- rd2322_rxd_rd2322
+cp_sdnc_pools +-- rd2322_rxd_rd2322
+cnf_sdnc_xnf +-- rd2322_rxd_rd2322
+cg_sdnc_groupings +-- rd2322_rxd_rd2322
+inet_ietf_inet_types +-- rd2322_rxd_rd2322
+class "rxd-rd2322" as rxd_rd2322 << (M, #33CCFF) module>> 
+rxd_rd2322 : feature : rxd_rd2322 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+rxd_rd2322 *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cs:sdnc-sku
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+class "cli-header" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header
+<b>Config = </b>false
+end note 
+class "hardware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : cg:common-hardware {uses} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : operational-mode : ct:rxd-operational-mode   = 2x2 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : shelfname : string  
+class "aging" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_aging <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_aging 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_aging : idle-mac : uint32  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_aging : stale-mac : uint32  
+class "acl" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl 
+class "acl" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl : ordered-by : user
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl : +sequence : uint16 [1..max]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl : classification : enumeration : {permit,deny,remark,...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl : definition : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_acl_I_acl
+<b>When</b> (definition):
+../classification = 'permit' or ../classification = 'deny' or ../classification = 'remark'
+
+end note 
+class "arp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp : gratuitous-interval : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp : timeout : uint16   = 1200 
+class "state" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state 
+class "searching" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching : rate-limit : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching : max-number : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching : global-max-rate : uint16   = 65535 
+class "cable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching_I_cable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching_I_cable 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching_I_cable : unicast : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_searching_I_cable : broadcast : empty  
+class "not-present" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present : rate-limit : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present : max-number : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present : max-time : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_arp_I_state_I_not_present : min-time : uint8  
+class "authentication" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authentication <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authentication 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authentication : level : enumeration : {ml1,ml2,default,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authentication : type : enumeration : {local,none,local none,}  
+class "authorization" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authorization <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authorization 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authorization : level : enumeration : {author_default,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_authorization : type : enumeration : {local,}  
+class "banner" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner 
+class "banner" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner_I_banner << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner_I_banner 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner_I_banner : +type : enumeration : {login,motd,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner_I_banner : message : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_banner : mode : enumeration : {historic,}  
+class "cable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable : proxy-tftp : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable : cm-status : enumeration : {seqOutOfRange-recovery,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable : helper-address : inet:ip-address-no-zone  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable : dhcp-giaddr : ct:ip-dhcp-priority  
+class "adminision-control" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control 
+class "multicast" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control_I_multicast <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control_I_multicast 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control_I_multicast : enable : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_adminision_control_I_multicast : allowed : uint16  
+class "enable-trap" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap : cmonoff-notification : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap : cminit-ranging-notification : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap : cminit-ip-notification : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap : cminit-reg-notification : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_enable_trap : cmflap-notification : empty  
+class "fibre-node" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node 
+class "rpds" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds : +identifier : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds : rpd-identifier : leafref : ...identifier  {unique} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds : ds-conn : leafref : ...instance  {unique} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds : us-conn : leafref : ...instance  {unique} 
+class "nodes" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes : +identifier : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes : init : empty  
+class "downstream" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_downstream << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_downstream 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_downstream : +interface : string  {key} 
+class "upstream" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_upstream << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_upstream 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_nodes_I_upstream : +interface : string  {key} 
+class "flap-list" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list 
+class "power-adjust" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list_I_power_adjust <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list_I_power_adjust 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list_I_power_adjust : threshold : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_flap_list : insertion-time : uint8  
+class "host" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_host <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_host 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_host : authorization : enumeration : {off,on,}  
+class "global" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : annex : ct:docsis-annex-type  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : additional-ds-sc-qams : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : allow-cmsg-ambig-override : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : cm-cfg-reg-req-time : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : cm-init-dsx-bonding : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : cm-status-ack : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : default-max-l2pdu-length : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : delayed-cpe-learning-bpi : empty  
+class "ds-random-detect" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_ds_random_detect <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_ds_random_detect 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_ds_random_detect : low : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_ds_random_detect : medium : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_ds_random_detect : high : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : ds-token-bucket : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : ds-tos-overwrite : enumeration : {before-submgmt-filter,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : dsa-rsp-sid-tlv-override : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : freq-ds-min : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : freq-ds-max : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : freq-us-min : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : freq-us-max : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : load-interval : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : mac-move-allowed-on-dhcp : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : max-qos-active-timeout : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : max-qos-admitted-timeout : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : max-traf-burst-docsis11 : uint32 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : max-ucd-burst-len : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : modify-primary-DS-RCC : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : mtcm-conditional-override : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : peak-tr-rate-upstream : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : percentAddtlDSBandwidth : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : ranging-timing-offset : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : recover-US-impaired-ack : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : RtpsPiggybackEnable : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : tcc-refid-in-first-only : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : unicast-np-us-acquisition : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global : us-dmac-check-disable : empty  
+class "unicast-polling" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling : pri : uint8 [0..7]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling : slow-intvl : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling : fast-intvl : uint8 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_global_I_unicast_polling : fast-period : uint8 [0..max]  
+class "load-balance" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : macdomain-check : uint8  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (macdomain-check):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : downstream-start-threshold : uint8  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (downstream-start-threshold):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : upstream-start-threshold : uint8  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (upstream-start-threshold):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : utilization-modems-to-check : uint8  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (utilization-modems-to-check):
+(../enabled)
+
+end note 
+class "failed-list" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_failed_list <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_failed_list 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_failed_list
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_failed_list : timeout : uint8   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_failed_list : exclude-count : uint8   = 0 
+class "general-group-defaults" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults : init-technique : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance_I_general_group_defaults
+<b>When</b> (init-technique):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : rcs-load-balance : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (rcs-load-balance):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : tcs-load-balance : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (tcs-load-balance):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : rcs-move-ds-primary : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (rcs-move-ds-primary):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : rcs-move-us-primary : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (rcs-move-us-primary):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : tcs-move-us-primary : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (tcs-move-us-primary):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : dbc-move-us-primary : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (dbc-move-us-primary):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance : dbc-move-ds-primary : ct:enable-disable  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_load_balance
+<b>When</b> (dbc-move-ds-primary):
+(../enabled)
+
+end note 
+class "metering" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering : enabled : empty  
+class "collector" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector
+<b>When: </b>not (../enabled)
+end note 
+class "collectors" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector_I_collectors << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector_I_collectors 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector_I_collectors : +instance : uint8 [1..max]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector_I_collectors : host : inet:host  {unique} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_collector_I_collectors : port : inet:port-number  {unique} 
+class "query" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query : query-port : inet:port-number   = 4737 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query : streaming-port : inet:port-number   = 4737 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query : keep-alive-interval : uint16   = 300 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query : connect-mode : enumeration : {accept,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_metering_I_query : initiate-retry-interval : uint8 [1..max]  
+class "modem" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem 
+class "remote-query" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_remote_query <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_remote_query 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_remote_query : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_remote_query : source-interface : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_remote_query
+<b>When</b> (source-interface):
+(../enabled)
+
+end note 
+class "format" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format 
+class "formats" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : +type : enumeration : {scmf,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : identifier : enumeration : {cable-mac,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : aggregation : enumeration : {bonded-actual,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : hfc-mac : enumeration : {docsis-mac,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : qos : enumeration : {qos-primary,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : cpe : enumeration : {cpe-count,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : cable-mac : enumeration : {cm-mac,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_format_I_formats : cable-ip : enumeration : {cm-ip,}  
+class "energy-mgmt" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_energy_mgmt <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_energy_mgmt 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_energy_mgmt : battery-mode1x : enumeration : {no,}  
+class "vendor" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor 
+class "vendors" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor_I_vendors << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor_I_vendors 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor_I_vendors : oui-prefix : ct:oui-prefix  {unique} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_modem_I_vendor_I_vendors : +vendor : ct:name  {key} 
+class "multicast" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast 
+class "group-qos" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos 
+class "group-qos" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos_I_group_qos << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos_I_group_qos 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos_I_group_qos : +instance : uint16  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos_I_group_qos : scn : enumeration : {ipvideo_dn,}  
+class "modulation-profile" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile 
+class "modulation-profiles" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : modulation : ct:docsis-modulation-profile  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : pre-len : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : diff : boolean  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : fec-tbytes : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : seed : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : burst-len : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : guard-time-size : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : last-cw : boolean  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : scramber : boolean  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_modulation_profile_I_modulation_profiles : docsis-mode : ct:docsis-modulation-type  
+class "qos" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos 
+class "qos" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos : +instance : uint16  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos : group-qos : leafref : ...instance  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos : priority : uint8  
+class "session-range" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos_I_session_range <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos_I_session_range 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos_I_session_range : range : inet:ip-prefix  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos_I_session_range : source : inet:ip-prefix   = 0.0.0.0/0 
+class "privacy" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : ca-bad-cert-drop : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : chk-manufacturer-ca-validity-period : enumeration : {true,false,}  
+class "kek" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_kek <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_kek 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_kek : life-time : uint32  
+class "tek" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_tek <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_tek 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy_I_tek : life-time : uint32  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : default-cert-trust : enumeration : {trusted,untrusted,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : chk-validity-perio : enumeration : {false,true,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : mandatory : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : eae-policy : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_privacy : aes-128 : empty  
+class "proto-throttle" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle 
+class "proto-throttles" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle_I_proto_throttles << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle_I_proto_throttles 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle_I_proto_throttles : +protocol : enumeration : {arp,dhcp,dhcpv6,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_proto_throttle_I_proto_throttles : rate : uint16  
+class "relay-agent-option" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option : circuit-id : enumeration : {mac-ifindex,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option : qos-sc-name : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option : fanout : enumeration : {enable,disable,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_relay_agent_option : mso-defined-text : ct:name  
+class "spectrum-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_spectrum_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_spectrum_group 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_spectrum_group : enable-trap : empty  
+class "shared-secret" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_shared_secret <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_shared_secret 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_shared_secret : primary : string {pattern = [a-f0-9]*}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_shared_secret : secondary : string {pattern = [a-f0-9]*}  
+class "source-verify" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify : enabled : empty  
+class "lease-query" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify_I_lease_query <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify_I_lease_query 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify_I_lease_query
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify_I_lease_query : message-type : uint8 [1..15]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_source_verify_I_lease_query : version : enumeration : {rfc-2131,rfc-3315,rfc-4388,}  
+class "submgmt" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt 
+class "default" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default : max-cpe : uint32   = 16 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default : v6-max-cpe : uint32   = 16 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default : active : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default : learnable : empty  
+class "filter-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group 
+class "cm" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_cm <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_cm 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_cm : downstream : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_cm : upstream : empty  
+class "host" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_host <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_host 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_host : downstream : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_submgmt_I_default_I_filter_group_I_host : upstream : empty  
+class "privilege" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege 
+class "privileges" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges : +privilege : uint8 [1..15]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges : encrypted-password : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_privilege_I_privileges
+<b>When</b> (encrypted-password):
+(../enabled)
+
+end note 
+class "users" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users 
+class "user" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users_I_user << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users_I_user 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users_I_user : +username : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users_I_user : privilege : uint8 [1..15]   = 1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_users_I_user : salted-password : string  
+class "console" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_console <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_console 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_console : enabled : empty  
+class "counts" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts 
+class "collection" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts_I_collection <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts_I_collection 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_counts_I_collection : rate : uint16   = 120 
+class "clock" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clock <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clock 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clock : timezone : ct:iana-timezones   = Europe/London 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_clock : mode : enumeration : {ntp,}  
+class "crypto" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto 
+class "privacy" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy 
+class "certificates" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates : +name : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates : type : enumeration : {nsi,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates : index : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_crypto_I_privacy_I_certificates : hex-block : string {pattern = [a-f0-9 ]*}  
+class "dot1x" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_dot1x <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_dot1x 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_dot1x : enabled : empty  
+class "lacp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lacp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lacp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lacp : system-priority : uint16   = 32768 
+class "lldp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lldp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lldp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lldp : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_lldp : disabled : empty  
+class "license" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license 
+class "entitlement" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license_I_entitlement << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license_I_entitlement 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license_I_entitlement : +entitlement : ct:docsis-license-entitlement  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license_I_entitlement : key : string {pattern = [A-Z0-9]*}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_license_I_entitlement : quota : uint64   = 1 
+class "line" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line 
+class "console" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : +instance : uint8 [0..1]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : session-timeout : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : idle-timeout : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : width : uint8 [80..240]   = 80 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : length : uint16 [0..32767]   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances : password : string  
+class "authentication" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication 
+class "authentications" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication_I_authentications << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication_I_authentications 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication_I_authentications : +level : enumeration : {ml1,ml2,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authentication_I_authentications : type : enumeration : {login-authentication,enable-authentication,}  
+class "authorization" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization 
+class "authorizations" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization_I_authorizations << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization_I_authorizations 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization_I_authorizations : +level : enumeration : {author_default,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_console_I_instances_I_authorization_I_authorizations : type : enumeration : {command-authorization,}  
+class "vty" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : session-timeout : uint8 [0..15]   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : idle-timeout : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : width : uint8 [80..240]   = 80 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : length : uint16 [0..32767]   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances : password : string  
+class "authentication" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication 
+class "authentications" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication_I_authentications << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication_I_authentications 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication_I_authentications : +level : enumeration : {ml1,ml2,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authentication_I_authentications : type : enumeration : {login-authentication,enable-authentication,}  
+class "authorization" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization 
+class "authorizations" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization_I_authorizations << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization_I_authorizations 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization_I_authorizations : +level : enumeration : {author_default,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_line_I_vty_I_instances_I_authorization_I_authorizations : type : enumeration : {command-authorization,}  
+class "logging" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging : proprietary : empty  
+class "size" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_size <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_size 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_size : history : uint32   = 2000 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_size : local-volatile : uint32   = 2000 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_size : local-non-volatile : uint32   = 2000 
+class "throttle" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle : threshold : uint16   = 0 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle
+<b>When</b> (threshold):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle : interval : uint16   = 0 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_throttle
+<b>When</b> (interval):
+(../enabled)
+
+end note 
+class "mapping" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping 
+class "map" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map : unit : enumeration : {rpd,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map : +component : enumeration : {local-volatile,local-non-volatile,snmp,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map : level : uint8 [1..8]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_map : disabled : enumeration : {no,}  
+class "priority" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_priority << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_priority 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_priority : +component : enumeration : {local-volatile,local-non-volatile,snmp,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_priority : facility : uint8 [0..15]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_priority : level : uint8 [1..8]  
+class "rpd" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_rpd << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_rpd 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_rpd : +component : enumeration : {local-volatile,local-non-volatile,snmp,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_rpd : level : uint8 [1..8]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_mapping_I_rpd : disabled : enumeration : {no,}  
+class "trap" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap : enabled : empty  
+class "traps" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap_I_traps << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap_I_traps 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap_I_traps
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap_I_traps : +type : enumeration : {init-reg-req-fail,init-reg-rsp-fail,init-reg-ack-fail,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_trap_I_traps : disabled : empty  
+class "override" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override 
+class "events" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override_I_events << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override_I_events 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override_I_events : +event : uint32  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_override_I_events : enabled : empty  
+class "hosts" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_hosts << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_hosts 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_hosts : +host : inet:host  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_logging_I_hosts : facility : enumeration : {local0,local1,local2,...}  
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip : unreachables : empty  
+class "domain-lookup" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_domain_lookup <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_domain_lookup 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_domain_lookup : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_domain_lookup : source-interface : string  
+class "fqdn-cache" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_fqdn_cache <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_fqdn_cache 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_fqdn_cache : enable : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_fqdn_cache : poll-interval : uint16  
+class "multicast" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast : default-group-service-class : string  
+class "multicast-routing" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast_routing <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast_routing 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast_routing : vrf : leafref : ...identifier  
+class "proto-throttle-rate" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate 
+class "protocol-rates" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate_I_protocol_rates << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate_I_protocol_rates 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate_I_protocol_rates : +rate : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_proto_throttle_rate_I_protocol_rates : protocol : enumeration : {arp,bgp,cops,...}  
+class "route" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route 
+class "routes" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes : +source : leafref : ...cp:address  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes : range : ct:ipv4-subnet-mask  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes : gateway : leafref : ...cp:address  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes : metric : ct:ip-metric   = 0 
+class "static" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static 
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf 
+class "default" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf_I_default <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf_I_default 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_static_I_vrf_I_default : distance : ct:ip-ttl   = 1 
+class "ssh" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_ssh <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_ssh 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_ssh : password-auth-req : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_ssh : public-key-auth-req : enumeration : {no,}  
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 
+class "icmp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp : unreachables : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp : too-big : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp : param-problem : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_icmp : time-exceeded : enumeration : {no,}  
+class "proto-throttle-rate" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate 
+class "protocol-rates" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate_I_protocol_rates << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate_I_protocol_rates 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate_I_protocol_rates : +rate : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_proto_throttle_rate_I_protocol_rates : protocol : enumeration : {arp,bgp,cops,...}  
+class "dhcp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp 
+class "relay" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp_I_relay <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp_I_relay 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp_I_relay : source-interface : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_dhcp_I_relay : use-link-address : enumeration : {no,}  
+class "mld" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_mld <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_mld 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_mld : query-robustness-variable : empty  
+class "nd" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd : timeout : uint16  
+class "searching" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching : rate-limit : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching : max-number : uint16  
+class "cable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching_I_cable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching_I_cable 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching_I_cable : unicast : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_searching_I_cable : multicast : empty  
+class "not-present" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present : rate-limit : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present : max-number : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present : max-time : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_nd_I_not_present : min-time : uint8  
+class "route" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route 
+class "routes" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes : +source : union{leafref, enumeration}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes : vrf : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes
+<b>When</b> (vrf):
+../source = 'vrf'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes : range : inet:ipv6-prefix  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes : gateway : leafref : ...cp:address  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes : metric : ct:ip-metric   = 0 
+class "router" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router 
+class "pd" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router_I_pd <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router_I_pd 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_router_I_pd : distance : ct:ip-ttl   = 1 
+class "static" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static 
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf 
+class "default" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf_I_default <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf_I_default 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_static_I_vrf_I_default : distance : ct:ip-ttl   = 1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 : prefix-stability : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6 : pd-route-injection : empty  
+class "ip-video" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video : attribute-encoding : string {pattern = [0-9a-f]x([0-9a-f]*)...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video : dbc-delay-timer : uint16  
+class "monitoring" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video_I_monitoring <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video_I_monitoring 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video_I_monitoring : vod-setup-threshold : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_video_I_monitoring : linear-setup-threshold : uint16  
+class "interface" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface 
+class "cable-streams" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams 
+class "interfaces" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams_I_interfaces << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams_I_interfaces 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams_I_interfaces : +interface : string {pattern = [ds|us]/([a-z]*)/([0...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams_I_interfaces : cable-direction : ct:docsis-cable-direction  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_streams_I_interfaces : administrative-state : enumeration : {shutdown,no shutdown,}   = shutdown 
+class "cable-mac" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances : description : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances : authorization-module : enumeration : {open-dynamic-flow-policy,}  
+class "cable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : bundle : enumeration : {master,slave,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : freq-ds-min : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : freq-ds-max : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : freq-us-min : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : freq-us-max : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : us-freq-range : enumeration : {standard,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : insertion-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : invited-ranging-attempts : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : range-cycle-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : ranging-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : sync-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : ucd-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : cm-tcs-max-size : union{enumeration, uint16}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : tftp-enforce : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : dynamic-secret : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : cm-ip-prov-mode : enumeration : {ipv4only,ipv6only,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : cm-dynamic-multi-tuner : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : upstream-drop-classifiers : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : mcast-fwd-by-dsid : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : mdd-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : verbose-cm-rcp : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : reg-rsp-timer-t6 : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : dynamic-rcc : empty  
+class "downstream-bonding-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_downstream_bonding_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_downstream_bonding_group 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_downstream_bonding_group : dynamic : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_downstream_bonding_group : reseq-wait-time : uint8   = 255 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_downstream_bonding_group : reseq-warning-time : uint8   = 255 
+class "uptream-bonding-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_uptream_bonding_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_uptream_bonding_group 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_uptream_bonding_group : dynamic : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_uptream_bonding_group : reseq-wait-time : uint8   = 255 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_uptream_bonding_group : reseq-warning-time : uint8   = 255 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : mult-rx-chl-mode : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable : mult-tx-chl-mode : empty  
+class "dsg" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_dsg <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_dsg 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_dsg : mode : enumeration : {30DOCSIS_SUPPORT,}  
+class "qos-sc" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_qos_sc <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_qos_sc 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_qos_sc : enforce-rules : enumeration : {enable,no,}  
+class "upstream" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_upstream <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_upstream 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_upstream : ext-power : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_upstream : graceful-tcs-reduction : enumeration : {enable,no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_upstream : ranging-poll : enumeration : {t4-multiplier,no,}  
+class "energy-mgmt" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_energy_mgmt <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_energy_mgmt 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_energy_mgmt : low-power-1x1 : enumeration : {no,}  
+class "cm-status" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status : enabled : empty  
+class "event-type" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type
+<b>When: </b>(../enabled)
+end note 
+class "all" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all : max-event-holdoff : enumeration : {no,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all
+<b>When</b> (max-event-holdoff):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all : max-num-reports : uint16  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_cm_status_I_event_type_I_all
+<b>When</b> (max-num-reports):
+(../enabled)
+
+end note 
+class "privacy" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy : default-cert-trust : enumeration : {untrusted,trusted,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy : chk-validity-period : enumeration : {true,false,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy : mandatory : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy : eae-policy : enumeration : {no,}  
+class "kek" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_kek <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_kek 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_kek : life-time : uint32   = 604800 
+class "tek" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_tek <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_tek 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_privacy_I_tek : life-time : uint32   = 604800 
+class "ofdm" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_ofdm <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_ofdm 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_ofdm : docsis-mode : ct:docsis-version  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_ofdm : profile-guard-time : uint16   = 300 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances_I_cable_I_ofdm : preeq-probe-interval : uint16   = 120 
+class "cable-mac-sub" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub 
+class "sub-instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances : +instance : leafref : ...instance  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances : sub-instance : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances : description : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances : proxy-arp : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances : restricted-proxy-arp : empty  
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip 
+class "ipv4" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4 : directed-broadcast : enumeration : {no,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4 : unreachables : empty  
+class "addresses" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses : +address : union{leafref, enumeration}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses : subnet-mask : ct:ipv4-subnet-mask  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses
+<b>When</b> (subnet-mask):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses : scope : enumeration : {secondary,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv4_I_addresses
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6 : enable : empty  
+class "addresses" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When: </b>(../enable)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses : +address : union{leafref, enumeration}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses : generate-method : enumeration : {eui-64,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When</b> (generate-method):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses : scope : ct:ipv6-network-scope  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_vrf 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances_I_ip_I_vrf : forwarding : enumeration : {default,}  
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances : +instance : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances : description : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances
+<b>When</b> (description):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances : gratuitous-arp : empty  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances
+<b>When</b> (gratuitous-arp):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances : pre-shared-key : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances
+<b>When</b> (pre-shared-key):
+(../enabled)
+
+end note 
+class "encapsulation" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation : outer : ct:ip-vlan-id   = 1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation : vlan-id : leafref : ...cp:identifier  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation : mode : leafref : ...cp:type   = dot1q 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation : priority : uint16   = 0 
+class "macsec" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_macsec <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_macsec 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_macsec
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_macsec : mode : ct:ip-macsec-mode  
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip : unreachables : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip : directed-broadcast : empty  
+class "address" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address : address : union{leafref, enumeration}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address : subnet-mask : ct:ipv4-subnet-mask  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address
+<b>When</b> (subnet-mask):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address : scope : enumeration : {secondary,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_address
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_vrf 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_vrf : forwarding : leafref : ...identifier  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip : mtu : uint16 [68..9202]  
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 : enabled : empty  
+class "address" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address : address : union{leafref, enumeration}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address : generate-method : enumeration : {eui-64,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address
+<b>When</b> (generate-method):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address : scope : ct:ipv6-network-scope  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_address
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "icmp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp : unreachables : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp : too-big : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp : param-problem : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_icmp : time-exceeded : enumeration : {no,}  
+class "nd" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd : managed-config : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd : other-config : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd : ns-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd : reachable-time : uint32  
+class "dad" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_dad <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_dad 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_dad : attempts : uint16  
+class "ra" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra 
+class "interval" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra_I_interval <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra_I_interval 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra_I_interval : begin : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra_I_interval : end : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6_I_nd_I_ra : suppress : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ipv6 : mtu : uint16 [68..9202]  
+class "loopback" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances : description : string  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances
+<b>When</b> (description):
+(../enabled)
+
+end note 
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip
+<b>When: </b>(../enabled)
+end note 
+class "address" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address : address : union{leafref, enumeration}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address : subnet-mask : ct:ipv4-subnet-mask  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address
+<b>When</b> (subnet-mask):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address : scope : ct:ip-dhcp-priority  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_address
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_vrf 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_vrf : forwarding : leafref : ...identifier  
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6 : enabled : empty  
+class "address" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address : address : union{leafref, enumeration}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address : generate-method : enumeration : {eui-64,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address
+<b>When</b> (generate-method):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address : scope : ct:ipv6-network-scope  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ipv6_I_address
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "null" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances : description : string  
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ip 
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6 
+class "icmp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp : unreachables : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp : too-big : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp : param-problem : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_null_I_instances_I_ipv6_I_icmp : time-exceeded : enumeration : {no,}  
+class "mgmt" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt 
+class "ns" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns 
+class "instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances : description : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances : enabled : empty  
+class "encapsulation" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation : method : leafref : ...cp:type   = dot1q 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation : outer : ct:ip-vlan-id   = 1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation : vlan-id : leafref : ...cp:identifier  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation
+<b>When</b> (vlan-id):
+../method = 'dot1q'
+
+end note 
+class "sub-instances" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances : +instance : leafref : ...instance  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances : sub-instance : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances : description : string  
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip 
+class "ipv4" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4 
+class "addresses" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses : +address : union{leafref, enumeration}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses : subnet-mask : ct:ipv4-subnet-mask  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses
+<b>When</b> (subnet-mask):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses : scope : enumeration : {secondary,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "dhcp-options" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses_I_dhcp_options <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses_I_dhcp_options 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses_I_dhcp_options
+<b>When: </b>../address = 'dhcp'
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv4_I_addresses_I_dhcp_options : wait-time : uint16   = 1800 
+class "ipv6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6 : enable : empty  
+class "addresses" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6 *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When: </b>(../enable)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses : +address : union{leafref, enumeration}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses : generate-method : enumeration : {eui-64,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When</b> (generate-method):
+../address != 'dhcp'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses : scope : enumeration : {interface-local,link-local,realm-local,...}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses
+<b>When</b> (scope):
+../address != 'dhcp'
+
+end note 
+class "dhcp-options" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses_I_dhcp_options <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses_I_dhcp_options 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses_I_dhcp_options
+<b>When: </b>../address = 'dhcp'
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances_I_ip_I_ipv6_I_addresses_I_dhcp_options : wait-time : uint16   = 1800 
+class "rpd" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd 
+class "rpds" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds : +identifier : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds : description : string  
+class "ds-conn" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn : ds-group : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn : power-level : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn : tilt-power-adjust : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn : tilt-max-frequency : uint64  
+class "us-conn" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_us_conn << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_us_conn 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_us_conn : +instance : uint8  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_us_conn : base-target-power : uint16  
+class "l2vpn" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn : forwarding : enumeration : {disabled,enabled,}  
+class "cm" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm 
+class "capability" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm_I_capability <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm_I_capability 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm_I_capability : esafe-ident : enumeration : {required,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_cm_I_capability : dut-filter : enumeration : {required,}  
+class "network-interface" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_network_interface <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_network_interface 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_network_interface : type : enumeration : {dot1ad,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_l2vpn_I_network_interface : ethertype : string {length = 5} {pattern = [a-f0-9]x[a-f0-9][a-...}  
+class "operation" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation 
+class "modes" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation_I_modes << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation_I_modes 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation_I_modes : +mode : enumeration : {adjrxpwrctl,USIngressNoiseMitigation,enbudptcpfltr,...}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_operation_I_modes : enabled : enumeration : {no,}   = no 
+class "packetcable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable : pepid-hostname : inet:host  
+class "dqos" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos : enabled : empty  
+class "timer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos_I_timer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos_I_timer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos_I_timer
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos_I_timer : t0 : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_dqos_I_timer : t1 : uint8  
+class "eventmsg" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg : element-id : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg : batch-size : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg : billing-events : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg : max-age : uint16  
+class "retry" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg_I_retry <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg_I_retry 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg_I_retry : timer : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_eventmsg_I_retry : limit : uint16  
+class "gate" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_gate <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_gate 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_gate : send-subscriber-id : empty  
+class "pcmm" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm : subscriber-id : enumeration : {vrf default,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm
+<b>When</b> (subscriber-id):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm : version : ct:docsis-packetcable-pcmm-version  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm
+<b>When</b> (version):
+(../enabled)
+
+end note 
+class "timer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm_I_timer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm_I_timer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm_I_timer
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm_I_timer : t0 : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_pcmm_I_timer : t1 : uint8  
+class "throttle" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_throttle <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_throttle 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_throttle : normal-threshold : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_throttle : red-threshold : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_throttle : yellow-threshold : uint16  
+class "voice-limit" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit 
+class "voice-limits" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : +direction : enumeration : {upstream,downstream,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : allowed-total : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : allowed-normal : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : allowed-emergency : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : reserved-normal : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_packetcable_I_voice_limit_I_voice_limits : reserved-emergency : uint16  
+class "ntp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp : version : ct:ntp-version   = 4 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp : authentication : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp : minpoll : uint8   = 6 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ntp : maxpoll : uint8   = 7 
+class "tod" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod 
+class "servers" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod_I_servers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod_I_servers 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod_I_servers : +server : inet:ip-address-no-zone  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod_I_servers : protocol : ct:ip-protocol-type   = udp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_tod_I_servers : not-use : enumeration : {no,}  
+class "overlay" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay 
+class "downstream" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream : attenuator : uint16  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream
+<b>When</b> (attenuator):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream : hysteresis : uint8  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream
+<b>When</b> (hysteresis):
+(../enabled)
+
+end note 
+class "optical-agc" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc
+<b>When: </b>(../enabled)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc : attenuator-reference : uint16  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc
+<b>When</b> (attenuator-reference):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc : input-power-reference : uint16  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_downstream_I_optical_agc
+<b>When</b> (input-power-reference):
+(../enabled)
+
+end note 
+class "upstream" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_upstream <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_upstream 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overlay_I_upstream : enabled : empty  
+class "overload-control" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overload_control <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overload_control 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overload_control : sensitivity : uint8   = 2 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_overload_control : threshold : uint8   = 2 
+class "ofdm" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm 
+class "global" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global : plc-dpd-ocd-interval : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global : profile0-dpd-interval : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global : enable-short-codewords : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global : iuc-short-term-threshold : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_global : iuc13-impair-enable : empty  
+class "modulation-profile" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile 
+class "modulation-profiles" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : +instance : uint16 [1..max]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : name : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : description : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : cyclic-prefix : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : rolloff-period : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles : symbols-per-frame : uint8  
+class "iuc" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_iuc <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_iuc 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_iuc : +instance : uint16 [1..max]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_iuc : modulation : ct:docsis-modulation-profile  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_iuc : pilot-pattern : uint8  
+class "initial-ranging" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_initial_ranging <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_initial_ranging 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_initial_ranging : frequency-width : uint16   = 32 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_initial_ranging : preamble-length : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_initial_ranging : tutal-guard-band-size : uint8  
+class "fine-ranging" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_fine_ranging <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_fine_ranging 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_fine_ranging : frequency-width : uint16   = 32 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_modulation_profile_I_modulation_profiles_I_fine_ranging : preamble-length : uint8  
+class "profile-mgmt" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt : threshold : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt : retry-interval : uint8  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt : guard-time : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt : max-retries : uint8  
+class "modulation-profile" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile 
+class "modulation-margins" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile_I_modulation_margins << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile_I_modulation_margins 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile_I_modulation_margins : +modulation : ct:docsis-modulation-profile  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ofdm_I_profile_mgmt_I_modulation_profile_I_modulation_margins : mer-adjust : uint8   = 12 
+class "qos-sc" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc 
+class "qos-scs" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : +name : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : priority : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : max-tr-rate : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : max-tr-burst : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : min-res-rate : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : min-res-pkt : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : max-burst : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : poll-int : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : poll-jitter : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : grant-size : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : grant-int : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : grant-jitter : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : grants-per-int : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : active-tmout : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : adm-tmout : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : type : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : req-policy : string {length = 10} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : and-mask : string {length = 4} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : or-mask : string {length = 4} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : dir : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : required-attr-mask-value : string {length = 10} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : forbidden-attr-mask-value : string {length = 10} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : attr-aggr-rule-mask-value : string {length = 10} {pattern = [0-9a-f]x[0-9a-f][0-...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_qos_sc_I_qos_scs : peak-tr-rate : uint16  
+class "vrf" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf 
+class "vrfs" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs : +identifier : leafref : ...cp:identifier  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs : auto-import : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs : icmp-time-exceeded : empty  
+class "rpd" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd 
+class "global" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global 
+class "l2tp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp : version : ct:ip-l2tp-version   = v3 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp : hello-interval : ct:yes-no  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp : retries : ct:yes-no  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_l2tp : setup-wait-time : uint16  
+class "gcp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_gcp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_gcp 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_gcp : keepalive-interval : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_gcp : keepalive-timeout : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global : max-mtu : uint16 [68..9202]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global : status-refresh-interval : uint16  
+class "mcast-session-id" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_mcast_session_id <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_mcast_session_id 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_mcast_session_id : min : string {length = 10} {pattern = [a-f0-9]x([a-f0-9]*)...}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_mcast_session_id : max : string {length = 10} {pattern = [a-f0-9]x([a-f0-9]*)...}  
+class "multicast-interface" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_multicast_interface <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_multicast_interface 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_multicast_interface : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_multicast_interface : mode : enumeration : {auto-switchback,}  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global_I_multicast_interface
+<b>When</b> (mode):
+(../enabled)
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_rpd_I_global : cin-if-timeout : uint8  
+class "snmp-server" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server : contact : ct:email-address  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server : location : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server : context : string  
+class "enable" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable 
+class "traps" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable_I_traps <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable_I_traps 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_enable_I_traps : snmp : empty  
+class "data" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data 
+class "snmp-agent" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data_I_snmp_agent <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data_I_snmp_agent 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data_I_snmp_agent : max-read-ahead : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data_I_snmp_agent : refresh-time : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data : max-read-ahead : uint16  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_data : refresh-time : uint16  
+class "community" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community 
+class "communities" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities : +community : ct:snmp-community-name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities : access : ct:snmp-access-type  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities : index : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities : ttag : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_community_I_communities : transmsssion : ct:snmp-transmission-type   = encrypted 
+class "host" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host 
+class "hosts" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : +host : inet:host  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : name : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : udp-port : inet:port-number   = 8127 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : version : ct:snmp-version  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : inform-taglist : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : tparam : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : timeout : uint16   = 1000 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : retry : uint16   = 5 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : notify-filter : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_host_I_hosts : mms : uint16   = 484 
+class "notify-filter" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter 
+class "profiles" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter_I_profiles << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter_I_profiles 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter_I_profiles : +profile : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter_I_profiles : subtree : string {pattern = [0-9.]*}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_notify_filter_I_profiles : type : ct:snmp-notify-filter-type  
+class "port-trap-inh" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh 
+class "interfaces" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh_I_interfaces << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh_I_interfaces 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh_I_interfaces : +interface : enumeration : {ethernet,cable-mac,}  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh_I_interfaces : +identifier : string  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_port_trap_inh_I_interfaces : hex : string {length = 4} {pattern = [a-f0-9]x[a-f0-9][a-...}  
+class "user" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user 
+class "users" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user_I_users << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user_I_users 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user_I_users : +username : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user_I_users : password : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_user_I_users : version : ct:snmp-version  
+class "group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group 
+class "groups" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups : +name : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups : +version : ct:snmp-version  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups : read : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups : write : ct:name  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_group_I_groups : notify : ct:name  
+class "view" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view 
+class "views" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view_I_views << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view_I_views 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view_I_views : +name : ct:name  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view_I_views : subtree : string {pattern = [0-9.]*}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_snmp_server_I_view_I_views : type : ct:snmp-notify-filter-type   = included 
+class "cli-footer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer
+<b>Config = </b>false
+end note 
+class "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner[cp:identifier=current()/../rd2322:vlan-id]" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner[cp:identifier=current()/../rd2322:vlan-id]" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vrf/cp:vrfs" as sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds-->"identifier"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds: rpd-identifier
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_ds_conn: ds-conn
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_fibre_node_I_rpds-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_rpd_I_rpds_I_us_conn: us-conn
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_qos_I_qos-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cable_I_multicast_I_group_qos_I_group_qos: group-qos
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_multicast_routing-->"identifier"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs: vrf
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes-->"cp:address"sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses: source
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_route_I_routes-->"cp:address"sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses: gateway
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ipv6_I_route_I_routes-->"cp:address"sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses: gateway
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_sub_I_sub_instances-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_cable_mac_I_instances: instance
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: vlan-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_encapsulation-->"cp:type"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: mode
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_ethernet_I_instances_I_ip_I_vrf-->"identifier"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs: forwarding
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_loopback_I_instances_I_ip_I_vrf-->"identifier"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs: forwarding
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation-->"cp:type"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: method
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_encapsulation-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: vlan-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_sub_instances-->"instance"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interface_I_mgmt_I_ns_I_instances: instance
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vrf_I_vrfs-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs: identifier
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

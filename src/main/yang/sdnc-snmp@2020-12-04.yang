@@ -1,0 +1,343 @@
+module sdnc-snmp {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:snmp";
+  prefix css;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc SNMP security/requests management";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-snmp {
+    status current;
+  }
+
+  rpc snmp-security-group-define {
+    if-feature "c:sdnc";
+    description
+      "Generate SNMP community/authentication security group";
+    input {
+      leaf version {
+        type ct:snmp-version;
+        default "v2c";
+      }
+      leaf udp-port {
+        type inet:port-number;
+        default "161";
+      }
+      leaf timeout {
+        type uint16;
+        default "1000";
+      }
+      leaf retry {
+        type uint16;
+        default "5";
+      }
+      leaf access-type {
+        config false;
+        type ct:snmp-access-type;
+        default "ro";
+      }
+      container v1-v2c {
+        when "(../version='v1') or (../version='v2c')";
+        leaf community {
+          type ct:snmp-community-name;
+        }
+      }
+      container v3 {
+        when "../version='v3'";
+        leaf username {
+          type ct:snmp-username;
+        }
+        leaf encryption-protocol {
+          type ct:snmp-authentication-encryption-protocol;
+        }
+        leaf authentication-protocol {
+          type ct:snmp-authentication-encryption-protocol;
+        }
+        leaf authentication-password {
+          type ct:snmp-authentication-password;
+        }
+        leaf privacy-password {
+          type ct:snmp-privacy-password;
+        }
+        leaf snmp-transmission-type {
+          type ct:snmp-transmission-type;
+          default "unencrypted";
+        }
+      }
+    }
+    output {
+      leaf identifier {
+        description
+          "Generated snmp security group identifier";
+        type leafref {
+          path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc snmp-request-define {
+    if-feature "c:sdnc";
+    description
+      "Generate or add SNMP GET requests to group";
+    input {
+      leaf identifier {
+        description
+          "Optional existing snmp request group identifier";
+        type leafref {
+          path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+          require-instance true;
+        }
+      }
+      list oids {
+        key "oid";
+        min-elements 1;
+        leaf oid {
+          type ct:snmp-object-identifier;
+          mandatory true;
+        }
+      }
+      leaf frequency {
+        type uint32 {
+          range "1..max";
+        }
+        default "5";
+        units "minutes";
+      }
+      leaf retention {
+        type uint32 {
+          range "1..max";
+        }
+        default "365";
+        units "days";
+      }
+    }
+    output {
+      leaf identifier {
+        description
+          "Generated snmp request group identifier";
+        type leafref {
+          path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container snmp {
+      config true;
+      container security-groups {
+        list security-group {
+          key "identifier";
+          leaf identifier {
+            type yang:uuid;
+          }
+          action destroy {
+            description
+              "Release identifier";
+          }
+          leaf version {
+            type ct:snmp-version;
+            default "v2c";
+          }
+          leaf udp-port {
+            type inet:port-number;
+            default "161";
+          }
+          leaf timeout {
+            type uint16;
+            default "1000";
+          }
+          leaf retry {
+            type uint16;
+            default "5";
+          }
+          leaf access-type {
+            config false;
+            type ct:snmp-access-type;
+            default "ro";
+          }
+          container v1-v2c {
+            when "(../version='v1') or (../version='v2c')";
+            leaf community {
+              type ct:snmp-community-name;
+            }
+          }
+          container v3 {
+            when "../version='v3'";
+            leaf username {
+              type ct:snmp-username;
+            }
+            leaf encryption-protocol {
+              type ct:snmp-authentication-encryption-protocol;
+            }
+            leaf authentication-protocol {
+              type ct:snmp-authentication-encryption-protocol;
+            }
+            leaf authentication-password {
+              type ct:snmp-authentication-password;
+            }
+            leaf privacy-password {
+              type ct:snmp-privacy-password;
+            }
+            leaf snmp-transmission-type {
+              type ct:snmp-transmission-type;
+              default "unencrypted";
+            }
+          }
+        }
+      }
+      container requests {
+        list request-groups {
+          key "identifier";
+          leaf identifier {
+            description
+              "request group identifier";
+            type yang:uuid;
+          }
+          action undefine {
+            description
+              "Release group and associated OIDs";
+          }
+          list oids {
+            key "oid";
+            leaf oid {
+              type ct:snmp-object-identifier;
+              mandatory true;
+            }
+            action remove {
+              description
+                "Release specific OID";
+            }
+            leaf oid-name {
+              config false;
+              type ct:snmp-object-identifier-name;
+            }
+            leaf frequency {
+              type uint32 {
+                range "1..max";
+              }
+              default "5";
+              units "minutes";
+            }
+            leaf retention {
+              type uint32 {
+                range "1..max";
+              }
+              default "365";
+              units "days";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  notification snmp-security-group-added {
+    if-feature "c:sdnc";
+    leaf identifier {
+      type leafref {
+        path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+        require-instance true;
+      }
+      mandatory true;
+    }
+  }
+
+  notification snmp-security-group-modified {
+    if-feature "c:sdnc";
+    leaf identifier {
+      type leafref {
+        path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+        require-instance true;
+      }
+      mandatory true;
+    }
+  }
+
+  notification snmp-security-group-deleted {
+    if-feature "c:sdnc";
+    leaf identifier {
+      type leafref {
+        path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+        require-instance true;
+      }
+      mandatory true;
+    }
+  }
+
+  notification snmp-request-oid-added {
+    if-feature "c:sdnc";
+    leaf identifier {
+      description
+        "Generated snmp request group identifier";
+      type leafref {
+        path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    list oids {
+      key "oid";
+      leaf oid {
+        type ct:snmp-object-identifier;
+        mandatory true;
+      }
+    }
+  }
+
+  notification snmp-request-oid-deleted {
+    if-feature "c:sdnc";
+    leaf identifier {
+      description
+        "Generated snmp request group identifier";
+      type leafref {
+        path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    list oids {
+      key "oid";
+      leaf oid {
+        type ct:snmp-object-identifier;
+        mandatory true;
+      }
+    }
+  }
+}

@@ -1,0 +1,777 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-pools.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-pools 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of cp_sdnc_pools : <b>Namespace: </b> urn:com:vendor:yang:sdnc:pools \n<b>Prefix: </b> cp \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "cp:sdnc-pools" as cp_sdnc_pools { 
+c_sdnc +-- cp_sdnc_pools
+ct_sdnc_types +-- cp_sdnc_pools
+cnf_sdnc_xnf +-- cp_sdnc_pools
+inet_ietf_inet_types +-- cp_sdnc_pools
+class "sdnc-pools" as sdnc_pools << (M, #33CCFF) module>> 
+sdnc_pools : feature : sdnc_pools 
+sdnc_pools : allocid-request( in: instance in: port in: port_mode in: identifier out: identifier)
+sdnc_pools : gemportid-request( in: instance in: port in: port_mode in: block_size in: gemport_type in: allocation_strategy in: identifier out: ids)
+sdnc_pools : gemportid-release( in: instance in: port in: ids)
+sdnc_pools : onuid-request( in: instance in: port in: port_mode in: identifier out: identifier)
+sdnc_pools : ipv4-block-allocate( in: starting_address in: usage out: address_block)
+sdnc_pools : ipv6-block-allocate( in: type in: prefix in: usage in: starting_address out: address_block)
+sdnc_pools : vrf-request( in: identifier in: type in: instance out: identifier)
+sdnc_pools : vlan-outer-request( in: identifier in: classification in: name in: type in: instance out: identifier)
+sdnc_pools : vlan-request( in: outer_identifier in: outer_classification in: outer_name in: outer_type in: inner_identifier in: inner_classification in: inner_name in: inner_type in: instance out: outer_identifier out: inner_identifier)
+sdnc_pools : svlan-request( in: outer_identifier in: inner_identifier in: vlan_group in: tagging_mode in: instance)
+sdnc_pools : vxlan-request( in: identifier in: scope in: name in: instance out: identifier)
+sdnc_pools : virtual-router-request( in: identifier in: name in: instance out: identifier)
+sdnc_pools : route-target-request( in: type in: instance out: identifier)
+sdnc_pools : route-distinguisher-request( in: type in: instance out: identifier)
+sdnc_pools : autonomous-system-request( in: identifier in: classification in: instance out: identifier)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_pools *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "pools" as  sdnc_I_sdnc_I_pools <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_pools 
+note bottom of sdnc_I_sdnc_I_pools
+<b>Config = </b>true
+end note 
+class "pon" as  sdnc_I_sdnc_I_pools_I_pon <<container>> 
+sdnc_I_sdnc_I_pools *-- "1" sdnc_I_sdnc_I_pools_I_pon 
+class "alloc-id" as  sdnc_I_sdnc_I_pools_I_pon_I_alloc_id <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_alloc_id 
+class "allocs" as sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs : +instance : leafref : ...cnf:instance  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs : destroy()
+class "ports" as sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports : +port : uint8 [1..255]  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports : port-mode : ct:pon-port-mode   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports : clear()
+class "ids" as sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_ids << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_ids 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_ids : +identifier : uint16 [256..16383]  {key} 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_ids
+<b>Must</b> (identifier):
+(../../port-mode='gpon' and (. > 255 and . < 4097)) or (../../port-mode='epon' and (. > 255 and . < 4097)) or (../../port-mode='xgs' and (. > 1023 and . < 16384)) or (../../port-mode='xgpon' and (. > 1023 and . < 16384)) or (../../port-mode='xgspon' and (. > 1023 and . < 16384)) or (../../port-mode='ngpon2' and (. > 1023 and . < 16384))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_ids : release()
+class "tracking" as  sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_tracking : last-issued-identifier : uint16 [256..16383]  
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs_I_ports_I_tracking : last-released-identifier : uint16 [256..16383]  
+class "gemport-id" as  sdnc_I_sdnc_I_pools_I_pon_I_gemport_id <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_gemport_id 
+class "gemports" as sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports : +instance : leafref : ...cnf:instance  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports : destroy()
+class "ports" as sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports : +port : uint8 [1..255]  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports : port-mode : ct:pon-port-mode   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports : gemport-type : ct:ip-gemport-type   {mandatory}
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports
+<b>Must</b> (gemport-type):
+(. = 'point-to-point' and (allocation-strategy = increment) and (block-size = 8)) or (. = 'point-to-multipoint' and (allocation-strategy = decrement) and (block-size = 1))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports : allocation-strategy : ct:ip-allocation-strategy   {mandatory}
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports
+<b>Must</b> (allocation-strategy):
+(gemport-type = 'point-to-point' and (. = increment) and (block-size = 8)) or (gemport-type = 'point-to-multipoint' and (. = decrement) and (block-size = 1))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports : clear()
+class "ids" as sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids : +identifier : uint32 [0..65534]  {key} 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids
+<b>Must</b> (identifier):
+(../../port-mode='gpon' and (. >= 256 and . <= 4095)) or (../../port-mode='epon' and (. >= 0 and . <= 4095)) or (../../port-mode='xgs' and (. >= 1024 and . < 16384)) or (../../port-mode='xgpon' and (. >= 1024 and . <= 65534)) or (../../port-mode='xgspon' and (. >= 1024 and . <= 8960)) or (../../port-mode='ngpon2' and (. >= 1021 and . <= 65534))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids : block-size : uint8 [1..8]   = 8 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_ids : release()
+class "tracking" as  sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2p-last-issued-identifier : uint32 [0..65534]  
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2p-last-issued-block-size : uint8 [1..8]   = 8 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2p-last-released-identifier : uint32 [0..65534]  
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2mp-last-issued-identifier : uint32 [0..65534]  
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2mp-last-issued-block-size : uint8 [1..8]   = 8 
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports_I_ports_I_tracking : p2mp-last-released-identifier : uint32 [0..65534]  
+class "onu-id" as  sdnc_I_sdnc_I_pools_I_pon_I_onu_id <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_onu_id 
+class "onus" as sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus : +instance : leafref : ...cnf:instance  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus : destroy()
+class "ports" as sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports : +port : uint8 [1..255]  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports : port-mode : ct:pon-port-mode   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports : clear()
+class "ids" as sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_ids << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_ids 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_ids : +identifier : uint32 [0..1022]  {key} 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_ids
+<b>Must</b> (identifier):
+(../../port-mode='gpon' and (. >= 0 and . <= 253)) or (../../port-mode='epon' and (. >= 0 and . <= 253)) or (../../port-mode='xgs' and (. > 0 and . < 1022)) or (../../port-mode='xgpon' and (. >= 0 and . <= 1022)) or (../../port-mode='xgspon' and (. >= 0 and . <= 1020)) or (../../port-mode='ngpon2' and (. >= 0 and . <= 1020))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_ids : release()
+class "tracking" as  sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_tracking : last-issued-identifier : uint32 [0..1022]  
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus_I_ports_I_tracking : last-released-identifier : uint32 [0..1022]  
+class "vlan" as  sdnc_I_sdnc_I_pools_I_pon_I_vlan <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_vlan 
+class "outer" as sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer : +instance : leafref : ...cnf:instance  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer : destroy()
+class "vlans" as sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans : +identifier : ct:ip-vlan-id  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans : vlan-group : ct:ip-vlan-group   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans : taggingmode : ct:ip-vlan-tagmode   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans : release()
+class "inner" as sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans_I_inner << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans_I_inner 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans_I_inner : +identifier : ct:ip-vlan-id  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_vlans_I_inner : clear()
+class "tracking" as  sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking
+<b>Config = </b>false
+end note 
+class "allocated-c-vids" as sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking_I_allocated_c_vids << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking_I_allocated_c_vids 
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer_I_tracking_I_allocated_c_vids : +identifier : ct:ip-vlan-id  {key} 
+class "collection" as  sdnc_I_sdnc_I_pools_I_pon_I_collection <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_collection 
+class "traffic-descriptors" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_traffic_descriptors << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_traffic_descriptors 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_traffic_descriptors : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_traffic_descriptors : profile-name : leafref : ...name  
+class "l2-dhcp4-relays" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_l2_dhcp4_relays << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_l2_dhcp4_relays 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_l2_dhcp4_relays : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_l2_dhcp4_relays : profile-name : leafref : ...name  
+class "qos-policies" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_policies << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_policies 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_policies : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_policies : policy-name : leafref : ...name  
+class "qos-classifiers" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_classifiers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_classifiers 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_classifiers : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_classifiers : classifier-name : leafref : ...name  
+class "remote-endpoints" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_remote_endpoints << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_remote_endpoints 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_remote_endpoints : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_remote_endpoints : endpoint-name : leafref : ...name  
+class "syslog-endpoints" as sdnc_I_sdnc_I_pools_I_pon_I_collection_I_syslog_endpoints << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_collection *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_collection_I_syslog_endpoints 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_syslog_endpoints : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_syslog_endpoints : endpoint-name : leafref : ...name  
+class "endpoint" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint 
+class "remote-endpoints" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints : +name : ct:name  {key} 
+class "nf-client" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client : enabled : boolean   = true 
+class "nf-initiate" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client *-- "0..1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate
+<b>Presence: </b>Enables network function client to initiate
+connections to remote endpoints
+end note 
+class "remote-endpoints" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints 
+class "remote-endpoint" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints *-- "1..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint : +name : string  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint : type : ct:pon-nf-type  
+class "client-transport" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport : choice 
+class "grpc" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_case  : choice client-transport
+class "grpc" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc : local-endpoint-name : string  
+class "grpc-client-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters 
+class "channel" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_channel <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_channel 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_channel : ping-interval : uint32 [0..max]   = 300  {seconds}
+class "connection-backoff" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff : initial-backoff : uint16 [1..max]   = 30  {seconds}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff : min-connect-timeout : uint16 [1..max]   = 20  {seconds}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff : multiplier : decimal64   = 1.60 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff : jitter : decimal64   = 0.20 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_grpc_I_grpc_I_grpc_client_parameters_I_connection_backoff : max-backoff : uint16 [1..max]   = 10 
+class "kafka-agent" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_case  : choice client-transport
+class "kafka-agent" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent 
+class "kafka-agent-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters : client-id : string  
+class "publication-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters 
+class "topic" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters_I_topic << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters_I_topic 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters_I_topic : +name : string  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters_I_topic : purpose : string  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_publication_parameters_I_topic : partition : string  
+class "consumption-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters : group-id : string  
+class "topic" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters_I_topic << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters_I_topic 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters_I_topic : +name : string  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters_I_topic : purpose : string  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_client_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_parameters_I_consumption_parameters_I_topic : partition : string  
+class "access-point" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint *-- "1..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point : ordered-by : user
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point : +name : string  {key} 
+class "message-transport" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport : choice 
+class "grpc" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_case  : choice message-transport
+class "grpc" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc 
+class "grpc-transport-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters : remote-address : inet:host   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters : remote-port : inet:port-number   = 8443 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters : local-address : inet:ip-address  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters : local-port : inet:port-number   = 0 
+class "keepalives" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters_I_keepalives <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters_I_keepalives 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters_I_keepalives : idle-time : uint16 [1..max]   {mandatory} {seconds}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters_I_keepalives : max-probes : uint16 [1..max]   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_grpc_I_grpc_I_grpc_transport_parameters_I_keepalives : probe-interval : uint16 [1..max]   {mandatory} {seconds}
+class "kafka-agent" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_case  : choice message-transport
+class "kafka-agent" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent 
+class "kafka-agent-transport-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters : remote-address : inet:host   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters : remote-port : inet:port-number   = 9092 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters : local-address : inet:ip-address  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_client_I_nf_initiate_I_remote_endpoints_I_remote_endpoint_I_access_point_I_message_transport_I_kafka_agent_I_kafka_agent_I_kafka_agent_transport_parameters : local-port : inet:port-number   = 0 
+class "nf-server" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server : enabled : boolean   = true 
+class "listen" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server *-- "0..1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen
+<b>Presence: </b>Enables server to listen for client connections.
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen : idle-timeout : uint16   = 3600  {seconds}
+class "listen-endpoint" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen *-- "1..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint : +name : string  {key} 
+class "transport" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport : choice 
+class "grpc" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_case  : choice transport
+class "grpc" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc 
+class "grpc-server-parameters" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters : local-endpoint-name : string  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters : remote-address : inet:host  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters : remote-port : inet:port-number   = 0 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters : local-address : inet:ip-address   {mandatory}
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_transport_I_grpc_I_grpc_I_grpc_server_parameters : local-port : inet:port-number   = 8443 
+class "remote-endpoints" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints 
+class "remote-endpoint" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints_I_remote_endpoint << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints_I_remote_endpoint 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_server_I_listen_I_listen_endpoint_I_remote_endpoints_I_remote_endpoint : +name : string  {key} 
+class "nf-endpoint-filter" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter 
+class "rule" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter *-- "1..N" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule : +name : ct:string-ascii64  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule : priority : uint16 [1..max]   {mandatory}
+class "flexible-match" as  sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match 
+class "onu-criterion" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion : choice 
+class "any-onu" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_any_onu_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_any_onu_case  : choice onu-criterion
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_any_onu_case : any-onu : empty  
+class "onu-vendor" as sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_onu_vendor_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion .. sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_onu_vendor_case  : choice onu-criterion
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule_I_flexible_match_I_onu_criterion_I_onu_vendor_case : onu-vendor : ct:onu-vendor-id  
+sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints_I_nf_endpoint_filter_I_rule : resulting-endpoint : string  
+class "policy" as  sdnc_I_sdnc_I_pools_I_pon_I_policy <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_policy 
+class "qos" as sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_policy *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos 
+sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos : description : ct:string-ascii64-or-empty  
+class "classifiers" as sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos_I_classifiers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos_I_classifiers : ordered-by : user
+sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos_I_classifiers : +name : leafref : ...name  {key} 
+class "profile" as  sdnc_I_sdnc_I_pools_I_pon_I_profile <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_profile 
+class "traffic-descriptors" as sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_profile *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : fixed-bandwidth : uint64   = 0  {bits/second}
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : assured-bandwidth : uint64   = 0  {bits/second}
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : maximum-bandwidth : uint64   {mandatory} {bits/second}
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors
+<b>Must</b> (maximum-bandwidth):
+(boolean(../fixed-bandwidth) and
+boolean(../assured-bandwidth) and
+(. >= ../fixed-bandwidth + ../assured-bandwidth))
+or
+(boolean(../fixed-bandwidth) and
+not(boolean(../assured-bandwidth)) and
+(. >= ../fixed-bandwidth))
+or
+(not(boolean(../fixed-bandwidth)) and
+boolean(../assured-bandwidth) and
+(. >= ../assured-bandwidth))
+or
+(not(boolean(../fixed-bandwidth)) and
+not(boolean(../assured-bandwidth)))
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : priority : uint8 [1..8]  
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : weight : uint8  
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors : additional-bw-eligibility-indicator : enumeration : {non-assured-sharing,best-effort-sharing,none,}  
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors
+<b>Must</b> (additional-bw-eligibility-indicator):
+. = 'non-assured-sharing' or
+. = 'best-effort-sharing' or
+(. = 'none' and
+((boolean(../fixed-bandwidth) and
+boolean(../assured-bandwidth) and
+(../maximum-bandwidth = ../fixed-bandwidth +
+../assured-bandwidth))
+or
+(boolean(../fixed-bandwidth) and
+not(boolean(../assured-bandwidth)) and
+(../maximum-bandwidth = ../fixed-bandwidth))
+or
+(not(boolean(../fixed-bandwidth)) and
+boolean(../assured-bandwidth) and
+(../maximum-bandwidth = ../assured-bandwidth))
+or
+(not(boolean(../fixed-bandwidth)) and
+not(boolean(../assured-bandwidth)) and
+../maximum-bandwidth = 0)))
+
+end note 
+class "l2-dhcp4-relays" as sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_profile *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays : max-packet-size : uint16 [576..9000]   = 1500  {bytes}
+class "option82-format" as  sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : suboptions []: enumeration : {circuit-id,remote-id,access-loop-characteristics,} 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : default-circuit-id-syntax : ct:string-ascii63-or-empty   =  
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : default-remote-id-syntax : ct:string-ascii63-or-empty   =  
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : access-loop-suboptions : ct:broadband-line-characteristics   =  
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : start-numbering-from-zero : boolean   = false 
+sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays_I_option82_format : use-leading-zeroes : boolean   = false 
+class "classifier" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier <<container>> 
+sdnc_I_sdnc_I_pools_I_pon *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier 
+class "qos" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos : +name : ct:name  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos : description : ct:string-ascii64-or-empty  
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos : filter-operation : enumeration : {match-any-filter,match-all-filter,}   = match-any-filter  {deprecated}
+class "filter-method" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method : choice 
+class "inline" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_case  : choice filter-method
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_case
+<b>Status: </b>deprecated
+end note 
+class "match-criteria" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria
+<b>Status: </b>deprecated
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria : vlan-tag-match-type : enumeration : {untagged,vlan-tagged,dscp-range,...}  
+class "untagged" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_untagged <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_untagged 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_untagged
+<b>When: </b>../vlan-tag-match-type='untagged'
+end note 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_untagged
+<b>Status: </b>deprecated
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_untagged : untagged : empty   {deprecated}
+class "vlan-tagged" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged
+<b>When: </b>../vlan-tag-match-type='untagged'
+end note 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged
+<b>Status: </b>deprecated
+end note 
+class "tag" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged *-- "1..2" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag
+<b>Status: </b>deprecated
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag : +index : uint8 [0..1]  {key}  {deprecated}
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag
+<b>Must</b> (index):
+count(../../tag[index = 0]) > 0
+
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag : in-pbit-list : string {pattern = ([0-7](-[0-7])?(,[0-...}   {deprecated}
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_vlan_tagged_I_tag : in-dei : uint8 [0..1]   {deprecated}
+class "dscp-range" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_dscp_range <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_dscp_range 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_dscp_range
+<b>When: </b>../vlan-tag-match-type='dscp-range'
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_dscp_range : dscp-range : union{string, enumeration}   = any  {deprecated}
+class "protocols" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols
+<b>Status: </b>deprecated
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols : protocol : enumeration : {any,one,}  
+class "any-protocol" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_any_protocol <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_any_protocol 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_any_protocol
+<b>When: </b>../protocol='any'
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_any_protocol : any-protocol : empty   {deprecated}
+class "one-protocol" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_one_protocol <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_one_protocol 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_one_protocol
+<b>When: </b>../protocol='one'
+end note 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_one_protocol
+<b>Status: </b>deprecated
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_inline_I_match_criteria_I_protocols_I_one_protocol : protocol []: enumeration : {igmp,mld,dhcpv4,...}  {deprecated}
+class "all-packets" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_all_packets_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_all_packets_case  : choice filter-method
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_filter_method_I_all_packets_case : all-packets : empty  
+class "classifier-action-entry-cfg" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg : ordered-by : user
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg : +action-type : enumeration : {pbit-marking,dei-marking,scheduling-traffic-class,...}  {key} 
+class "action-cfg-params" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params <<choice>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params : choice 
+class "pbit-marking" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_case  : choice action-cfg-params
+class "pbit-marking-cfg" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg
+<b>When: </b>../action-type='pbit-marking'
+end note 
+class "pbit-marking-list" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg_I_pbit_marking_list << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg_I_pbit_marking_list 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg_I_pbit_marking_list : +index : uint8  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_pbit_marking_I_pbit_marking_cfg_I_pbit_marking_list : pbit-value : uint8 [0..7]  
+class "dei-marking" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_case  : choice action-cfg-params
+class "dei-marking-cfg" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg
+<b>When: </b>../action-type='dei-marking'
+end note 
+class "pbit-marking-list" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg_I_pbit_marking_list << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg *-- "0..N" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg_I_pbit_marking_list 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg_I_pbit_marking_list : +index : uint8  {key} 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dei_marking_I_dei_marking_cfg_I_pbit_marking_list : pbit-value : uint8 [0..7]  
+class "dscp-marking" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_case  : choice action-cfg-params
+class "dscp-marking-cfg" as  sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_I_dscp_marking_cfg <<container>> 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_case *-- "1" sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_I_dscp_marking_cfg 
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_I_dscp_marking_cfg
+<b>When: </b>../action-type='dscp-marking'
+end note 
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_dscp_marking_I_dscp_marking_cfg : dscp : uint8 [0..63]  
+class "scheduling-traffic-class" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_scheduling_traffic_class_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_scheduling_traffic_class_case  : choice action-cfg-params
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_scheduling_traffic_class_case : scheduling-traffic-class : uint32 [0..7]  
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_scheduling_traffic_class_case
+<b>When</b> (scheduling-traffic-class):
+../action-type=
+'scheduling-traffic-class'
+
+end note 
+class "permit" as sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_permit_case <<case>>
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params .. sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_permit_case  : choice action-cfg-params
+sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_permit_case : permit : empty  
+note bottom of sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos_I_classifier_action_entry_cfg_I_action_cfg_params_I_permit_case
+<b>When</b> (permit):
+../action-type="permit"
+
+end note 
+class "ip" as  sdnc_I_sdnc_I_pools_I_ip <<container>> 
+sdnc_I_sdnc_I_pools *-- "1" sdnc_I_sdnc_I_pools_I_ip 
+class "syslog-endpoint" as  sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint 
+class "syslog-endpoints" as sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints : +name : string  {key} 
+class "transport" as sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport <<choice>> 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints .. sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport : choice 
+class "tcp" as sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_case <<case>>
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport .. sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_case  : choice transport
+class "tcp" as  sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_I_tcp <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_case *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_I_tcp 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_I_tcp : address : inet:host  
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_tcp_I_tcp : port : inet:port-number   = 514 
+class "udp" as sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_case <<case>>
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport .. sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_case  : choice transport
+class "udp" as  sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_I_udp <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_case *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_I_udp 
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_I_udp : address : inet:host  
+sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints_I_transport_I_udp_I_udp : port : inet:port-number   = 514 
+class "address" as  sdnc_I_sdnc_I_pools_I_ip_I_address <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_address 
+class "ipv4" as  sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4 <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4 
+class "blocks" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4 *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : deallocate()
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : request( in: instance out: address)
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : +block : inet:ipv4-address  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : subnet-mask : ct:ipv4-subnet-mask   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : subnet-bits : ct:ipv4-subnet-bits   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : wildcard-mask : ct:ipv4-subnet-mask   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : +usage : ct:ipv4-network-usage  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : network-address : inet:ipv4-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : first-host-address : inet:ipv4-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : last-host-address : inet:ipv4-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : broadcast-address : inet:ipv4-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : total-usable : uint64   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks : total-usable-hosts : uint64   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks_I_tracking : last-issued-address : inet:ipv4-address-no-zone  
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks_I_tracking : last-released-address : inet:ipv4-address-no-zone  
+class "addresses" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4 *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses : release()
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses : +address : inet:ipv4-address  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses : instance : leafref : ...cnf:instance   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses : +block : leafref : ...cp:block  {key}  {mandatory}
+class "ipv6" as  sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6 <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6 
+class "blocks" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6 *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : deallocate()
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : request( in: instance out: address)
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : +block : inet:ipv6-address  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : +type : ct:ipv6-address-type  {key}  {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : prefix : ct:ipv6-prefix   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : usage : ct:ipv6-network-usage   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : network-address : inet:ipv6-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : first-host-address : inet:ipv6-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : last-host-address : inet:ipv6-address-no-zone   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : total-usable : union{uint64, string}   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks : total-usable-hosts : union{uint64, string}   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks_I_tracking : last-issued-address : inet:ipv6-address-no-zone  
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks_I_tracking : last-released-address : inet:ipv6-address-no-zone  
+class "addresses" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6 *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses : release()
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses : +address : inet:ipv6-address  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses : instance : leafref : ...cnf:instance   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses : +block : leafref : ...cp:block  {key}  {mandatory}
+class "vrf" as  sdnc_I_sdnc_I_pools_I_ip_I_vrf <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vrf 
+class "vrfs" as sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vrf *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs 
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs : release()
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs : +identifier : ct:ip-vrf  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs : type : ct:ip-vrf-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs : instance : leafref : ...cnf:instance   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vrf *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_tracking : last-issued-identifier : ct:ip-vrf  
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_tracking : last-released-identifier : ct:ip-vrf  
+class "vlan" as  sdnc_I_sdnc_I_pools_I_ip_I_vlan <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vlan 
+class "outer" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : +identifier : ct:ip-vlan-id  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : classification : ct:ip-vlan-classification   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : type : ct:ip-vlan-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : name : string  
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : outer-instance : leafref : ...cnf:instance   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer : destroy()
+class "inner" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : release()
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : +identifier : ct:ip-vlan-id  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : classification : ct:ip-vlan-classification   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : type : ct:ip-vlan-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : name : string  
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner : instance : leafref : ...cnf:instance   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_tracking : last-issued-identifier : ct:ip-vlan-id  
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_tracking : last-released-identifier : ct:ip-vlan-id  
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_tracking : last-issued-identifier : ct:ip-vlan-id  
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_tracking : last-released-identifier : ct:ip-vlan-id  
+class "vxlan" as  sdnc_I_sdnc_I_pools_I_ip_I_vxlan <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vxlan 
+class "vxlans" as sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans 
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans : release()
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans : +identifier : ct:ip-vxlan-vni  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans : scope : ct:ip-vxlan-scope   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans : name : string  
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans : instance : leafref : ...cnf:instance   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_tracking : last-issued-identifier : ct:ip-vxlan-vni  
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_tracking : last-released-identifier : ct:ip-vxlan-vni  
+class "virtual-router" as  sdnc_I_sdnc_I_pools_I_ip_I_virtual_router <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_virtual_router 
+class "virtual-routers" as sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers 
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers : release()
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers : +identifier : ct:ip-vrid  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers : name : string  
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers : instance : leafref : ...cnf:instance   {mandatory}
+class "tracking" as  sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_tracking <<container>> 
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_tracking 
+note bottom of sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_tracking
+<b>Config = </b>false
+end note 
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_tracking : last-issued-identifier : ct:ip-vrid  
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_tracking : last-released-identifier : ct:ip-vrid  
+class "route-target" as  sdnc_I_sdnc_I_pools_I_ip_I_route_target <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_route_target 
+class "route-targets" as sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_route_target *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets 
+sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets : release()
+sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets : +identifier : ct:ip-rt  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets : type : ct:ip-rt-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets : instance : leafref : ...cnf:instance   {mandatory}
+class "route-distinguisher" as  sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher 
+class "route-distinguishers" as sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers 
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers : release()
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers : +identifier : ct:ip-rd  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers : type : ct:ip-rd-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers : instance : leafref : ...cnf:instance   {mandatory}
+class "autonomous-system" as  sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system <<container>> 
+sdnc_I_sdnc_I_pools_I_ip *-- "1" sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system 
+class "autonomous-systems" as sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system *-- "0..N" sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems 
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems : release()
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems : +identifier : ct:ip-asn  {key} 
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems : classification : ct:ip-asn-type   {mandatory}
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems : instance : leafref : ...cnf:instance   {mandatory}
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:syslog-endpoint/cp:syslog-endpoints" as sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:blocks" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:blocks" as sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_pools_I_pon_I_alloc_id_I_allocs-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_pon_I_gemport_id_I_gemports-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_pon_I_onu_id_I_onus-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_pon_I_vlan_I_outer-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_traffic_descriptors-->"name"sdnc_I_sdnc_I_pools_I_pon_I_profile_I_traffic_descriptors: profile-name
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_l2_dhcp4_relays-->"name"sdnc_I_sdnc_I_pools_I_pon_I_profile_I_l2_dhcp4_relays: profile-name
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_policies-->"name"sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos: policy-name
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_qos_classifiers-->"name"sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos: classifier-name
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_remote_endpoints-->"name"sdnc_I_sdnc_I_pools_I_pon_I_endpoint_I_remote_endpoints: endpoint-name
+sdnc_I_sdnc_I_pools_I_pon_I_collection_I_syslog_endpoints-->"name"sdnc_I_sdnc_I_pools_I_ip_I_syslog_endpoint_I_syslog_endpoints: endpoint-name
+sdnc_I_sdnc_I_pools_I_pon_I_policy_I_qos_I_classifiers-->"name"sdnc_I_sdnc_I_pools_I_pon_I_classifier_I_qos: name
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_addresses-->"cp:block"sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv4_I_blocks: block
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_addresses-->"cp:block"sdnc_I_sdnc_I_pools_I_ip_I_address_I_ipv6_I_blocks: block
+sdnc_I_sdnc_I_pools_I_ip_I_vrf_I_vrfs-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: outer-instance
+sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_vxlan_I_vxlans-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_route_target_I_route_targets-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_route_distinguisher_I_route_distinguishers-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_pools_I_ip_I_autonomous_system_I_autonomous_systems-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

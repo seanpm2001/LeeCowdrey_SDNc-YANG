@@ -1,0 +1,180 @@
+module sdnc-topology {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:topology";
+  prefix ctop;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Network/Service Topology";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-topology {
+    status current;
+  }
+
+  rpc is-known {
+    input {
+      leaf link-id {
+        type leafref {
+          path "/c:sdnc/ctop:topology/ctop:link/ctop:links/ctop:link-id";
+          require-instance true;
+        }
+      }
+    }
+    output {
+      leaf exists {
+        type boolean;
+      }
+    }
+  }
+
+  rpc define-link {
+    input {
+      container source {
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf termination-point {
+          type inet:uri;
+        }
+      }
+      container destination {
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf termination-point {
+          type inet:uri;
+        }
+      }
+      leaf topology-base-class {
+        type ct:topology-base-class-type;
+        default "underlay";
+      }
+      leaf leader-link-id {
+        //when "../topology-base-class = 'service'";
+        description
+          "dependency link to non-service link";
+        type leafref {
+          path "/c:sdnc/ctop:topology/ctop:link/ctop:links/ctop:link-id";
+          require-instance true;
+        }
+      }
+      leaf topology-service-class {
+        //when "../topology-base-class = 'service'";
+        type ct:topology-service-class-type;
+        //mandatory true;
+      }
+    }
+    output {
+      leaf link-id {
+        type yang:uuid;
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container topology {
+      container link {
+        description
+          "provided to allow network functions to be linked, to form basis of topology irrespective of the layer";
+        list links {
+          key "link-id";
+          leaf link-id {
+            type yang:uuid;
+          }
+          action undefine {
+            input {
+              leaf cascade {
+                type boolean;
+                default "false";
+              }
+            }
+          }
+          leaf topology-base-class {
+            type ct:topology-base-class-type;
+            mandatory true;
+          }
+          leaf leader-link-id {
+            when "../topology-base-class = 'service'";
+            description
+              "dependency link to non-service link";
+            type leafref {
+              path "/c:sdnc/ctop:topology/ctop:link/ctop:links/ctop:link-id";
+              require-instance true;
+            }
+          }
+          leaf topology-service-class {
+            when "../topology-base-class = 'service'";
+            type ct:topology-service-class-type;
+            mandatory true;
+          }
+          container source {
+            leaf instance {
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            leaf termination-point {
+              type inet:uri;
+            }
+          }
+          container destination {
+            leaf instance {
+              type leafref {
+                path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            leaf termination-point {
+              type inet:uri;
+            }
+          }
+        }
+      }
+    }
+  }
+}

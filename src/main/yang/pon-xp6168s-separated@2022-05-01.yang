@@ -1,0 +1,103 @@
+module pon-xp6168s-separated {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:pon:xp6168s:separated";
+  prefix xp6168s-sne;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc XP6168S OLT (Separated-NE Mode)
+     - two versions (tbc):
+       1) XP6164S S2S (side-to-side air flow) for cabinets
+       2) XP6164S F2B (front-to-back air flow) for facilities
+
+     - common:
+       - 4x100G Ethernet (NSI or daisy chain)
+       - 16x10G Pors per module
+          - subscriber SFP+ ports support PON and Active Ethernet
+          - support PON modes XGS, GPON, 10GEEPON and EPON
+       - virtual OLT for management and control (VOLF-MF)
+    ";
+
+  revision 2022-05-01 {
+    description
+      "initial";
+  }
+
+  feature pon-volt {
+    status current;
+  }
+
+  feature pon-olt {
+    status current;
+  }
+
+  cs:sku-model-revision "2022-05-01";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "XGSPON";
+  cs:sku-model-type "XPS6168S OLT (Separated-NE Mode)";
+  cs:sku-firmware-name "default";
+  cs:sku-firmware-version "1.0.0";
+  cs:cli-process "false";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      leaf hostname {
+        type inet:host;
+      }
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "XPS6168S-SNE";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "1.0";
+            mandatory false;
+          }
+          refine "serial-number" {
+            config true;
+          }
+        }
+        leaf vendor {
+          type string {
+            length "3..max";
+            pattern '([A-Za-z0-9.-]+)((\s*)([A-Za-z0-9.-]*)*)';
+          }
+          default "VENDOR";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+module rxd-rd1322 {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:rxd:rd1322";
+  prefix rd1322;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "RxD RD1322 Device Model";
+
+  revision 2021-04-01 {
+    description
+      "initial";
+  }
+
+  feature rxd-rd1322 {
+    status current;
+  }
+
+  cs:sku-model-revision "2021-04-01";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "RxD";
+  cs:sku-model-type "ARRIS E6000N-RD1322";
+  cs:sku-firmware-name "default";
+  cs:sku-firmware-version "1.0.0.271";
+  cs:sku-factory-enable-username "admin";
+  cs:sku-factory-enable-password "admin";
+  cs:sku-factory-access-username "admin";
+  cs:sku-factory-access-password "admin";
+  cs:sku-config-erase-cli "erase nvram";
+  cs:sku-config-reset-cli "reset nvram";
+  cs:sku-config-save-to-memory-cli "write memory";
+  cs:sku-config-copy-to-remote "copy running config {{../config-remote-endpoint}}";
+  cs:sku-config-remote-endpoint "tftp://tftp.vendor.com/path";
+  cs:sku-ssh-idle-cli "ip ssh idle-timeout {{../ssh-idle-timeout-duration}}";
+  cs:sku-ssh-idle-timeout-duration "360";
+  cs:cli-process "true";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      container cli-header {
+        config false;
+        cs:cli-begin "configure";
+      }
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "ARRIS E6000N-RD1322";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "1.0.0.271";
+            mandatory false;
+          }
+        }
+        leaf operational-mode {
+          description
+            "The RF Operational Mode of the RMD; For Arris RD2322 - 1x1, 1x2, 2x2";
+          type ct:rxd-operational-mode;
+          default "1x1";
+        }
+      }
+      leaf hostname {
+        cs:cli-enable-cmd "hostname \"{{.}}\"";
+        cs:cli-modify-cmd "hostname \"{{.}}\"";
+        cs:cli-disable-cmd "no hostname \"{{.}}\"";
+        type inet:host;
+      }
+      leaf shelfname {
+        cs:cli-enable-cmd "shelfname \"{{.}}\"";
+        cs:cli-modify-cmd "shelfname \"{{.}}\"";
+        cs:cli-disable-cmd "no shelfname \"{{.}}\"";
+        type string;
+      }
+      container cli-footer {
+        config false;
+        cs:cli-end "end";
+      }
+    }
+  }
+}

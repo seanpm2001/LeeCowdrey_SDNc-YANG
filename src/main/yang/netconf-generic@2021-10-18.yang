@@ -1,0 +1,62 @@
+module netconf-generic {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:netconf:generic";
+  prefix nc;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Generic NETCONF model";
+
+  revision 2021-10-18 {
+    description
+      "initial";
+  }
+
+  feature netconf-generic {
+    status current;
+  }
+
+  cs:sku-model-revision "2021-10-18";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "NETCONF";
+  cs:sku-model-type "Generic";
+  cs:sku-firmware-name "default";
+  cs:sku-firmware-version "1.0.0";
+  cs:cli-process "false";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      leaf hostname {
+        type inet:host;
+      }
+    }
+  }
+}

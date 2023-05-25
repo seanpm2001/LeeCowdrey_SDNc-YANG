@@ -1,0 +1,272 @@
+module pon-onu {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:pon:onu";
+  prefix ponu;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import sdnc-extensions {
+    prefix cx;
+    revision-date 2020-12-04;
+  }
+  import pon-volt-mf {
+    prefix volt;
+    revision-date 2021-09-01;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "CommScope, Inc.";
+  contact
+    "lee.cowdrey@commscope.com";
+  description
+    "CSDM PON ONU
+
+     CommScope © 2020-2021 All Rights Reserved
+
+     This program is confidential and proprietary to CommScope, Inc.
+     (CommScope), and may not be copied, reproduced, modified, disclosed
+     to others, published or used, in whole or in part, without the express
+     prior written permission of CommScope.
+    ";
+
+  revision 2021-09-01 {
+    description
+      "initial";
+  }
+
+  feature pon-olt {
+    status current;
+  }
+
+  cx:sku-model-revision "2021-09-01";
+  cx:sku-vendor "CommScope";
+  cx:sku-model-family "XGSPON";
+  cx:sku-model-type "ARRIS ONU";
+  cx:sku-firmware-name "default";
+  cx:sku-firmware-version "1.0.0";
+  cx:cli-process "false";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "volt:pon-volt-mf";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "ONU";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "1.0.0";
+            description
+              "The interface-version of the device , which uniquely identifies the yang-modules set & revision supported by the device";
+            mandatory false;
+          }
+        }
+      }
+      leaf model {
+        type string;
+      }
+      leaf vendor {
+        type string {
+          length "3..max";
+          pattern '([A-Za-z0-9.-]+)((\s*)([A-Za-z0-9.-]*)*)';
+        }
+        description
+          "The vendor of device.Eg Nokia/Huawei, usually taken from model and sdnc-sku but this is override specific to PON";
+        default "COMMSCOPE";
+      }
+      leaf push-pma-configuration-to-device {
+        type boolean;
+        default "true";
+        description
+          "By default, push the PMA configuration to the device when the device connects for the first time. This is done since PMA in OB-BAA is the master of configurations. Configure this attribute as false using <edit-config> to turn-off this feature and upload device configuration to PMA.
+           When this attribute is set to false, it will be automatically reset to true after the device configuration is successfully uploaded to PMA.";
+      }
+      leaf connection-model {
+        type enumeration {
+          enum call-home;
+          enum direct;
+          enum snmp;
+          enum mediated-session;
+        }
+        description
+          "whether the connection is call-home/direct/snmp or a session mediated through another device.";
+        default "mediated-session";
+      }
+      leaf mediated-protocol {
+        when "../connection-model = 'mediated-session'";
+        type enumeration {
+          enum vomci {
+            description
+              "This value applies to vOMCI managed ONUs";
+          }
+        }
+        description
+          "The protocol being mediated.";
+        default "vomci";
+      }
+      leaf onu-vendor {
+        type string {
+          length "3..max";
+          pattern '([A-Za-z0-9.-]+)((\s*)([A-Za-z0-9.-]*)*)';
+        }
+        default "COMMSCOPE";
+      }
+      leaf expected-serial-number {
+        type string {
+          pattern '[a-zA-Z]{4}[0-9a-fA-F]{8}';
+        }
+        description
+          "A type meant for the serial number of an Optical Network Unit
+           (ONU).";
+      }
+      leaf expected-registration-id {
+        type string {
+          length "0..72";
+        }
+        description
+          "The registration ID of an Optical Network Unit (ONU) with each
+           octet represented as two hexadecimal characters.";
+        default "";
+      }
+      leaf xpon-technology {
+        type enumeration {
+          enum ngpon2-twdm;
+          enum ngpon2-ptp;
+          enum xgs;
+          enum xgpon;
+          enum gpon;
+        }
+        description
+          "Represents the type of channel termination (e.g.
+           TWDM NG-PON2, PtP NG-PON2, XGS-PON, XG-PON, G-PON).
+           Derieved from bbf-xpon-types identity base channel-pair-type-base";
+        default "xgs";
+      }
+      container expected-attachment-point {
+        description
+          "The ONU expected attachment point";
+        leaf olt-instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          description
+            "A reference to the OLT where the ONU is expected";
+        }
+        leaf channel-partition-name {
+          type string;
+          description
+            "The local name of the channel-partition in the OLT where the ONU is expected.";
+        }
+      }
+      container vomci-onu-management {
+        description
+          "The configuration data needed to manage ONUs via vOMCI.";
+        leaf use-vomci-management {
+          type boolean;
+          description
+            "When true, use vOMCI to manage the ONU.";
+          default "true";
+        }
+        leaf vomci-function {
+          type string;
+          description
+            "The vOMCI function to use for this ONU's management.";
+        }
+        leaf-list onu-management-chain {
+          type string;
+          ordered-by user;
+          description
+            "The ordered list of vOMCI function, vOMCI Proxy and OLT
+             to use for this ONU's management. The list is ordered from
+             the vOMCI function to the OLT inclusive.";
+        }
+        container network-function-links {
+          description
+            "Holds a list of links and endpoint names associated to the management
+             chain of the ONU when discovery is not possible or not wanted. The
+             endpoint names are needed by the vOLTMF when sending the
+             'set-onu-communication' action to the vOMCI function and vOMCI
+             proxy.";
+          list network-function-link {
+            key "name";
+            description
+              "List of network functions links between two network functions.";
+            leaf name {
+              type string;
+              description
+                "Link name.";
+            }
+            container termination-point-a {
+              description
+                "Source network function.";
+              leaf function-name {
+                //workaround, should be a leafref to the onu-management-chain
+                type string;
+                mandatory true;
+                description
+                  "Network function name.";
+              }
+              leaf local-endpoint-name {
+                type string;
+                mandatory true;
+                description
+                  "The local endpoint name.";
+              }
+            }
+            container termination-point-b {
+              description
+                "Destination network function.";
+              leaf function-name {
+                //workaround, should be a leafref to the onu-management-chain
+                type string;
+                mandatory true;
+                description
+                  "Network function name.";
+              }
+              leaf local-endpoint-name {
+                type string;
+                mandatory true;
+                description
+                  "The local endpoint name.";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

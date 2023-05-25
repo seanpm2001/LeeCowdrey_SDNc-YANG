@@ -1,0 +1,822 @@
+module sdnc-sku {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:sku";
+  prefix cs;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Device Model SKU & Third Party YANG
+
+     Mandatorys and min-elements temporarily removed to due
+     known defect in OpenDaylight not enforcing WHEN conditions
+     
+    ";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-sku {
+    status current;
+  }
+
+  extension substatement {
+    argument name {
+      cs:arg-type {
+        type string;
+      }
+    }
+    cs:substatement "cs:occurrence";
+    description
+      "Specifies which statements can occur as substatement to the
+       given statement.";
+  }
+
+  extension arg-type {
+    cs:substatement "default";
+    description
+      "Specifies the type of the argument.";
+  }
+
+  extension display-label {
+    argument name {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies a display label for UI presentation";
+  }
+
+  extension cli-header {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension cli-footer {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension cli-process {
+    description
+      "Indicates whether this YANG model should be handled by YANG-to-CLI feature";
+    argument definition {
+      cs:arg-type {
+        type boolean;
+        default "false";
+      }
+    }
+  }
+
+  extension cli-begin {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies in which CLI block/group verbs to start the CLI verbs with.";
+  }
+
+  extension cli-end {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies in which CLI block/group verbs to end the CLI verbs with.";
+  }
+
+  extension cli-enable-cmd {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies in which CLI verbs to parse the values in to add definition.";
+  }
+
+  extension cli-modify-cmd {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies in which CLI verbs to parse the values to modify an existing definition.
+       This is optional, if does not exist then sequence is to use cli-disable-cmd followed by cli-enable-cmd";
+  }
+
+  extension cli-disable-cmd {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+    description
+      "Specifies in which CLI verbs to parse the values in to remove definition.";
+  }
+
+  extension sku-model-revision {
+    argument definition {
+      cs:arg-type {
+        type string {
+          pattern '\d{4}-\d{2}-\d{2}';
+        }
+      }
+    }
+    description
+      "SDNc known YANG model version, e.g. YYYY-MM-DD, i.e. 2020-12-04";
+  }
+
+  extension sku-vendor {
+    argument definition {
+      cs:arg-type {
+        type string {
+          length "3..max";
+        }
+      }
+    }
+    description
+      "device vendor, i.e. Vendor";
+  }
+
+  extension sku-model-family {
+    argument definition {
+      cs:arg-type {
+        type string {
+          length "3..max";
+        }
+      }
+    }
+    description
+      "device model family, i.e. RxD";
+  }
+
+  extension sku-model-type {
+    argument definition {
+      cs:arg-type {
+        type string {
+          length "3..max";
+        }
+      }
+    }
+    description
+      "device model type, i.e. rd2322";
+  }
+
+  extension sku-firmware-name {
+    argument definition {
+      cs:arg-type {
+        type string {
+          length "3..max";
+        }
+      }
+    }
+  }
+
+  extension sku-firmware-version {
+    argument definition {
+      cs:arg-type {
+        type string {
+          pattern '\d{1,2}.\d{1,2}.\d{1,2}(.\d{1,4})?';
+        }
+      }
+    }
+  }
+
+  extension sku-factory-access-username {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-factory-access-password {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-factory-enable-username {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-factory-enable-password {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-config-erase-cli {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-config-reset-cli {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-config-save-to-memory-cli {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-config-copy-to-remote {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-config-remote-endpoint {
+    argument definition {
+      cs:arg-type {
+        type inet:uri;
+      }
+    }
+  }
+
+  extension sku-ssh-idle-cli {
+    argument definition {
+      cs:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension sku-ssh-idle-timeout-duration {
+    argument definition {
+      cs:arg-type {
+        type uint64 {
+          range "0..max";
+        }
+      }
+    }
+  }
+
+  rpc list-model-revision-by-vendor {
+    if-feature "c:sdnc";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of model and revision by specified vendor";
+    input {
+      leaf sku-vendor {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list models-revisions {
+        key "model-namespace model-revision";
+        ordered-by system;
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-model-revision-by-vendor-model-family {
+    if-feature "c:sdnc";
+    if-feature "cs:sdnc-sku";
+    input {
+      leaf sku-vendor {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+      leaf sku-model-family {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list models-revisions {
+        key "model-namespace model-revision";
+        ordered-by system;
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-model-revision-by-vendor-model-family-type {
+    if-feature "c:sdnc";
+    if-feature "cs:sdnc-sku";
+    input {
+      leaf sku-vendor {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+      leaf sku-model-family {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+      leaf sku-model-type {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list models-revisions {
+        key "model-namespace model-revision";
+        ordered-by system;
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-model-revision-by-model-family {
+    if-feature "c:sdnc";
+    if-feature "cs:sdnc-sku";
+    input {
+      leaf sku-model-family {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list models-revisions {
+        key "model-namespace model-revision";
+        ordered-by system;
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-model-revision-by-model-family-type {
+    if-feature "c:sdnc";
+    if-feature "cs:sdnc-sku";
+    input {
+      leaf sku-model-family {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+      leaf sku-model-type {
+        type string {
+          length "3..max";
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list models-revisions {
+        key "model-namespace model-revision";
+        ordered-by system;
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  //  rpc register {
+  //    if-feature "c:sdnc";
+  //    if-feature "cs:sdnc-sku";
+  //    description
+  //      "register new YANG namespace for model";
+  //    input {
+  //      leaf model-yang {
+  //        type string {
+  //          length "10..max";
+  //        }
+  //        must "(starts-with(current(),'module ') or starts-with(current(),'submodule '))" {
+  //          error-app-tag "register-model-yang";
+  //          error-message "must contain valid YANG definition";
+  //        }
+  //        mandatory true;
+  //      }
+  //    }
+  //  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container sku {
+      list models {
+        //        action register-revision {
+        //          description
+        //            "register new revision of existing model";
+        //          input {
+        //            leaf model-yang {
+        //              type string {
+        //                length "10..max";
+        //              }
+        //              must "(starts-with(current(),'module ') or starts-with(current(),'submodule '))" {
+        //                error-app-tag "register-revision-model-yang";
+        //                error-message "must contain valid YANG definition";
+        //              }
+        //              mandatory true;
+        //            }
+        //          }
+        //        }
+        //        action unregister {
+        //          description
+        //            "unregister existing YANG namespace for model, including all revisions";
+        //          input {
+        //            leaf unload-model {
+        //              description
+        //                "Unload YANG model from run-time";
+        //              type boolean;
+        //              default "false";
+        //            }
+        //          }
+        //        }
+        key "model-namespace";
+        leaf model-namespace {
+          description
+            "YANG model namespace, i.e. urn:com:vendor:yang:rxd:rd2322";
+          type ct:module-namespace;
+          mandatory true;
+        }
+        list versions {
+          //          action unregister {
+          //            description
+          //              "unregister existing YANG namespace";
+          //            input {
+          //              leaf unload-model {
+          //                description
+          //                  "Unload YANG model from run-time";
+          //                type boolean;
+          //                default "false";
+          //              }
+          //            }
+          //          }
+          key "model-revision";
+          leaf model-revision {
+            description
+              "YANG model version, e.g. YYYY-MM-DD, i.e. 2020-12-04";
+            type ct:module-revision;
+            mandatory true;
+          }
+          leaf model-yang {
+            config false;
+            type string {
+              length "10..max";
+            }
+            must "(starts-with(current(),'module ') or starts-with(current(),'submodule '))" {
+              error-app-tag "sku-model-yang";
+              error-message "must contain valid YANG definition";
+            }
+            mandatory true;
+          }
+          leaf yang-version {
+            config false;
+            type enumeration {
+              enum 1;
+              enum 1.1;
+            }
+          }
+          leaf module-name {
+            config false;
+            type string;
+          }
+          leaf prefix {
+            config false;
+            type string;
+          }
+          container imports {
+            config false;
+            list import {
+              key "module-name";
+              leaf module-name {
+                type string;
+              }
+              leaf prefix {
+                type string;
+              }
+              leaf revision-date {
+                type string {
+                  pattern '\d{4}-\d{2}-\d{2}';
+                }
+              }
+              leaf description {
+                type string;
+              }
+              leaf reference {
+                type string;
+              }
+            }
+          }
+          container includes {
+            config false;
+            list include {
+              key "submodule-name";
+              leaf submodule-name {
+                type string;
+              }
+              leaf revision-date {
+                type string {
+                  pattern '\d{4}-\d{2}-\d{2}';
+                }
+              }
+              leaf description {
+                type string;
+              }
+              leaf reference {
+                type string;
+              }
+            }
+          }
+          leaf organization {
+            config false;
+            type string;
+          }
+          leaf contact {
+            config false;
+            type string;
+          }
+          leaf description {
+            config false;
+            type string;
+          }
+          leaf reference {
+            config false;
+            type string;
+          }
+          container submodels {
+            config false;
+            list submodule {
+              key "submodule-name";
+              leaf submodule-name {
+                type string;
+              }
+              leaf submodel-yang {
+                type string {
+                  length "10..max";
+                }
+                must "starts-with(current(),'submodule ')" {
+                  error-app-tag "sku-submodel-yang";
+                  error-message "must contain valid YANG submodule definition";
+                }
+              }
+              leaf belongs-to {
+                type string;
+              }
+              leaf belongs-to-xmlns {
+                type leafref {
+                  path "../../../../cs:model-namespace";
+                  require-instance true;
+                }
+              }
+              container imports {
+                list import {
+                  key "module-name";
+                  leaf module-name {
+                    type string;
+                  }
+                  leaf prefix {
+                    type string;
+                  }
+                  leaf revision-date {
+                    type string {
+                      pattern '\d{4}-\d{2}-\d{2}';
+                    }
+                  }
+                  leaf description {
+                    type string;
+                  }
+                  leaf reference {
+                    type string;
+                  }
+                }
+              }
+              leaf organization {
+                type string;
+              }
+              leaf contact {
+                type string;
+              }
+              leaf description {
+                type string;
+              }
+              leaf reference {
+                type string;
+              }
+            }
+          }
+          container properties {
+            config false;
+            when 'starts-with(../../model-namespace,"urn:com:vendor:yang:")';
+            container product {
+              leaf vendor {
+                description
+                  "device vendor, i.e. Vendor";
+                type string {
+                  length "3..max";
+                }
+                //mandatory true;
+              }
+              leaf model-family {
+                description
+                  "device model family, i.e. RxD";
+                type string {
+                  length "3..max";
+                }
+                //mandatory true;
+              }
+              leaf model-type {
+                description
+                  "device model type, i.e. rd2322";
+                type string {
+                  length "3..max";
+                }
+                //mandatory true;
+              }
+            }
+            container firmware {
+              when 'starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or '
+                 + 'starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-") or '
+                 + 'starts-with(../../../model-namespace,"urn:com:vendor:yang:pon-")';
+              list revisions {
+                key "name";
+                //min-elements 1;
+                ordered-by user;
+                leaf name {
+                  type string {
+                    length "3..max";
+                  }
+                  //mandatory true;
+                }
+                leaf version {
+                  description
+                    "Version major.minor.patch(.build), i.e. 1.0.0, 1.13.75.1234";
+                  type string {
+                    pattern '\d{1,2}.\d{1,2}.\d{1,2}(.\d{1,4})?';
+                  }
+                  //mandatory true;
+                }
+              }
+            }
+            container factory-credentials {
+              when 'starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or '
+                 + 'starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-")';
+              leaf username {
+                type string;
+                //mandatory true;
+              }
+              leaf password {
+                type string;
+                //mandatory true;
+              }
+              leaf enable-username {
+                type string;
+              }
+              leaf enable-password {
+                type string;
+              }
+            }
+            container cli-helpers {
+              when 'starts-with(../../../model-namespace,"urn:com:vendor:yang:icx-") or '
+                 + 'starts-with(../../../model-namespace,"urn:com:vendor:yang:rxd-")';
+              leaf config-erase-cli {
+                type string;
+              }
+              leaf config-reset-cli {
+                type string;
+              }
+              leaf config-save-to-memory-cli {
+                type string;
+              }
+              leaf config-copy-to-remote {
+                type string;
+              }
+              leaf config-remote-endpoint {
+                type inet:uri;
+              }
+              leaf ssh-idle-cli {
+                type string;
+              }
+              leaf ssh-idle-timeout-duration {
+                type uint64;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

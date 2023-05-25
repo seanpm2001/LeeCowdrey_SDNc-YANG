@@ -1,0 +1,204 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-halo-docs.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-halo-docs 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of chd_sdnc_halo_docs : <b>Namespace: </b> urn:com:vendor:yang:sdnc:halo:docs \n<b>Prefix: </b> chd \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2022-06-23 \n
+package "chd:sdnc-halo-docs" as chd_sdnc_halo_docs { 
+ct_sdnc_types +-- chd_sdnc_halo_docs
+yang_ietf_yang_types +-- chd_sdnc_halo_docs
+inet_ietf_inet_types +-- chd_sdnc_halo_docs
+class "sdnc-halo-docs" as sdnc_halo_docs << (M, #33CCFF) module>> 
+sdnc_halo_docs : feature : sdnc_halo_docs 
+class "response-common" as sdnc_halo_docs_I_response_common_grouping <<(G,Lime) grouping>> 
+class "ok" as sdnc_halo_docs_I_ok_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_ok_grouping : chd:response-common {uses} 
+class "created" as sdnc_halo_docs_I_created_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_created_grouping : chd:response-common {uses} 
+class "accepted" as sdnc_halo_docs_I_accepted_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_accepted_grouping : chd:response-common {uses} 
+class "no-content" as sdnc_halo_docs_I_no_content_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_no_content_grouping : chd:response-common {uses} 
+class "reset-content" as sdnc_halo_docs_I_reset_content_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_reset_content_grouping : chd:response-common {uses} 
+class "partial-content" as sdnc_halo_docs_I_partial_content_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_partial_content_grouping : chd:response-common {uses} 
+class "bad-request" as sdnc_halo_docs_I_bad_request_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_bad_request_grouping : chd:response-common {uses} 
+sdnc_halo_docs_I_bad_request_grouping : badRequest : string  
+sdnc_halo_docs_I_bad_request_grouping : error_list []: string 
+class "unauthorized" as sdnc_halo_docs_I_unauthorized_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_unauthorized_grouping : chd:response-common {uses} 
+class "payment-required" as sdnc_halo_docs_I_payment_required_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_payment_required_grouping : chd:response-common {uses} 
+class "forbidden" as sdnc_halo_docs_I_forbidden_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_forbidden_grouping : chd:response-common {uses} 
+class "not-found" as sdnc_halo_docs_I_not_found_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_not_found_grouping : chd:response-common {uses} 
+sdnc_halo_docs_I_not_found_grouping : notFound : string  
+class "method-not-allowed" as sdnc_halo_docs_I_method_not_allowed_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_method_not_allowed_grouping : chd:response-common {uses} 
+class "not-acceptable" as sdnc_halo_docs_I_not_acceptable_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_not_acceptable_grouping : chd:response-common {uses} 
+class "proxy-authentication-required" as sdnc_halo_docs_I_proxy_authentication_required_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_proxy_authentication_required_grouping : chd:response-common {uses} 
+class "request-timeout" as sdnc_halo_docs_I_request_timeout_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_request_timeout_grouping : chd:response-common {uses} 
+class "conflict" as sdnc_halo_docs_I_conflict_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_conflict_grouping : chd:response-common {uses} 
+sdnc_halo_docs_I_conflict_grouping : conflict : string  
+class "gone" as sdnc_halo_docs_I_gone_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_gone_grouping : chd:response-common {uses} 
+class "length-required" as sdnc_halo_docs_I_length_required_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_length_required_grouping : chd:response-common {uses} 
+class "precondition-failed" as sdnc_halo_docs_I_precondition_failed_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_precondition_failed_grouping : chd:response-common {uses} 
+class "payload-too-long" as sdnc_halo_docs_I_payload_too_long_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_payload_too_long_grouping : chd:response-common {uses} 
+class "uri-too-long" as sdnc_halo_docs_I_uri_too_long_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_uri_too_long_grouping : chd:response-common {uses} 
+class "unsupported-media-type" as sdnc_halo_docs_I_unsupported_media_type_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_unsupported_media_type_grouping : chd:response-common {uses} 
+class "range-not-satisfiable" as sdnc_halo_docs_I_range_not_satisfiable_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_range_not_satisfiable_grouping : chd:response-common {uses} 
+class "expectation-failed" as sdnc_halo_docs_I_expectation_failed_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_expectation_failed_grouping : chd:response-common {uses} 
+class "device-structure" as sdnc_halo_docs_I_device_structure_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_device_structure_grouping : elementName : ct:element-name   {mandatory}
+sdnc_halo_docs_I_device_structure_grouping : elementFamily : ct:element-family   {mandatory}
+sdnc_halo_docs_I_device_structure_grouping : elementVendor : ct:element-vendor   {mandatory}
+sdnc_halo_docs_I_device_structure_grouping : elementModel : ct:element-model   {mandatory}
+sdnc_halo_docs_I_device_structure_grouping : primaryMacAddress : ct:mac-address   {mandatory}
+sdnc_halo_docs_I_device_structure_grouping : groupId : string   = Default 
+sdnc_halo_docs_I_device_structure_grouping : description : string  
+sdnc_halo_docs_I_device_structure_grouping : location : string  
+sdnc_halo_docs_I_device_structure_grouping : gpsLocation : ct:location-decimal-degrees-type  
+sdnc_halo_docs_I_device_structure_grouping : ipv4Address : inet:ipv4-address  
+sdnc_halo_docs_I_device_structure_grouping : ipv6Address : inet:ipv6-address  
+class "trafficTypes" as sdnc_halo_docs_I_device_structure_I_trafficTypes << (L, #FF7700) list>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "0..8" sdnc_halo_docs_I_device_structure_I_trafficTypes : ordered-by : user
+sdnc_halo_docs_I_device_structure_I_trafficTypes : +trafficType : ct:element-traffic-types  {key} 
+class "vendorClasses" as sdnc_halo_docs_I_device_structure_I_vendorClasses << (L, #FF7700) list>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "0..N" sdnc_halo_docs_I_device_structure_I_vendorClasses 
+sdnc_halo_docs_I_device_structure_I_vendorClasses : +vendorClass : ct:element-vendor-classes  {key} 
+class "mgmtConfig" as  sdnc_halo_docs_I_device_structure_I_mgmtConfig <<container>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "1" sdnc_halo_docs_I_device_structure_I_mgmtConfig 
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : username : string {length = 1..256}  
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : password : string {length = 1..256}  
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : ipAddress : inet:ip-address  
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : protocol : ct:element-management-protocol   = SSH 
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : sshPublicKey : string  
+note bottom of sdnc_halo_docs_I_device_structure_I_mgmtConfig
+<b>When</b> (sshPublicKey):
+../protocol = 'SSH' or ../protocol = 'NETCONF'
+
+end note 
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : port : uint16 [1..65535]   = 22 
+sdnc_halo_docs_I_device_structure_I_mgmtConfig : snmpV2Public : ct:snmp-community-name  
+sdnc_halo_docs_I_device_structure_grouping : assetId : string {length = 1..17}  
+sdnc_halo_docs_I_device_structure_grouping : deviceAlias : string {length = 1..255}  
+sdnc_halo_docs_I_device_structure_grouping : serialNumber : string  
+sdnc_halo_docs_I_device_structure_grouping : operationalMode : ct:rxd-operational-mode  
+sdnc_halo_docs_I_device_structure_grouping : intraNodeCabling : ct:rxd-operational-mode  
+class "licenseConfig" as  sdnc_halo_docs_I_device_structure_I_licenseConfig <<container>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "1" sdnc_halo_docs_I_device_structure_I_licenseConfig 
+sdnc_halo_docs_I_device_structure_I_licenseConfig : lawfulIntercept : boolean   = false 
+sdnc_halo_docs_I_device_structure_I_licenseConfig : calea : boolean   = false 
+sdnc_halo_docs_I_device_structure_I_licenseConfig : laes : boolean   = false 
+class "downstream" as  sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream <<container>> 
+sdnc_halo_docs_I_device_structure_I_licenseConfig *-- "1" sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : serviceGroupCnt : uint8 [1..2]   = 1 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : enterprise : boolean   = false 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : eneterpriseCnt : uint8 [1..2]   = 1 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : docsisDS30aCnt : uint16 [0..288]   = 0 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : docsisDS30bCnt : uint16 [0..384]   = 0 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_downstream : docsisDSOfdmCnt : uint16 [0..788]   = 0 
+class "upstream" as  sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream <<container>> 
+sdnc_halo_docs_I_device_structure_I_licenseConfig *-- "1" sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream : serviceGroupCnt : uint8 [1..2]   = 1 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream : enterprise : boolean   = false 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream : eneterpriseCnt : uint8 [1..2]   = 1 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream : docsisDS30bCnt : uint8 [0..24]   = 0 
+sdnc_halo_docs_I_device_structure_I_licenseConfig_I_upstream : docsisDSOfdmaCnt : uint16 [0..3800]   = 0 
+class "onboarding" as  sdnc_halo_docs_I_device_structure_I_onboarding <<container>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "1" sdnc_halo_docs_I_device_structure_I_onboarding 
+sdnc_halo_docs_I_device_structure_I_onboarding : onboarded : boolean  
+sdnc_halo_docs_I_device_structure_I_onboarding : ssdIdentifier : string  
+sdnc_halo_docs_I_device_structure_I_onboarding : softwareVersion : string  
+sdnc_halo_docs_I_device_structure_I_onboarding : time : yang:date-and-time  
+class "auxCore" as  sdnc_halo_docs_I_device_structure_I_auxCore <<container>> 
+sdnc_halo_docs_I_device_structure_grouping *-- "1" sdnc_halo_docs_I_device_structure_I_auxCore 
+sdnc_halo_docs_I_device_structure_I_auxCore : auxCoreId : string {length = 12} {pattern = [0-9A-Fa-f]{12}}  
+sdnc_halo_docs_I_device_structure_I_auxCore : gcpIpAddress : inet:ip-address  
+sdnc_halo_docs_I_device_structure_grouping : softwareVersion : string  
+sdnc_halo_docs_I_device_structure_grouping : startupTemplate : string  
+sdnc_halo_docs_I_device_structure_grouping : securityTemplate : string  
+sdnc_halo_docs_I_device_structure_grouping : useLag : boolean   = true 
+sdnc_halo_docs_I_device_structure_grouping : annex : ct:docsis-annex-type  
+class "device-ethernet-interfaces" as sdnc_halo_docs_I_device_ethernet_interfaces_grouping <<(G,Lime) grouping>> 
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : name : string {length = 1..32}   {mandatory}
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : templateId : string  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : ipAddress : inet:ip-address  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : subnetMask : ct:ipv4-subnet-mask  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : ipv6Address : inet:ipv6-address  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : ipv6Prefix : inet:ipv6-prefix  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : description : string  
+sdnc_halo_docs_I_device_ethernet_interfaces_grouping : vlanId : ct:ip-vlan-id  
+sdnc_halo_docs : controller-create-device( in: device_structure)
+sdnc_halo_docs : controller-retrieve-devices( in: elementFamily in: elementVendor in: elementModel in: elementName in: fields)
+sdnc_halo_docs : controller-get-device( in: elementId)
+sdnc_halo_docs : controller-update-device( in: elementId in: device_structure)
+sdnc_halo_docs : controller-delete-device( in: elementId)
+sdnc_halo_docs : controller-get-device-interfaces-ethernet( in: elementId)
+sdnc_halo_docs : controller-create-device-interfaces-ethernet( in: elementId in: ifId in: chd_device_ethernet_interfaces)
+sdnc_halo_docs : controller-get-device-interface-ethernet( in: elementId in: ifId)
+sdnc_halo_docs : controller-update-device-interface-ethernet( in: elementId in: ifId)
+sdnc_halo_docs : controller-delete-device-interface-ethernet( in: elementId in: ifId)
+} 
+
+sdnc_halo_docs_I_ok_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_created_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_accepted_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_no_content_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_reset_content_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_partial_content_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_bad_request_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_unauthorized_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_payment_required_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_forbidden_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_not_found_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_method_not_allowed_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_not_acceptable_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_proxy_authentication_required_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_request_timeout_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_conflict_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_gone_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_length_required_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_precondition_failed_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_payload_too_long_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_uri_too_long_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_unsupported_media_type_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_range_not_satisfiable_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs_I_expectation_failed_grouping --> sdnc_halo_docs_I_response_common_grouping : uses 
+sdnc_halo_docs --> sdnc_halo_docs_I_device_structure_grouping : uses 
+sdnc_halo_docs --> sdnc_halo_docs_I_device_structure_grouping : uses 
+sdnc_halo_docs --> sdnc_halo_docs_I_device_ethernet_interfaces_grouping : uses 
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

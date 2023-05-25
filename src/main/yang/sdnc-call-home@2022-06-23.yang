@@ -1,0 +1,229 @@
+module sdnc-call-home {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:call-home";
+  prefix cch;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc NETCONF Call-Home";
+
+  revision 2022-06-23 {
+    description
+      "initial";
+  }
+
+  feature sdnc-call-home {
+    status current;
+  }
+
+  rpc set-global-credentials {
+    if-feature "cch:sdnc-call-home";
+    description
+      "NETCONF Call-Home global (installation-wide) username and list of passwords";
+    input {
+      leaf username {
+        description
+          "global username";
+        type string {
+          length "4..max";
+        }
+        mandatory true;
+      }
+      list passwords {
+        description
+          "one or more global passwords";
+        key "password";
+        min-elements 1;
+        ordered-by user;
+        leaf password {
+          type string {
+            length "4..max";
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc add-global-credential-passwords {
+    if-feature "cch:sdnc-call-home";
+    description
+      "add additional NETCONF Call-Home global (installation-wide) passwords to list";
+    input {
+      leaf username {
+        description
+          "global username";
+        type leafref {
+          path "/c:sdnc/cch:call-home/cch:credentials/cch:username";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      list passwords {
+        description
+          "one or more global passwords";
+        key "password";
+        min-elements 1;
+        ordered-by user;
+        leaf password {
+          type string {
+            length "4..max";
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc ignore-ssh-host-keys {
+    if-feature "cch:sdnc-call-home";
+    description
+      "Allow unknown NETCONF call-home devices to connect - this is a debug feature and should not be used in production.";
+    input {
+      leaf ignore {
+        type boolean;
+        mandatory true;
+      }
+    }
+  }
+
+  rpc set-tls-passphrase {
+    if-feature "cch:sdnc-call-home";
+    description
+      "set/modify passphrase for private-key certificate";
+    input {
+      leaf key-id {
+        description
+          "Key identifier inside the NetConf keystore which will be used during two-way TLS authentication.";
+        type leafref {
+          path "/c:sdnc/cch:call-home/cch:tls/cch:certificates/cch:id";
+          require-instance true;
+        }
+        must "/c:sdnc/cch:call-home/cch:tls/cch:certificates[cch:id=current()]/category='private-key'" {
+          error-app-tag "call-home-certificate-category-invalid";
+          error-message "call home certificate must be category private-key";
+        }
+      }
+      leaf passphrase {
+        type string;
+        mandatory true;
+      }
+    }
+  }
+
+  rpc add-tls-certificate {
+    if-feature "cch:sdnc-call-home";
+    description
+      "Add trusted X.509 certificate for TLS";
+    input {
+      leaf id {
+        description
+          "Common-Name (CN), Signing Authority or other unique name";
+        type string;
+        mandatory true;
+      }
+      leaf category {
+        type ct:tls-certificate-type;
+        mandatory true;
+      }
+      leaf certificate {
+        description
+          "BASE-64 encoded certificate.";
+        type string;
+        mandatory true;
+      }
+      leaf passphrase {
+        description
+          "for private keys";
+        type string;
+        when "../category='private-key'";
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container call-home {
+      container credentials {
+        leaf username {
+          description
+            "global username";
+          type string {
+            length "4..max";
+          }
+        }
+        action remove {
+          description
+            "remove global username and all associated passwords";
+        }
+        list passwords {
+          description
+            "one or more global passwords";
+          key "password";
+          ordered-by user;
+          leaf password {
+            type string {
+              length "4..max";
+            }
+          }
+          action delete {
+            description
+              "remove specific password";
+          }
+        }
+      }
+      container ssh {
+        container ssh-host-keys {
+          leaf ignore {
+            type boolean;
+            default "false";
+          }
+        }
+      }
+      container tls {
+        list certificates {
+          key "id";
+          ordered-by user;
+          leaf id {
+            description
+              "Common-Name (CN), Signing Authority or other unique name";
+            type string;
+            mandatory true;
+          }
+          leaf category {
+            type ct:tls-certificate-type;
+            mandatory true;
+          }
+          leaf certificate {
+            description
+              "BASE-64 encoded certificate.";
+            type string;
+            mandatory true;
+          }
+          leaf passphrase {
+            description
+              "for private keys";
+            type string;
+            when "../category='private-key'";
+          }
+          action revoke {
+            description
+              "remove certificate";
+          }
+        }
+      }
+    }
+  }
+}

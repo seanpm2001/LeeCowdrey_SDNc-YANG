@@ -1,0 +1,4106 @@
+module rxd-rd2322 {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:rxd:rd2322";
+  prefix rd2322;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import sdnc-pools {
+    prefix cp;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "RxD RD2322 Device Model";
+
+  revision 2021-04-01 {
+    description
+      "RMD RD2322";
+  }
+
+  feature rxd-rd2322 {
+    status current;
+  }
+
+  cs:sku-model-revision "2021-04-01";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "RxD";
+  cs:sku-model-type "ARRIS E6000N-RD2322";
+  cs:sku-firmware-name "default";
+  cs:sku-firmware-version "1.0.0.271";
+  cs:sku-factory-enable-username "admin";
+  cs:sku-factory-enable-password "admin";
+  cs:sku-factory-access-username "admin";
+  cs:sku-factory-access-password "admin";
+  cs:sku-config-erase-cli "erase nvram";
+  cs:sku-config-reset-cli "reset nvram";
+  cs:sku-config-save-to-memory-cli "write memory";
+  cs:sku-config-copy-to-remote "copy running config {{../config-remote-endpoint}}";
+  cs:sku-config-remote-endpoint "tftp://tftp.vendor.com/path";
+  cs:sku-ssh-idle-cli "ip ssh idle-timeout {{../ssh-idle-timeout-duration}}";
+  cs:sku-ssh-idle-timeout-duration "360";
+  cs:cli-process "true";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      container cli-header {
+        config false;
+        cs:cli-begin "configure";
+      }
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "ARRIS E6000N-RD2322";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "1.0.0.0271";
+            mandatory false;
+          }
+        }
+        leaf operational-mode {
+          description
+            "The RF Operational Mode of the RMD; For Arris RD2322 - 1x1, 1x2, 2x2";
+          type ct:rxd-operational-mode;
+          default "2x2";
+        }
+      }
+      leaf hostname {
+        cs:cli-enable-cmd "hostname \"{{.}}\"";
+        cs:cli-modify-cmd "hostname \"{{.}}\"";
+        cs:cli-disable-cmd "no hostname \"{{.}}\"";
+        type inet:host;
+      }
+      leaf shelfname {
+        cs:cli-enable-cmd "shelfname \"{{.}}\"";
+        cs:cli-modify-cmd "shelfname \"{{.}}\"";
+        cs:cli-disable-cmd "no shelfname \"{{.}}\"";
+        type string;
+      }
+      container aging {
+        leaf idle-mac {
+          cs:cli-enable-cmd "aging idle-mac {{.}}";
+          cs:cli-disable-cmd "no aging idle-mac {{.}}";
+          type uint32;
+        }
+        leaf stale-mac {
+          cs:cli-enable-cmd "aging stale-mac {{.}}";
+          cs:cli-disable-cmd "no aging stale-mac {{.}}";
+          type uint32;
+        }
+      }
+      container acl {
+        list acl {
+          cs:cli-enable-cmd "access-list {{./sequence}} deny {{./definition}}";
+          cs:cli-disable-cmd "no access-list {{./sequence}} deny {{./definition}}";
+          key "sequence";
+          ordered-by user;
+          leaf sequence {
+            type uint16 {
+              range "1..max";
+            }
+          }
+          leaf classification {
+            type enumeration {
+              enum permit;
+              enum deny;
+              enum remark;
+              enum enable-accounting;
+            }
+          }
+          leaf definition {
+            when "../classification = 'permit' or ../classification = 'deny' or ../classification = 'remark'";
+            type string;
+          }
+        }
+      }
+      container arp {
+        leaf gratuitous-interval {
+          cs:cli-enable-cmd "arp gratuitous-interval {{.}}";
+          cs:cli-disable-cmd "no arp gratuitous-interval {{.}}";
+          type uint16;
+          default "0";
+        }
+        leaf timeout {
+          cs:cli-enable-cmd "arp timeout {{.}}";
+          cs:cli-disable-cmd "no arp timeout {{.}}";
+          type uint16;
+          default "1200";
+        }
+        container state {
+          container searching {
+            leaf rate-limit {
+              cs:cli-enable-cmd "arp searching rate-limit {{.}}";
+              cs:cli-disable-cmd "no arp searching rate-limit {{.}}";
+              type uint16;
+            }
+            leaf max-number {
+              cs:cli-enable-cmd "arp searching max-number {{.}}";
+              cs:cli-disable-cmd "no arp searching max-number {{.}}";
+              type uint16;
+            }
+            leaf global-max-rate {
+              cs:cli-enable-cmd "arp searching global-max-rate {{.}}";
+              cs:cli-disable-cmd "no arp searching global-max-rate {{.}}";
+              type uint16;
+              default "65535";
+            }
+            container cable {
+              leaf unicast {
+                cs:cli-enable-cmd "arp searching cable unicast {{.}}";
+                cs:cli-disable-cmd "no arp searching cable unicast {{.}}";
+                type uint16;
+                default "0";
+              }
+              leaf broadcast {
+                cs:cli-enable-cmd "arp searching cable broadcast";
+                cs:cli-disable-cmd "no arp searching cable broadcast";
+                type empty;
+              }
+            }
+          }
+          container not-present {
+            leaf rate-limit {
+              cs:cli-enable-cmd "arp not-present rate-limit {{.}}";
+              cs:cli-disable-cmd "no arp not-present rate-limit {{.}}";
+              type uint16;
+            }
+            leaf max-number {
+              cs:cli-enable-cmd "arp not-present max-number {{.}}";
+              cs:cli-disable-cmd "no arp not-present max-number {{.}}";
+              type uint16;
+            }
+            leaf max-time {
+              cs:cli-enable-cmd "arp not-present max-time {{.}}";
+              cs:cli-disable-cmd "no arp not-present max-time {{.}}";
+              type uint8;
+            }
+            leaf min-time {
+              cs:cli-enable-cmd "arp not-present min-time {{.}}";
+              cs:cli-disable-cmd "no arp not-present min-time {{.}}";
+              type uint8;
+            }
+          }
+        }
+      }
+      container authentication {
+        cs:cli-enable-cmd "authentication {{./level}} {{./type}}";
+        cs:cli-disable-cmd "no authentication {{./level}} {{./type}}";
+        leaf level {
+          type enumeration {
+            enum ml1;
+            enum ml2;
+            enum default;
+          }
+        }
+        leaf type {
+          type enumeration {
+            enum local;
+            enum none;
+            enum "local none";
+          }
+        }
+      }
+      container authorization {
+        cs:cli-enable-cmd "authorization {{./level}} {{./type}}";
+        cs:cli-disable-cmd "no authorization {{./level}} {{./type}}";
+        leaf level {
+          type enumeration {
+            enum author_default;
+          }
+        }
+        leaf type {
+          type enumeration {
+            enum local;
+          }
+        }
+      }
+      container banner {
+        list banner {
+          key "type";
+          cs:cli-begin "banner {{./type}}";
+          cs:cli-enable-cmd "{{./message}}";
+          cs:cli-end "/end";
+          cs:cli-disable-cmd "no banner mode {{./type}}";
+          leaf type {
+            type enumeration {
+              enum login;
+              enum motd;
+            }
+          }
+          leaf message {
+            type string;
+          }
+        }
+        leaf mode {
+          cs:cli-enable-cmd "banner mode {{.}}";
+          cs:cli-disable-cmd "no banner mode {{.}}";
+          type enumeration {
+            enum historic;
+          }
+        }
+      }
+      container cable {
+        leaf proxy-tftp {
+          cs:cli-enable-cmd "cable proxy-tftp";
+          cs:cli-disable-cmd "cable proxy-tftp no";
+          type empty;
+        }
+        leaf cm-status {
+          cs:cli-enable-cmd "cable cm-status {{.}}";
+          cs:cli-disable-cmd "no cable cm-status {{.}}";
+          type enumeration {
+            enum seqOutOfRange-recovery;
+          }
+        }
+        leaf helper-address {
+          cs:cli-enable-cmd "cable helper-address {../helper-address}}";
+          cs:cli-disable-cmd "no cable helper-address {../helper-address}}";
+          type inet:ip-address-no-zone;
+        }
+        leaf dhcp-giaddr {
+          cs:cli-enable-cmd "cable dhcp-giaddr {../dhcp-giaddr}}";
+          cs:cli-disable-cmd "no cable dhcp-giaddr {../dhcp-giaddr}}";
+          type ct:ip-dhcp-priority;
+        }
+        container adminision-control {
+          container multicast {
+            leaf enable {
+              cs:cli-enable-cmd "cable admission-control multicast enable";
+              cs:cli-disable-cmd "cable admission-control multicast enable no";
+              type empty;
+            }
+            leaf allowed {
+              cs:cli-enable-cmd "cable admission-control multicast allowed {{.}}";
+              cs:cli-disable-cmd "no cable admission-control multicast allowed {{.}}";
+              type uint16;
+            }
+          }
+        }
+        container enable-trap {
+          leaf cmonoff-notification {
+            cs:cli-enable-cmd "cable enable-trap cmonoff-notification";
+            cs:cli-disable-cmd "cable enable-trap cmonoff-notification no";
+            type empty;
+          }
+          leaf cminit-ranging-notification {
+            cs:cli-enable-cmd "cable enable-trap cminit-ranging-notification";
+            cs:cli-disable-cmd "cable enable-trap cminit-ranging-notification no";
+            type empty;
+          }
+          leaf cminit-ip-notification {
+            cs:cli-enable-cmd "cable enable-trap cminit-ip-notification";
+            cs:cli-disable-cmd "cable enable-trap cminit-ip-notification no";
+            type empty;
+          }
+          leaf cminit-reg-notification {
+            cs:cli-enable-cmd "cable enable-trap cminit-reg-notification";
+            cs:cli-disable-cmd "cable enable-trap cminit-reg-notification no";
+            type empty;
+          }
+          leaf cmflap-notification {
+            cs:cli-enable-cmd "cable enable-trap cmflap-notification";
+            cs:cli-disable-cmd "cable enable-trap cmflap-notification no";
+            type empty;
+          }
+        }
+        container fibre-node {
+          list rpds {
+            cs:cli-enable-cmd "cable fiber-node \"{{./identifier}}\" rpd \"{{../rpd-identifier}}\" ds-conn {{./ds-conn}} us-conn {{./us-conn}}";
+            cs:cli-disable-cmd "no cable fiber-node \"{{./identifier}}\" rpd \"{{../rpd-identifier}}\" ds-conn {{./ds-conn}} us-conn {{./us-conn}}";
+            key "identifier";
+            unique "rpd-identifier ds-conn us-conn";
+            leaf identifier {
+              type ct:name;
+            }
+            leaf rpd-identifier {
+              type leafref {
+                path "../../../../interface/rpd/rpds/identifier";
+                require-instance true;
+              }
+            }
+            leaf ds-conn {
+              type leafref {
+                path "../../../../interface/rpd/rpds/ds-conn/instance";
+                require-instance true;
+              }
+            }
+            leaf us-conn {
+              type leafref {
+                path "../../../../interface/rpd/rpds/us-conn/instance";
+                require-instance true;
+              }
+            }
+          }
+          list nodes {
+            cs:cli-enable-cmd "cable fiber-node \"{{./identifier}}\"";
+            cs:cli-disable-cmd "no cable fiber-node \"{{./identifier}}\"";
+            key "identifier";
+            leaf identifier {
+              type ct:name;
+            }
+            leaf init {
+              cs:cli-enable-cmd "init";
+              cs:cli-disable-cmd "no init";
+              type empty;
+            }
+            list downstream {
+              cs:cli-enable-cmd "cable-downstream {{./interface}}";
+              cs:cli-disable-cmd "no cable-downstream {{./interface}}";
+              key "interface";
+              leaf interface {
+                type string;
+              }
+            }
+            list upstream {
+              cs:cli-enable-cmd "cable-upstream {{./interface}}";
+              cs:cli-disable-cmd "no cable-upstream {{./interface}}";
+              key "interface";
+              leaf interface {
+                type string;
+              }
+            }
+          }
+        }
+        container flap-list {
+          container power-adjust {
+            leaf threshold {
+              cs:cli-enable-cmd "cable flap-list power-adjust threshold {{.}}";
+              cs:cli-disable-cmd "no cable flap-list power-adjust threshold {{.}}";
+              type uint16;
+            }
+          }
+          leaf insertion-time {
+            cs:cli-enable-cmd "cable flap-list insertion-time {{.}}";
+            cs:cli-disable-cmd "no cable flap-list insertion-time {{.}}";
+            type uint8;
+          }
+        }
+        container host {
+          leaf authorization {
+            cs:cli-enable-cmd "cable host authorization {{.}}";
+            cs:cli-disable-cmd "no cable host authorization {{.}}";
+            type enumeration {
+              enum off;
+              enum on;
+            }
+          }
+        }
+        container global {
+          leaf annex {
+            cs:cli-enable-cmd "cable global annex {{.}}";
+            cs:cli-disable-cmd "no cable global annex {{.}}";
+            description
+              "Annex B=DOCSIS/EuroDOCSIS 1.1, Annex A=DVB EuroModem, Annex C=Japanese DOCSIS 1.1, Annex F=EuroDOCSIS 2.0, Annex J=Japanese DOCSIS 2.0";
+            type ct:docsis-annex-type;
+          }
+          leaf additional-ds-sc-qams {
+            cs:cli-enable-cmd "cable global additional-ds-sc-qams no";
+            cs:cli-disable-cmd "cable global additional-ds-sc-qams";
+            type empty;
+          }
+          leaf allow-cmsg-ambig-override {
+            cs:cli-enable-cmd "cable global allow-cmsg-ambig-override no";
+            cs:cli-disable-cmd "cable global allow-cmsg-ambig-override";
+            type empty;
+          }
+          leaf cm-cfg-reg-req-time {
+            cs:cli-enable-cmd "cable global cm-cfg-reg-req-time {{.}}";
+            cs:cli-disable-cmd "cable global cm-cfg-reg-req-time {{.}}";
+            type uint8;
+          }
+          leaf cm-init-dsx-bonding {
+            cs:cli-enable-cmd "cable global cm-init-dsx-bonding no";
+            cs:cli-disable-cmd "cable global cm-init-dsx-bonding";
+            type empty;
+          }
+          leaf cm-status-ack {
+            cs:cli-enable-cmd "cable global cm-status-ack no";
+            cs:cli-disable-cmd "cable global cm-status-ack";
+            type empty;
+          }
+          leaf default-max-l2pdu-length {
+            cs:cli-enable-cmd "cable global default-max-l2pdu-length no";
+            cs:cli-disable-cmd "cable global default-max-l2pdu-length";
+            type empty;
+          }
+          leaf delayed-cpe-learning-bpi {
+            cs:cli-enable-cmd "cable global delayed-cpe-learning-bpi";
+            cs:cli-disable-cmd "cable global delayed-cpe-learning-bpi no";
+            type empty;
+          }
+          container ds-random-detect {
+            cs:cli-enable-cmd "cable global ds-random-detect {{./low}} {{./medium}} {{./high}}";
+            cs:cli-disable-cmd "cable global ds-random-detect {{./low}} {{./medium}} {{./high}}";
+            leaf low {
+              type uint16;
+            }
+            leaf medium {
+              type uint16;
+            }
+            leaf high {
+              type uint16;
+            }
+          }
+          leaf ds-token-bucket {
+            cs:cli-enable-cmd "cable global ds-token-bucket no";
+            cs:cli-disable-cmd "cable global ds-token-bucket";
+            type empty;
+          }
+          leaf ds-tos-overwrite {
+            cs:cli-enable-cmd "cable global ds-tos-overwrite {{.}}";
+            cs:cli-disable-cmd "no cable global ds-tos-overwrite {{.}}";
+            type enumeration {
+              enum before-submgmt-filter;
+            }
+          }
+          leaf dsa-rsp-sid-tlv-override {
+            cs:cli-enable-cmd "cable global dsa-rsp-sid-tlv-override no";
+            cs:cli-disable-cmd "cable global dsa-rsp-sid-tlv-override";
+            type empty;
+          }
+          leaf freq-ds-min {
+            cs:cli-enable-cmd "cable global freq-ds-min {{.}}";
+            cs:cli-disable-cmd "no cable global freq-ds-min {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf freq-ds-max {
+            cs:cli-enable-cmd "cable global freq-ds-min {{.}}";
+            cs:cli-disable-cmd "no cable global freq-ds-min {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf freq-us-min {
+            cs:cli-enable-cmd "cable global freq-us-min {{.}}";
+            cs:cli-disable-cmd "no cable global freq-us-min {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf freq-us-max {
+            cs:cli-enable-cmd "cable global freq-us-max {{.}}";
+            cs:cli-disable-cmd "no cable global freq-us-max {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf load-interval {
+            cs:cli-enable-cmd "cable global load-interval {{.}}";
+            cs:cli-disable-cmd "no cable global load-interval {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf mac-move-allowed-on-dhcp {
+            cs:cli-enable-cmd "cable global mac-move-allowed-on-dhcp no";
+            cs:cli-disable-cmd "cable global mac-move-allowed-on-dhcp";
+            type empty;
+          }
+          leaf max-qos-active-timeout {
+            cs:cli-enable-cmd "cable global max-qos-active-timeoutl {{.}}";
+            cs:cli-disable-cmd "no cable global max-qos-active-timeoutl {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf max-qos-admitted-timeout {
+            cs:cli-enable-cmd "cable global max-qos-admitted-timeout {{.}}";
+            cs:cli-disable-cmd "no cable global max-qos-admitted-timeout {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf max-traf-burst-docsis11 {
+            cs:cli-enable-cmd "cable global max-traf-burst-docsis11 {{.}}";
+            cs:cli-disable-cmd "no cable global max-traf-burst-docsis11 {{.}}";
+            type uint32 {
+              range "0..max";
+            }
+          }
+          leaf max-ucd-burst-len {
+            cs:cli-enable-cmd "cable global max-ucd-burst-len {{.}}";
+            cs:cli-disable-cmd "no cable global max-ucd-burst-len {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf modify-primary-DS-RCC {
+            cs:cli-enable-cmd "cable global modify-primary-DS-RCC no";
+            cs:cli-disable-cmd "cable global modify-primary-DS-RCC";
+            type empty;
+          }
+          leaf mtcm-conditional-override {
+            cs:cli-enable-cmd "cable global mtcm-conditional-override no";
+            cs:cli-disable-cmd "cable global mtcm-conditional-override";
+            type empty;
+          }
+          leaf peak-tr-rate-upstream {
+            cs:cli-enable-cmd "cable global peak-tr-rate-upstream no";
+            cs:cli-disable-cmd "cable global peak-tr-rate-upstream";
+            type empty;
+          }
+          leaf percentAddtlDSBandwidth {
+            cs:cli-enable-cmd "cable global percentAddtlDSBandwidth {{.}}";
+            cs:cli-disable-cmd "no cable global percentAddtlDSBandwidth {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf ranging-timing-offset {
+            cs:cli-enable-cmd "cable global max-ucd-burst-len {{.}}";
+            cs:cli-disable-cmd "no cable global max-ucd-burst-len {{.}}";
+            type uint8 {
+              range "0..max";
+            }
+          }
+          leaf recover-US-impaired-ack {
+            cs:cli-enable-cmd "cable global modify-primary-DS-RCC";
+            cs:cli-disable-cmd "cable global modify-primary-DS-RCC no";
+            type empty;
+          }
+          leaf RtpsPiggybackEnable {
+            cs:cli-enable-cmd "cable global RtpsPiggybackEnable no";
+            cs:cli-disable-cmd "cable global RtpsPiggybackEnable";
+            type empty;
+          }
+          leaf tcc-refid-in-first-only {
+            cs:cli-enable-cmd "cable global tcc-refid-in-first-only no";
+            cs:cli-disable-cmd "cable global tcc-refid-in-first-only";
+            type empty;
+          }
+          leaf unicast-np-us-acquisition {
+            cs:cli-enable-cmd "cable global unicast-np-us-acquisition no";
+            cs:cli-disable-cmd "cable global unicast-np-us-acquisition";
+            type empty;
+          }
+          leaf us-dmac-check-disable {
+            cs:cli-enable-cmd "cable global us-dmac-check-disabl no";
+            cs:cli-disable-cmd "cable global us-dmac-check-disabl";
+            type empty;
+          }
+          container unicast-polling {
+            cs:cli-enable-cmd "cable global unicast-polling[[ pri {{./pri}}]][[ slow-intvl {{./slow-intvl}}]][[ fast-intvl {{./fast-intvl}}]][[ fast-period {{./fast-period}}]]";
+            cs:cli-disable-cmd "no cable global unicast-polling[[ pri {{./pri}}]][[ slow-intvl {{./slow-intvl}}]][[ fast-intvl {{./fast-intvl}}]][[ fast-period {{./fast-period}}]]";
+            leaf pri {
+              type uint8 {
+                range "0..7";
+              }
+            }
+            leaf slow-intvl {
+              type uint8 {
+                range "0..max";
+              }
+            }
+            leaf fast-intvl {
+              type uint8 {
+                range "0..max";
+              }
+            }
+            leaf fast-period {
+              type uint8 {
+                range "0..max";
+              }
+            }
+          }
+        }
+        container load-balance {
+          leaf enabled {
+            cs:cli-enable-cmd "cable load-balance enable";
+            cs:cli-disable-cmd "cable load-balance enable no";
+            type empty;
+          }
+          leaf macdomain-check {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance macdomain-check {{.}}";
+            cs:cli-disable-cmd "no cable load-balance macdomain-check {{.}}";
+            type uint8;
+          }
+          leaf downstream-start-threshold {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance downstream-start-threshold {{.}}";
+            cs:cli-disable-cmd "no cable load-balance downstream-start-threshold {{.}}";
+            type uint8;
+          }
+          leaf upstream-start-threshold {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance upstream-start-threshold {{.}}";
+            cs:cli-disable-cmd "no cable load-balance upstream-start-threshold {{.}}";
+            type uint8;
+          }
+          leaf utilization-modems-to-check {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance utilization-modems-to-check {{.}}";
+            cs:cli-disable-cmd "no cable load-balance utilization-modems-to-check {{.}}";
+            type uint8;
+          }
+          container failed-list {
+            when '(../enabled)';
+            leaf timeout {
+              cs:cli-enable-cmd "cable load-balance failed-list timeout {{.}}";
+              cs:cli-disable-cmd "no cable load-balance failed-list timeout {{.}}";
+              type uint8;
+              default "0";
+            }
+            leaf exclude-count {
+              cs:cli-enable-cmd "cable load-balance failed-list exclude-count {{.}}";
+              cs:cli-disable-cmd "no cable load-balance failed-list exclude-count {{.}}";
+              type uint8;
+              default "0";
+            }
+          }
+          container general-group-defaults {
+            when '(../enabled)';
+            leaf enabled {
+              cs:cli-enable-cmd "cable load-balance general-group-defaults enable";
+              cs:cli-disable-cmd "cable load-balance general-group-defaults disable";
+              type empty;
+            }
+            leaf init-technique {
+              when '(../enabled)';
+              cs:cli-enable-cmd "cable load-balance general-group-defaults init-technique {{.}}";
+              cs:cli-disable-cmd "no cable load-balance general-group-defaults init-technique {{.}}";
+              type ct:enable-disable;
+            }
+          }
+          leaf rcs-load-balance {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance rcs-load-balance {{.}}";
+            cs:cli-disable-cmd "no cable load-balance rcs-load-balance {{.}}";
+            type ct:enable-disable;
+          }
+          leaf tcs-load-balance {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance tcs-load-balance {{.}}";
+            cs:cli-disable-cmd "no cable load-balance tcs-load-balance {{.}}";
+            type ct:enable-disable;
+          }
+          leaf rcs-move-ds-primary {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance rcs-move-ds-primary {{.}}";
+            cs:cli-disable-cmd "no cable load-balance rcs-move-ds-primary {{.}}";
+            type ct:enable-disable;
+          }
+          leaf rcs-move-us-primary {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance rcs-move-us-primary {{.}}";
+            cs:cli-disable-cmd "no cable load-balance rcs-move-us-primary {{.}}";
+            type ct:enable-disable;
+          }
+          leaf tcs-move-us-primary {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance tcs-move-us-primary {{.}}";
+            cs:cli-disable-cmd "no cable load-balance tcs-move-us-primary {{.}}";
+            type ct:enable-disable;
+          }
+          leaf dbc-move-us-primary {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance dbc-move-us-primary {{.}}";
+            cs:cli-disable-cmd "no cable load-balance dbc-move-us-primary {{.}}";
+            type ct:enable-disable;
+          }
+          leaf dbc-move-ds-primary {
+            when '(../enabled)';
+            cs:cli-enable-cmd "cable load-balance dbc-move-ds-primary {{.}}";
+            cs:cli-disable-cmd "no cable load-balance dbc-move-ds-primary {{.}}";
+            type ct:enable-disable;
+          }
+        }
+        container metering {
+          leaf enabled {
+            cs:cli-enable-cmd "cable metering no shutdown";
+            cs:cli-disable-cmd "cable metering shutdown";
+            type empty;
+          }
+          container collector {
+            when 'not (../enabled)';
+            list collectors {
+              cs:cli-enable-cmd "cable metering collector {{./instance}} {{./host}} {{./port}}";
+              cs:cli-disable-cmd "no cable metering collector {{./instance}} {{./host}} {{./port}}";
+              key "instance";
+              unique "host port";
+              leaf instance {
+                type uint8 {
+                  range "1..max";
+                }
+              }
+              leaf host {
+                type inet:host;
+              }
+              leaf port {
+                type inet:port-number;
+              }
+            }
+          }
+          container query {
+            cs:cli-enable-cmd "cable metering query-port {{./query-port}} streaming-port {{./streaming-port}} keep-alive-interval {{./keep-alive-interval}} connect-mode {{./connect-mode}} initiate-retry-interval {{./initiate-retry-interval}}";
+            cs:cli-disable-cmd "no cable metering query-port {{./query-port}} streaming-port {{./streaming-port}} keep-alive-interval {{./keep-alive-interval}} connect-mode {{./connect-mode}} initiate-retry-interval {{./initiate-retry-interval}}";
+            leaf query-port {
+              type inet:port-number;
+              default "4737";
+            }
+            leaf streaming-port {
+              type inet:port-number;
+              default "4737";
+            }
+            leaf keep-alive-interval {
+              type uint16;
+              default "300";
+            }
+            leaf connect-mode {
+              type enumeration {
+                enum accept;
+              }
+            }
+            leaf initiate-retry-interval {
+              type uint8 {
+                range "1..max";
+              }
+            }
+          }
+        }
+        container modem {
+          container remote-query {
+            leaf enabled {
+              cs:cli-enable-cmd "cable modem remote-query";
+              cs:cli-disable-cmd "no cable modem remote-query";
+              type empty;
+            }
+            leaf source-interface {
+              when '(../enabled)';
+              cs:cli-enable-cmd "cable modem remote-query source-interface {{.}}";
+              cs:cli-disable-cmd "cable modem remote-query source-interface no";
+              type string;
+            }
+          }
+          container format {
+            list formats {
+              cs:cli-enable-cmd "cable modem format {{./type}} interface {{./identifier}} state[[ {{./aggregation}}]][[ {{./qos}}]][[ {{./cpe}}]][[ {{./cable-mac}}]][[ {{./cable-ip}}]]";
+              cs:cli-disable-cmd "no cable modem format {{./type}} interface {{./identifier}} state[[ {{./aggregation}}]][[ {{./qos}}]][[ {{./cpe}}]][[ {{./cable-mac}}]][[ {{./cable-ip}}]]";
+              key "type";
+              leaf type {
+                type enumeration {
+                  enum scmf;
+                }
+              }
+              leaf identifier {
+                type enumeration {
+                  enum cable-mac;
+                }
+              }
+              leaf aggregation {
+                type enumeration {
+                  enum bonded-actual;
+                }
+              }
+              leaf hfc-mac {
+                type enumeration {
+                  enum docsis-mac;
+                }
+              }
+              leaf qos {
+                type enumeration {
+                  enum qos-primary;
+                }
+              }
+              leaf cpe {
+                type enumeration {
+                  enum cpe-count;
+                }
+              }
+              leaf cable-mac {
+                type enumeration {
+                  enum cm-mac;
+                }
+              }
+              leaf cable-ip {
+                type enumeration {
+                  enum cm-ip;
+                }
+              }
+            }
+          }
+          container energy-mgmt {
+            leaf battery-mode1x {
+              cs:cli-enable-cmd "cable energy-mgmt battery-mode1x {{.}}";
+              cs:cli-disable-cmd "no cable energy-mgmt battery-mode1x {{.}}";
+              type enumeration {
+                enum no;
+              }
+            }
+          }
+          container vendor {
+            list vendors {
+              cs:cli-enable-cmd "cable modem vendor {{./oui-prefix}} {{./vendor}}";
+              cs:cli-disable-cmd "no cable modem vendor {{./oui-prefix}} {{./vendor}}";
+              key "vendor";
+              unique "oui-prefix";
+              leaf oui-prefix {
+                type ct:oui-prefix;
+              }
+              leaf vendor {
+                type ct:name;
+              }
+            }
+          }
+        }
+        container multicast {
+          container group-qos {
+            list group-qos {
+              key "instance";
+              leaf instance {
+                cs:cli-disable-cmd "no cable multicast group-qos {{.}}";
+                type uint16;
+              }
+              leaf scn {
+                cs:cli-enable-cmd "cable multicast group-qos {{../instance}} scn {{.}}";
+                cs:cli-disable-cmd "no cable multicast group-qos {{../instance}} scn {{.}}";
+                type enumeration {
+                  enum ipvideo_dn;
+                }
+              }
+            }
+          }
+          container modulation-profile {
+            list modulation-profiles {
+              cs:cli-begin "cable modulation-profile {{./instance}}";
+              cs:cli-enable-cmd "iuc {{./instance}}[[ mod {{./modulation}}]][[ pre-len {{./pre-len}}]][[ diff {{./diff}}]][[ fec-tbytes {{./fec-tbytes}}]][[ fec-len {{./fec-len}}]][[ seed {{./seed}}]][[ burst-len {{./burst-len}}]][[ guard-time-size {{./guard-time-size}}]][[ last-cw {{./last-cw}}]][[ scrambler {{./scrambler}}]][[ docsis-mode {{./docsis-mode}}]]";
+              cs:cli-disable-cmd "no iuc {{./instance}}[[ mod {{./modulation}}]][[ pre-len {{./pre-len}}]][[ diff {{./diff}}]][[ fec-tbytes {{./fec-tbytes}}]][[ fec-len {{./fec-len}}]][[ seed {{./seed}}]][[ burst-len {{./burst-len}}]][[ guard-time-size {{./guard-time-size}}]][[ last-cw {{./last-cw}}]][[ scrambler {{./scrambler}}]][[ docsis-mode {{./docsis-mode}}]]";
+              cs:cli-end "exit";
+              cs:cli-disable-cmd "no cable modulation-profile {{./instance}}";
+              key "instance";
+              leaf instance {
+                type uint8;
+              }
+              leaf modulation {
+                type ct:docsis-modulation-profile;
+              }
+              leaf pre-len {
+                type uint16;
+              }
+              leaf diff {
+                type boolean;
+              }
+              leaf fec-tbytes {
+                type uint16;
+              }
+              leaf seed {
+                type uint16;
+              }
+              leaf burst-len {
+                type uint16;
+              }
+              leaf guard-time-size {
+                type uint16;
+              }
+              leaf last-cw {
+                type boolean;
+              }
+              leaf scramber {
+                type boolean;
+              }
+              leaf docsis-mode {
+                type ct:docsis-modulation-type;
+              }
+            }
+          }
+          container qos {
+            list qos {
+              key "instance";
+              leaf instance {
+                cs:cli-disable-cmd "no cable multicast qos group {{.}}";
+                type uint16;
+              }
+              leaf group-qos {
+                cs:cli-enable-cmd "cable multicast qos group {{../instance}} group-qos {{.}}";
+                cs:cli-disable-cmd "no cable multicastqos groups {{../instance}} group-qos {{.}}";
+                type leafref {
+                  path "../../../group-qos/group-qos/instance";
+                  require-instance true;
+                }
+              }
+              leaf priority {
+                cs:cli-enable-cmd "cable multicast qos group {{../instance}} priority {{.}}";
+                cs:cli-disable-cmd "no cable multicast qos group {{../instance}} priority {{.}}";
+                type uint8;
+              }
+              container session-range {
+                cs:cli-enable-cmd "cable multicast qos group {{../../instance}} session-range {{./range}} source {{./source}}";
+                cs:cli-disable-cmd "no cable multicast qos group {{../../instance}} session-range {{./range}}source {{./source}}";
+                leaf range {
+                  type inet:ip-prefix;
+                }
+                leaf source {
+                  type inet:ip-prefix;
+                  default "0.0.0.0/0";
+                }
+              }
+            }
+          }
+        }
+        container privacy {
+          leaf ca-bad-cert-drop {
+            cs:cli-enable-cmd "cable privacy ca-bad-cert-drop";
+            cs:cli-disable-cmd "cable privacy ca-bad-cert-drop no";
+            type empty;
+          }
+          leaf chk-manufacturer-ca-validity-period {
+            cs:cli-enable-cmd "cable privacy chk-manufacturer-ca-validity-period {{.}}";
+            cs:cli-disable-cmd "no cable privacy chk-manufacturer-ca-validity-period {{.}}";
+            type enumeration {
+              enum true;
+              enum false;
+            }
+          }
+          container kek {
+            leaf life-time {
+              cs:cli-enable-cmd "cable privacy kek life-time {{.}}";
+              cs:cli-disable-cmd "no cable privacy kek life-time {{.}}";
+              type uint32;
+            }
+          }
+          container tek {
+            leaf life-time {
+              cs:cli-enable-cmd "cable privacy tek life-time {{.}}";
+              cs:cli-disable-cmd "no cable privacy tek life-time {{.}}";
+              type uint32;
+            }
+          }
+          leaf default-cert-trust {
+            cs:cli-enable-cmd "cable privacy default-cert-trust {{.}}";
+            cs:cli-disable-cmd "no cable privacy default-cert-trust {{.}}";
+            type enumeration {
+              enum trusted;
+              enum untrusted;
+            }
+          }
+          leaf chk-validity-perio {
+            cs:cli-enable-cmd "cable privacy chk-validity-perio {{.}}";
+            cs:cli-disable-cmd "no cable privacy chk-validity-perio {{.}}";
+            type enumeration {
+              enum false;
+              enum true;
+            }
+          }
+          leaf mandatory {
+            cs:cli-enable-cmd "cable privacy mandatory";
+            cs:cli-disable-cmd "cable privacy mandatory no";
+            type empty;
+          }
+          leaf eae-policy {
+            cs:cli-enable-cmd "cable privacy eae-policy";
+            cs:cli-disable-cmd "cable privacy eae-policy no";
+            type empty;
+          }
+          leaf aes-128 {
+            cs:cli-enable-cmd "cable privacy aes-128";
+            cs:cli-disable-cmd "cable privacy aes-128 no";
+            type empty;
+          }
+        }
+        container proto-throttle {
+          list proto-throttles {
+            cs:cli-enable-cmd "cable proto-throttle {{./protocol}}[[ {{./rate}}]]";
+            cs:cli-disable-cmd "no cable proto-throttle {{./protocol}}[[ {{./rate}}]]";
+            key "protocol";
+            leaf protocol {
+              type enumeration {
+                enum arp;
+                enum dhcp;
+                enum dhcpv6;
+                enum igmp;
+                enum "igmp max-burst";
+                enum "igmp interval";
+                enum "igmp increment";
+                enum nd;
+                enum max-burst;
+                enum interval;
+                enum increment;
+              }
+            }
+            leaf rate {
+              type uint16;
+            }
+          }
+        }
+        container relay-agent-option {
+          leaf circuit-id {
+            cs:cli-enable-cmd "cable relay-agent-option circuit-id {{.}}";
+            cs:cli-disable-cmd "no cable relay-agent-option circuit-id {{.}}";
+            type enumeration {
+              enum mac-ifindex;
+            }
+          }
+          leaf qos-sc-name {
+            cs:cli-enable-cmd "cable relay-agent-option qos-sc-name {{.}}";
+            cs:cli-disable-cmd "cable relay-agent-option qos-sc-name no";
+            type ct:name;
+          }
+          leaf fanout {
+            cs:cli-enable-cmd "cable relay-agent-option fanout enable";
+            cs:cli-disable-cmd "cable relay-agent-option fanout disable";
+            type enumeration {
+              enum enable;
+              enum disable;
+            }
+          }
+          leaf mso-defined-text {
+            cs:cli-enable-cmd "cable relay-agent-option mso-defined-text {{.}}";
+            cs:cli-disable-cmd "cable relay-agent-option mso-defined-text no";
+            type ct:name;
+          }
+        }
+        container spectrum-group {
+          leaf enable-trap {
+            cs:cli-enable-cmd "cable spectrum-group enable-trap";
+            cs:cli-disable-cmd "cable spectrum-group enable-trap no";
+            type empty;
+          }
+        }
+        container shared-secret {
+          leaf primary {
+            cs:cli-enable-cmd "cable shared-secret {{.}} hidden";
+            cs:cli-disable-cmd "no cable shared-secret {{.}} hidden";
+            type string {
+              pattern '[a-f0-9]*';
+            }
+          }
+          leaf secondary {
+            cs:cli-enable-cmd "cable shared-secret {{.}} hidden";
+            cs:cli-disable-cmd "no cable shared-secret {{.}} hidden";
+            type string {
+              pattern '[a-f0-9]*';
+            }
+          }
+        }
+        container source-verify {
+          leaf enabled {
+            cs:cli-enable-cmd "cable source-verify";
+            cs:cli-disable-cmd "cable source-verify no";
+            type empty;
+          }
+          container lease-query {
+            when '(../enabled)';
+            leaf message-type {
+              cs:cli-enable-cmd "cable source-verify leasequery message-type {{.}}";
+              cs:cli-disable-cmd "no cable source-verify leasequery message-type {{.}}";
+              type uint8 {
+                range "1..15";
+              }
+            }
+            leaf version {
+              cs:cli-enable-cmd "cable source-verify leasequery versione {{.}}";
+              cs:cli-disable-cmd "no cable source-verify leasequery version {{.}}";
+              type enumeration {
+                enum rfc-2131;
+                enum rfc-3315;
+                enum rfc-4388;
+              }
+            }
+          }
+        }
+        container submgmt {
+          container default {
+            leaf max-cpe {
+              cs:cli-enable-cmd "cable submgmt default max-cpe {{.}}";
+              cs:cli-disable-cmd "no cable submgmt default max-cpe {{.}}";
+              type uint32;
+              default "16";
+            }
+            leaf v6-max-cpe {
+              cs:cli-enable-cmd "cable submgmt default v6-max-cpe {{.}}";
+              cs:cli-disable-cmd "no cable submgmt default v6-max-cpe {{.}}";
+              type uint32;
+              default "16";
+            }
+            leaf active {
+              cs:cli-enable-cmd "cable submgmt default active";
+              cs:cli-disable-cmd "cable submgmt default active no";
+              type empty;
+            }
+            leaf learnable {
+              cs:cli-enable-cmd "cable submgmt default learnable";
+              cs:cli-disable-cmd "cable submgmt default learnable no";
+              type empty;
+            }
+            container filter-group {
+              container cm {
+                leaf downstream {
+                  cs:cli-enable-cmd "cable submgmt default filter-group cm downstream";
+                  cs:cli-disable-cmd "cable submgmt default filter-group cm downstream no";
+                  type empty;
+                }
+                leaf upstream {
+                  cs:cli-enable-cmd "cable submgmt default filter-group cm upstream";
+                  cs:cli-disable-cmd "cable submgmt default filter-group cm upstream no";
+                  type empty;
+                }
+              }
+              container host {
+                leaf downstream {
+                  cs:cli-enable-cmd "cable submgmt default filter-group host downstream";
+                  cs:cli-disable-cmd "cable submgmt default filter-group host downstream no";
+                  type empty;
+                }
+                leaf upstream {
+                  cs:cli-enable-cmd "cable submgmt default filter-group host upstream";
+                  cs:cli-disable-cmd "cable submgmt default filter-group host upstream no";
+                  type empty;
+                }
+              }
+            }
+          }
+        }
+      }
+      container privilege {
+        list privileges {
+          key "privilege";
+          cs:cli-enable-cmd "enable encrypted-password {{./encrypted-password}} privilege {{./privilege}}";
+          cs:cli-disable-cmd "no enable privilege {{./privilege}}";
+          leaf privilege {
+            type uint8 {
+              range "1..15";
+            }
+          }
+          leaf enabled {
+            type empty;
+          }
+          leaf encrypted-password {
+            when '(../enabled)';
+            type string;
+          }
+        }
+      }
+      container users {
+        list user {
+          key "username";
+          cs:cli-enable-cmd "username {{./username}} privilege {{./privilege}} salted-password {{./salted-password}}";
+          cs:cli-disable-cmd "no username {{./username}}";
+          leaf username {
+            type ct:name;
+          }
+          leaf privilege {
+            type uint8 {
+              range "1..15";
+            }
+            default "1";
+          }
+          leaf salted-password {
+            type string;
+          }
+        }
+      }
+      container console {
+        leaf enabled {
+          cs:cli-enable-cmd "console enable";
+          cs:cli-disable-cmd "no console enable";
+          type empty;
+        }
+      }
+      container counts {
+        container collection {
+          leaf rate {
+            cs:cli-enable-cmd "counts collection rate {{.}}";
+            cs:cli-disable-cmd "no collection rate {{.}}";
+            type uint16;
+            default "120";
+          }
+        }
+      }
+      container clock {
+        leaf timezone {
+          cs:cli-enable-cmd "clock timezone \"{{.}}\"";
+          cs:cli-disable-cmd "no clock timezone \"{{.}}\"";
+          type ct:iana-timezones;
+          default "Europe/London";
+        }
+        leaf mode {
+          cs:cli-enable-cmd "clock mode {{.}}";
+          cs:cli-disable-cmd "no clock mode {{.}}";
+          type enumeration {
+            enum ntp;
+          }
+        }
+      }
+      container crypto {
+        container privacy {
+          list certificates {
+            cs:cli-begin "crypto privacy add-certificate {{./name}} {{./type}} {{./index}}";
+            cs:cli-enable-cmd "{{./hex-block}}";
+            cs:cli-end "/end";
+            cs:cli-disable-cmd "no crypto privacy add-certificate {{./name}} {{./type}}";
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf type {
+              type enumeration {
+                enum nsi;
+              }
+            }
+            leaf index {
+              type uint16;
+            }
+            leaf hex-block {
+              type string {
+                pattern '[a-f0-9 ]*';
+              }
+            }
+          }
+        }
+      }
+      container dot1x {
+        leaf enabled {
+          cs:cli-enable-cmd "dot1x enable";
+          cs:cli-disable-cmd "no dot1x enable";
+          type empty;
+        }
+      }
+      container lacp {
+        leaf system-priority {
+          cs:cli-enable-cmd "lacp system-priority {{.}}";
+          cs:cli-disable-cmd "no lacp system-priority {{.}}";
+          type uint16;
+          default "32768";
+        }
+      }
+      container lldp {
+        leaf enabled {
+          cs:cli-enable-cmd "lldp enable";
+          cs:cli-disable-cmd "lldp disable";
+          type empty;
+        }
+        leaf disabled {
+          cs:cli-enable-cmd "lldp disable";
+          cs:cli-disable-cmd "lldp enable";
+          type empty;
+        }
+      }
+      container license {
+        list entitlement {
+          cs:cli-enable-cmd "license type {{./entitlement}} key {{./key}} count {{./quota}}";
+          cs:cli-disable-cmd "no license type {{./entitlement}} key {{./key}} count {{./quota}}";
+          key "entitlement";
+          leaf entitlement {
+            type ct:docsis-license-entitlement;
+          }
+          leaf key {
+            type string {
+              pattern '[A-Z0-9]*';
+            }
+          }
+          leaf quota {
+            type uint64;
+            default "1";
+          }
+        }
+      }
+      container line {
+        container console {
+          list instances {
+            key "instance";
+            leaf instance {
+              type uint8 {
+                range "0..1";
+              }
+            }
+            leaf session-timeout {
+              cs:cli-enable-cmd "line console {{../instance}} session-timeout {{.}}";
+              cs:cli-disable-cmd "no line console {{../instance}} session-timeout {{.}}";
+              type uint16;
+              default "0";
+            }
+            leaf idle-timeout {
+              cs:cli-enable-cmd "line console {{../instance}} idle-timeout {{.}}";
+              cs:cli-disable-cmd "no line console {{../instance}} idle-timeout {{.}}";
+              type uint16;
+              default "0";
+            }
+            leaf width {
+              cs:cli-enable-cmd "line console {{../instance}} width {{.}}";
+              cs:cli-disable-cmd "no line console {{../instance}} width {{.}}";
+              type uint8 {
+                range "80..240";
+              }
+              default "80";
+            }
+            leaf length {
+              cs:cli-enable-cmd "line console {{../instance}} length {{.}}";
+              cs:cli-disable-cmd "no line console {{../instance}} length {{.}}";
+              type uint16 {
+                range "0..32767";
+              }
+              default "0";
+            }
+            leaf password {
+              cs:cli-enable-cmd "line console {{../instance}} password {{.}} hidden";
+              cs:cli-disable-cmd "no line console {{../instance}} password {{.}} hidden";
+              type string;
+            }
+            container authentication {
+              list authentications {
+                cs:cli-enable-cmd "line console {{../instance}} authentication {{./level}} {{./type}}";
+                cs:cli-disable-cmd "no line console {{../instance}} authentication {{./level}} {{./type}}";
+                key "level";
+                leaf level {
+                  type enumeration {
+                    enum ml1;
+                    enum ml2;
+                  }
+                }
+                leaf type {
+                  type enumeration {
+                    enum login-authentication;
+                    enum enable-authentication;
+                  }
+                }
+              }
+            }
+            container authorization {
+              list authorizations {
+                cs:cli-enable-cmd "line console {{../instance}} authorization {{./level}} {{./type}}";
+                cs:cli-disable-cmd "no line console {{../instance}} authorization {{./level}} {{./type}}";
+                key "level";
+                leaf level {
+                  type enumeration {
+                    enum author_default;
+                  }
+                }
+                leaf type {
+                  type enumeration {
+                    enum command-authorization;
+                  }
+                }
+              }
+            }
+          }
+        }
+        container vty {
+          list instances {
+            key "instance";
+            leaf instance {
+              type uint8;
+            }
+            leaf session-timeout {
+              cs:cli-enable-cmd "line vty {{../instance}} session-timeout {{../session-timeout}}";
+              cs:cli-disable-cmd "no line vty {{../instance}} session-timeout {{../session-timeout}}";
+              type uint8 {
+                range "0..15";
+              }
+              default "0";
+            }
+            leaf idle-timeout {
+              cs:cli-enable-cmd "line vty {{../instance}} idle-timeout {{../idle-timeout}}";
+              cs:cli-disable-cmd "no line vty {{../instance}} idle-timeout {{../idle-timeout}}";
+              type uint16;
+              default "0";
+            }
+            leaf width {
+              cs:cli-enable-cmd "line vty {{../instance}} width {{.}}";
+              cs:cli-disable-cmd "no line vty {{../instance}} width {{.}}";
+              type uint8 {
+                range "80..240";
+              }
+              default "80";
+            }
+            leaf length {
+              cs:cli-enable-cmd "line vty {{../instance}} length {{.}}";
+              cs:cli-disable-cmd "no line vty {{../instance}} length {{.}}";
+              type uint16 {
+                range "0..32767";
+              }
+              default "0";
+            }
+            leaf password {
+              cs:cli-enable-cmd "line vty {{../instance}} password {{.}} hidden";
+              cs:cli-disable-cmd "no line vty {{../instance}} password {{.}} hidden";
+              type string;
+            }
+            container authentication {
+              list authentications {
+                cs:cli-enable-cmd "line vty {{../instance}} authentication {{./level}} {{./type}}";
+                cs:cli-disable-cmd "no line vty {{../instance}} authentication {{./level}} {{./type}}";
+                key "level";
+                leaf level {
+                  type enumeration {
+                    enum ml1;
+                    enum ml2;
+                  }
+                }
+                leaf type {
+                  type enumeration {
+                    enum login-authentication;
+                    enum enable-authentication;
+                  }
+                }
+              }
+            }
+            container authorization {
+              list authorizations {
+                cs:cli-enable-cmd "line vty {{../instance}} authorization {{./level}} {{./type}}";
+                cs:cli-disable-cmd "no line vty {{../instance}} authorization {{./level}} {{./type}}";
+                key "level";
+                leaf level {
+                  type enumeration {
+                    enum author_default;
+                  }
+                }
+                leaf type {
+                  type enumeration {
+                    enum command-authorization;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      container logging {
+        leaf proprietary {
+          cs:cli-enable-cmd "logging proprietary";
+          cs:cli-disable-cmd "no logging proprietary";
+          type empty;
+        }
+        container size {
+          leaf history {
+            cs:cli-enable-cmd "logging history size {{.}}";
+            cs:cli-disable-cmd "no logging history size {{.}}";
+            type uint32;
+            default "2000";
+          }
+          leaf local-volatile {
+            cs:cli-enable-cmd "logging local-volatile size {{.}}";
+            cs:cli-disable-cmd "no logging local-volatile size {{.}}";
+            type uint32;
+            default "2000";
+          }
+          leaf local-non-volatile {
+            cs:cli-enable-cmd "logging local-non-volatile size {{.}}";
+            cs:cli-disable-cmd "no logging local-non-volatile size {{.}}";
+            type uint32;
+            default "2000";
+          }
+        }
+        container throttle {
+          leaf enabled {
+            cs:cli-enable-cmd "logging throttle";
+            cs:cli-disable-cmd "no logging throttle";
+            type empty;
+          }
+          leaf threshold {
+            cs:cli-enable-cmd "logging throttle threshold {{.}}";
+            cs:cli-disable-cmd "no logging throttle threshold {{.}}";
+            when '(../enabled)';
+            type uint16;
+            default "0";
+          }
+          leaf interval {
+            cs:cli-enable-cmd "logging throttle interval {{.}}";
+            cs:cli-disable-cmd "no logging throttle interval {{.}}";
+            when '(../enabled)';
+            type uint16;
+            default "0";
+          }
+        }
+        container mapping {
+          list map {
+            cs:cli-enable-cmd "logging[[ {{./unit}}]] {{./component}} {{./level}}[[ {{./disabled}}]]";
+            cs:cli-disable-cmd "no logging[[ {{./unit}}]] {{./component}} {{./level}}[[ {{./disabled}}]]";
+            key "component";
+            leaf unit {
+              type enumeration {
+                enum rpd;
+              }
+            }
+            leaf component {
+              type enumeration {
+                enum local-volatile;
+                enum local-non-volatile;
+                enum snmp;
+                enum syslog;
+                enum console;
+                enum cli;
+                enum gcp-event;
+              }
+            }
+            leaf level {
+              type uint8 {
+                range "1..8";
+              }
+            }
+            leaf disabled {
+              type enumeration {
+                enum no;
+              }
+            }
+          }
+          list priority {
+            cs:cli-enable-cmd "logging priority {{./component}} {{./facility}} {{./level}}";
+            cs:cli-disable-cmd "no logging priority {{./component}} {{./facility}} {{./level}}";
+            key "component";
+            leaf component {
+              type enumeration {
+                enum local-volatile;
+                enum local-non-volatile;
+                enum snmp;
+                enum syslog;
+                enum console;
+                enum cli;
+                enum gcp-event;
+              }
+            }
+            leaf facility {
+              type uint8 {
+                range "0..15";
+              }
+            }
+            leaf level {
+              type uint8 {
+                range "1..8";
+              }
+            }
+          }
+          list rpd {
+            cs:cli-enable-cmd "logging rpd {{./component}} {{./level}}[[ {{./disabled}}]]";
+            cs:cli-disable-cmd "no logging rpd {{./component}} {{./level}}[[ {{./disabled}}]]";
+            key "component";
+            leaf component {
+              type enumeration {
+                enum local-volatile;
+                enum local-non-volatile;
+                enum snmp;
+                enum syslog;
+                enum console;
+                enum cli;
+                enum gcp-event;
+              }
+            }
+            leaf level {
+              type uint8 {
+                range "1..8";
+              }
+            }
+            leaf disabled {
+              type enumeration {
+                enum no;
+              }
+            }
+          }
+        }
+        container trap {
+          leaf enabled {
+            cs:cli-enable-cmd "logging trap";
+            cs:cli-disable-cmd "no logging trap";
+            type empty;
+          }
+          list traps {
+            cs:cli-enable-cmd "logging trap {{./type}}";
+            cs:cli-disable-cmd "no logging trap {{./type}}";
+            when '(../enabled)';
+            key "type";
+            leaf type {
+              type enumeration {
+                enum init-reg-req-fail;
+                enum init-reg-rsp-fail;
+                enum init-reg-ack-fail;
+                enum dyn-serv-req-fail;
+                enum dyn-serv-rsp-fail;
+                enum dyn-serv-ack-fail;
+                enum bpi-init;
+                enum bpkm;
+                enum dyn-sa;
+                enum dcc-req-fail;
+                enum dcc-rsp-fail;
+                enum dcc-ack-fail;
+                enum em-mode-enter;
+                enum em-mode-exit;
+              }
+            }
+            leaf disabled {
+              type empty;
+            }
+          }
+        }
+        container override {
+          list events {
+            cs:cli-enable-cmd "logging override event {{./event}}";
+            cs:cli-disable-cmd "no logging override event {{./event}}";
+            key "event";
+            leaf event {
+              type uint32;
+            }
+            leaf enabled {
+              type empty;
+            }
+          }
+        }
+        list hosts {
+          cs:cli-enable-cmd "logging host {{./host}} facility {{./facility}}";
+          cs:cli-disable-cmd "no logging host {{./host}} facility {{./facility}}";
+          key "host";
+          leaf host {
+            type inet:host;
+          }
+          leaf facility {
+            type enumeration {
+              enum local0;
+              enum local1;
+              enum local2;
+              enum local3;
+              enum local4;
+              enum local5;
+              enum local6;
+              enum local7;
+            }
+          }
+        }
+      }
+      container ip {
+        leaf unreachables {
+          cs:cli-enable-cmd "ip unreachables";
+          cs:cli-disable-cmd "no ip unreachables";
+          type empty;
+        }
+        container domain-lookup {
+          leaf enabled {
+            cs:cli-enable-cmd "ip domain-lookup";
+            cs:cli-disable-cmd "ip domain-lookup no";
+            type empty;
+          }
+          leaf source-interface {
+            cs:cli-enable-cmd "ip domain-lookup source-interface {{../source-interface}}";
+            cs:cli-disable-cmd "ip domain-lookup source-interface no";
+            type string;
+          }
+        }
+        container fqdn-cache {
+          leaf enable {
+            cs:cli-enable-cmd "ip fqdn-cache enable";
+            cs:cli-disable-cmd "ip fqdn-cache enable no";
+            type empty;
+          }
+          leaf poll-interval {
+            cs:cli-enable-cmd "ip fqdn-cache poll-interval {{.}}";
+            cs:cli-disable-cmd "no ip fqdn-cache poll-interval {{.}}";
+            type uint16;
+          }
+        }
+        container multicast {
+          leaf default-group-service-class {
+            cs:cli-enable-cmd "ip multicast default-group-service-class {{.}}";
+            cs:cli-disable-cmd "no ip multicast default-group-service-class {{.}}";
+            type string;
+          }
+        }
+        container multicast-routing {
+          leaf vrf {
+            cs:cli-enable-cmd "ip multicast-routing vrf {{.}}";
+            cs:cli-disable-cmd "no ip multicast-routing vrf {{.}}";
+            type leafref {
+              path "../../../vrf/vrfs/identifier";
+              require-instance true;
+            }
+          }
+        }
+        container proto-throttle-rate {
+          list protocol-rates {
+            cs:cli-enable-cmd "ip proto-throttle-rate {{./rate}}[[ {{./protocol}}]]";
+            cs:cli-disable-cmd "no ip proto-throttle-rate {{./rate}}[[ {{./protocol}}]]";
+            key "rate";
+            leaf rate {
+              type uint8;
+            }
+            leaf protocol {
+              type enumeration {
+                enum arp;
+                enum bgp;
+                enum cops;
+                enum dhcp;
+                enum dhcpv6;
+                enum icmp;
+                enum igmp;
+                enum pim;
+                enum rip;
+                enum snmp-cm;
+                enum nd;
+                enum tftp;
+                enum other;
+              }
+            }
+          }
+        }
+        container route {
+          list routes {
+            cs:cli-enable-cmd "ip route {{./source}} {{./range}} {{./gateway}}[[ metric {{./metric}}]]";
+            cs:cli-disable-cmd "no ip route {{./source}} {{./range}} {{./gateway}}[[ metric {{./metric}}]]";
+            key "source";
+            leaf source {
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                require-instance true;
+              }
+            }
+            leaf range {
+              type ct:ipv4-subnet-mask;
+            }
+            leaf gateway {
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                require-instance true;
+              }
+            }
+            leaf metric {
+              type ct:ip-metric;
+              default "0";
+            }
+          }
+        }
+        container static {
+          container vrf {
+            container default {
+              leaf distance {
+                cs:cli-enable-cmd "router static vrf default distance {{.}}";
+                cs:cli-disable-cmd "no router static vrf default distance {{.}}";
+                type ct:ip-ttl;
+                default "1";
+              }
+            }
+          }
+        }
+        container ssh {
+          leaf password-auth-req {
+            cs:cli-enable-cmd "ip ssh password-auth-req";
+            cs:cli-disable-cmd "ip ssh {{.}} password-auth-req";
+            type enumeration {
+              enum no;
+            }
+          }
+          leaf public-key-auth-req {
+            cs:cli-enable-cmd "ip ssh public-key-auth-req";
+            cs:cli-disable-cmd "ip ssh {{.}} public-key-auth-req";
+            type enumeration {
+              enum no;
+            }
+          }
+        }
+      }
+      container ipv6 {
+        container icmp {
+          leaf unreachables {
+            cs:cli-enable-cmd "ipv6 icmp unreachables";
+            cs:cli-disable-cmd "no ipv6 icmp unreachables";
+            type empty;
+          }
+          leaf too-big {
+            cs:cli-enable-cmd "ipv6 icmp too-big";
+            cs:cli-disable-cmd "no ipv6 icmp too-big";
+            type empty;
+          }
+          leaf param-problem {
+            cs:cli-enable-cmd "ipv6 icmp param-problem";
+            cs:cli-disable-cmd "no ipv6 icmp param-problem";
+            type empty;
+          }
+          leaf time-exceeded {
+            cs:cli-enable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+            cs:cli-disable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+            type enumeration {
+              enum no;
+            }
+          }
+        }
+        container proto-throttle-rate {
+          list protocol-rates {
+            cs:cli-enable-cmd "ip proto-throttle-rate {{./rate}}[[ {{./protocol}}]]";
+            cs:cli-disable-cmd "no ip proto-throttle-rate {{./rate}}[[ {{./protocol}}]]";
+            key "rate";
+            leaf rate {
+              type uint8;
+            }
+            leaf protocol {
+              type enumeration {
+                enum arp;
+                enum bgp;
+                enum cops;
+                enum dhcp;
+                enum icmp;
+                enum igmp;
+                enum pim;
+                enum rip;
+                enum snmp-cm;
+                enum nd;
+                enum tftp;
+                enum other;
+              }
+            }
+          }
+        }
+        container dhcp {
+          container relay {
+            leaf source-interface {
+              cs:cli-enable-cmd "ipv6 dhcp relay source-interface";
+              cs:cli-disable-cmd "ipv6 dhcp relay source-interface[[ {{.}}]]";
+              type enumeration {
+                enum no;
+              }
+            }
+            leaf use-link-address {
+              cs:cli-enable-cmd "ipv6 dhcp relay use-link-address";
+              cs:cli-disable-cmd "ipv6 dhcp relay use-link-address[[ {{.}}]]";
+              type enumeration {
+                enum no;
+              }
+            }
+          }
+        }
+        container mld {
+          leaf query-robustness-variable {
+            cs:cli-enable-cmd "ipv6 mld query-robustness-variable";
+            cs:cli-disable-cmd "ipv6 mld query-robustness-variable no";
+            type empty;
+          }
+        }
+        container nd {
+          leaf timeout {
+            cs:cli-enable-cmd "ipv6 nd timeout {{.}}";
+            cs:cli-disable-cmd "no ipv6 nd timeout {{.}}";
+            type uint16;
+          }
+          container searching {
+            leaf rate-limit {
+              cs:cli-enable-cmd "ipv6 nd state searching rate-limit {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state searching rate-limit {{.}}";
+              type uint16;
+            }
+            leaf max-number {
+              cs:cli-enable-cmd "ipv6 nd state searching max-number {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state searching max-number {{.}}";
+              type uint16;
+            }
+            container cable {
+              leaf unicast {
+                cs:cli-enable-cmd "ipv6 nd state searching cable unicast {{.}}";
+                cs:cli-disable-cmd "no ipv6 nd state searching cable unicast {{.}}";
+                type uint16;
+                default "0";
+              }
+              leaf multicast {
+                cs:cli-enable-cmd "ipv6 nd state searching cable broadcast";
+                cs:cli-disable-cmd "no ipv6 nd state searching cable broadcast";
+                type empty;
+              }
+            }
+          }
+          container not-present {
+            leaf rate-limit {
+              cs:cli-enable-cmd "ipv6 nd state not-present rate-limit {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state not-present rate-limit {{.}}";
+              type uint16;
+            }
+            leaf max-number {
+              cs:cli-enable-cmd "ipv6 nd state not-present max-number {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state not-present max-number {{.}}";
+              type uint16;
+            }
+            leaf max-time {
+              cs:cli-enable-cmd "ipv6 nd state not-present max-time {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state not-present max-time {{.}}";
+              type uint8;
+            }
+            leaf min-time {
+              cs:cli-enable-cmd "ipv6 nd state not-present min-time {{.}}";
+              cs:cli-disable-cmd "no ipv6 nd state not-present min-time {{.}}";
+              type uint8;
+            }
+          }
+        }
+        container route {
+          list routes {
+            cs:cli-enable-cmd "ipv6 route {{./source}}[[ vrf {{./vrf}}]] {{./range}} {{./gateway}}[[ metric {{./metric}}]]";
+            cs:cli-disable-cmd "no ipv6 route {{./source}}[[ vrf {{./vrf}}]] {{./range}} {{./gateway}}[[ metric {{./metric}}]]";
+            key "source";
+            leaf source {
+              type union {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                  require-instance true;
+                }
+                type enumeration {
+                  enum vrf;
+                }
+              }
+            }
+            leaf vrf {
+              when "../source = 'vrf'";
+              type string;
+            }
+            leaf range {
+              type inet:ipv6-prefix;
+            }
+            leaf gateway {
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                require-instance true;
+              }
+            }
+            leaf metric {
+              type ct:ip-metric;
+              default "0";
+            }
+          }
+        }
+        container router {
+          container pd {
+            leaf distance {
+              cs:cli-enable-cmd "ipv6 router pd distance {{.}}";
+              cs:cli-disable-cmd "no ipv6 router pd distance {{.}}";
+              type ct:ip-ttl;
+              default "1";
+            }
+          }
+        }
+        container static {
+          container vrf {
+            container default {
+              leaf distance {
+                cs:cli-enable-cmd "router static vrf default distance {{.}}";
+                cs:cli-disable-cmd "no ipv6 router static vrf default distance {{.}}";
+                type ct:ip-ttl;
+                default "1";
+              }
+            }
+          }
+        }
+        leaf prefix-stability {
+          cs:cli-enable-cmd "ipv6 prefix-stability";
+          cs:cli-disable-cmd "no ipv6 prefix-stability";
+          type empty;
+        }
+        leaf pd-route-injection {
+          cs:cli-enable-cmd "ipv6 pd-route-injection";
+          cs:cli-disable-cmd "no ipv6 pd-route-injection";
+          type empty;
+        }
+      }
+      container ip-video {
+        leaf attribute-encoding {
+          cs:cli-enable-cmd "ip-video attribute-encoding {{.}}";
+          cs:cli-disable-cmd "no ip-video attribute-encoding {{.}}";
+          type string {
+            pattern '[0-9a-f]x([0-9a-f]*)';
+          }
+        }
+        leaf dbc-delay-timer {
+          cs:cli-enable-cmd "ip-video dbc-delay-timer {{.}}";
+          cs:cli-disable-cmd "no ip-video dbc-delay-timer {{.}}";
+          type uint16;
+        }
+        container monitoring {
+          leaf vod-setup-threshold {
+            cs:cli-enable-cmd "ip-video monitoring vod-setup-threshold {{.}}";
+            cs:cli-disable-cmd "no ip-video monitoring vod-setup-threshold {{.}}";
+            type uint16;
+          }
+          leaf linear-setup-threshold {
+            cs:cli-enable-cmd "ip-video monitoring vod-setup-threshold {{.}}";
+            cs:cli-disable-cmd "no ip-video monitoring vod-setup-threshold {{.}}";
+            type uint16;
+          }
+        }
+      }
+      container interface {
+        container cable-streams {
+          cs:cli-begin "interface cable-{{./cable-direction}} {{./interface}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no interface cable-{{./cable-direction}} {{./interface}}";
+          list interfaces {
+            key "interface";
+            leaf interface {
+              type string {
+                pattern '[ds|us]/([a-z]*)/([0-9.]*)';
+              }
+            }
+            leaf cable-direction {
+              type ct:docsis-cable-direction;
+            }
+            leaf administrative-state {
+              type enumeration {
+                enum shutdown;
+                enum "no shutdown";
+              }
+              default "shutdown";
+            }
+          }
+        }
+        container cable-mac {
+          cs:cli-begin "interface cable-mac {{./instance}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no interface cable-mac {{./instance}}";
+          list instances {
+            key "instance";
+            leaf instance {
+              type uint8;
+            }
+            leaf enabled {
+              cs:cli-enable-cmd "no shutdown";
+              cs:cli-disable-cmd "shutdown";
+              type empty;
+            }
+            leaf description {
+              cs:cli-enable-cmd "description {{.}}";
+              cs:cli-disable-cmd "no description {{.}}";
+              type string;
+            }
+            leaf authorization-module {
+              cs:cli-enable-cmd "authorization-module {{.}}";
+              cs:cli-disable-cmd "no authorization-module {{.}}";
+              type enumeration {
+                enum open-dynamic-flow-policy;
+              }
+            }
+            container cable {
+              leaf bundle {
+                cs:cli-enable-cmd "cable bundle {{.}}";
+                cs:cli-disable-cmd "no cable bundle {{.}}";
+                type enumeration {
+                  enum master;
+                  enum slave;
+                }
+              }
+              leaf freq-ds-min {
+                cs:cli-enable-cmd "cable freq-ds-min {{.}}";
+                cs:cli-disable-cmd "no cable freq-ds-min {{.}}";
+                type uint16;
+              }
+              leaf freq-ds-max {
+                cs:cli-enable-cmd "cable freq-ds-max {{.}}";
+                cs:cli-disable-cmd "no cable freq-ds-max {{.}}";
+                type uint16;
+              }
+              leaf freq-us-min {
+                cs:cli-enable-cmd "cable freq-us-min {{.}}";
+                cs:cli-disable-cmd "no cable freq-us-min {{.}}";
+                type uint16;
+              }
+              leaf freq-us-max {
+                cs:cli-enable-cmd "cable freq-us-max {{.}}";
+                cs:cli-disable-cmd "no cable freq-us-max {{.}}";
+                type uint16;
+              }
+              leaf us-freq-range {
+                cs:cli-enable-cmd "cable us-freq-range {{.}}";
+                cs:cli-disable-cmd "no cable us-freq-range {{.}}";
+                type enumeration {
+                  enum standard;
+                }
+              }
+              leaf insertion-interval {
+                cs:cli-enable-cmd "cable insertion-interval {{.}}";
+                cs:cli-disable-cmd "no cable insertion-interval {{.}}";
+                type uint16;
+              }
+              leaf invited-ranging-attempts {
+                cs:cli-enable-cmd "cable invited-ranging-attempts {{.}}";
+                cs:cli-disable-cmd "no cable invited-ranging-attempts {{.}}";
+                type uint16;
+              }
+              leaf range-cycle-interval {
+                cs:cli-enable-cmd "cable range-cycle-interval {{.}}";
+                cs:cli-disable-cmd "no cable range-cycle-interval {{.}}";
+                type uint16;
+              }
+              leaf ranging-interval {
+                cs:cli-enable-cmd "cable ranging-interval {{.}}";
+                cs:cli-disable-cmd "no cable ranging-interval {{.}}";
+                type uint16;
+              }
+              leaf sync-interval {
+                cs:cli-enable-cmd "cable sync-interval {{.}}";
+                cs:cli-disable-cmd "no cable sync-interval {{.}}";
+                type uint16;
+              }
+              leaf ucd-interval {
+                cs:cli-enable-cmd "cable ucd-interval {{.}}";
+                cs:cli-disable-cmd "no cable ucd-interval {{.}}";
+                type uint16;
+              }
+              leaf cm-tcs-max-size {
+                cs:cli-enable-cmd "cable cm-tcs-max-size {{.}}";
+                cs:cli-disable-cmd "no cable cm-tcs-max-size {{.}}";
+                type union {
+                  type enumeration {
+                    enum no;
+                  }
+                  type uint16;
+                }
+              }
+              leaf tftp-enforce {
+                cs:cli-enable-cmd "cable tftp-enforce {{.}}";
+                cs:cli-disable-cmd "no cable tftp-enforce {{.}}";
+                type enumeration {
+                  enum no;
+                }
+              }
+              leaf dynamic-secret {
+                cs:cli-enable-cmd "cable dynamic-secret {{.}}";
+                cs:cli-disable-cmd "no cable dynamic-secret {{.}}";
+                type enumeration {
+                  enum no;
+                }
+              }
+              leaf cm-ip-prov-mode {
+                cs:cli-enable-cmd "cable cm-ip-prov-mode {{.}}";
+                cs:cli-disable-cmd "no cable cm-ip-prov-mode {{.}}";
+                type enumeration {
+                  enum ipv4only;
+                  enum ipv6only;
+                }
+              }
+              leaf cm-dynamic-multi-tuner {
+                cs:cli-enable-cmd "cable cm-dynamic-multi-tuner {{.}}";
+                cs:cli-disable-cmd "no cable cm-dynamic-multi-tuner {{.}}";
+                type enumeration {
+                  enum enable;
+                  enum no;
+                }
+              }
+              leaf upstream-drop-classifiers {
+                cs:cli-enable-cmd "cable upstream-drop-classifiers {{.}}";
+                cs:cli-disable-cmd "no cable upstream-drop-classifiers {{.}}";
+                type enumeration {
+                  enum enable;
+                  enum no;
+                }
+              }
+              leaf mcast-fwd-by-dsid {
+                cs:cli-enable-cmd "cable mcast-fwd-by-dsid";
+                cs:cli-disable-cmd "no cable mcast-fwd-by-dsid";
+                type empty;
+              }
+              leaf mdd-interval {
+                cs:cli-enable-cmd "cable mdd-interval {{.}}";
+                cs:cli-disable-cmd "no cable mdd-interval {{.}}";
+                type uint16;
+              }
+              leaf verbose-cm-rcp {
+                cs:cli-enable-cmd "cable verbose-cm-rcp {{.}}";
+                cs:cli-disable-cmd "no cable verbose-cm-rcp {{.}}";
+                type enumeration {
+                  enum no;
+                }
+              }
+              leaf reg-rsp-timer-t6 {
+                cs:cli-enable-cmd "cable reg-rsp-timer-t6 {{.}}";
+                cs:cli-disable-cmd "no cable reg-rsp-timer-t6 {{.}}";
+                type uint16;
+              }
+              leaf dynamic-rcc {
+                cs:cli-enable-cmd "cable dynamic-rcc";
+                cs:cli-disable-cmd "no cable dynamic-rcc";
+                type empty;
+              }
+              container downstream-bonding-group {
+                leaf dynamic {
+                  cs:cli-enable-cmd "cable downstream-bonding-group dynamic {{.}}";
+                  cs:cli-disable-cmd "no cable downstream-bonding-group dynamic {{.}}";
+                  type enumeration {
+                    enum enable;
+                    enum no;
+                  }
+                }
+                leaf reseq-wait-time {
+                  cs:cli-enable-cmd "cable downstream-bonding-group dynamic reseq-wait-time {{.}}";
+                  cs:cli-disable-cmd "no cable downstream-bonding-group dynamic reseq-wait-time {{.}}";
+                  type uint8;
+                  default "255";
+                }
+                leaf reseq-warning-time {
+                  cs:cli-enable-cmd "cable downstream-bonding-group dynamic reseq-warning-time {{.}}";
+                  cs:cli-disable-cmd "no cable downstream-bonding-group dynamic reseq-warning-time {{.}}";
+                  type uint8;
+                  default "255";
+                }
+              }
+              container uptream-bonding-group {
+                leaf dynamic {
+                  cs:cli-enable-cmd "cable uptream-bonding-group dynamic {{.}}";
+                  cs:cli-disable-cmd "no cable uptream-bonding-group dynamic {{.}}";
+                  type enumeration {
+                    enum enable;
+                    enum no;
+                  }
+                }
+                leaf reseq-wait-time {
+                  cs:cli-enable-cmd "cable downstream-bonding-group dynamic reseq-wait-time {{.}}";
+                  cs:cli-disable-cmd "no cable downstream-bonding-group dynamic reseq-wait-time {{.}}";
+                  type uint8;
+                  default "255";
+                }
+                leaf reseq-warning-time {
+                  cs:cli-enable-cmd "cable downstream-bonding-group dynamic reseq-warning-time {{.}}";
+                  cs:cli-disable-cmd "no cable downstream-bonding-group dynamic reseq-warning-time {{.}}";
+                  type uint8;
+                  default "255";
+                }
+              }
+              leaf mult-rx-chl-mode {
+                cs:cli-enable-cmd "cable mult-rx-chl-mode";
+                cs:cli-disable-cmd "no cable mult-rx-chl-mode";
+                type empty;
+              }
+              leaf mult-tx-chl-mode {
+                cs:cli-enable-cmd "cable mult-tx-chl-mode";
+                cs:cli-disable-cmd "no cable mult-tx-chl-mode";
+                type empty;
+              }
+              container dsg {
+                leaf mode {
+                  cs:cli-enable-cmd "cable dsg mode {{.}}";
+                  cs:cli-disable-cmd "no cable dsg mode {{.}}";
+                  type enumeration {
+                    enum 30DOCSIS_SUPPORT;
+                  }
+                }
+              }
+              container qos-sc {
+                leaf enforce-rules {
+                  cs:cli-enable-cmd "cable qos-sc enforce-rules {{.}}";
+                  cs:cli-disable-cmd "no cable qos-sc enforce-rules {{.}}";
+                  type enumeration {
+                    enum enable;
+                    enum no;
+                  }
+                }
+              }
+              container upstream {
+                leaf ext-power {
+                  cs:cli-enable-cmd "cable upstream ext-power {{.}}";
+                  cs:cli-disable-cmd "no cable upstream ext-power {{.}}";
+                  type enumeration {
+                    enum enable;
+                    enum no;
+                  }
+                }
+                leaf graceful-tcs-reduction {
+                  cs:cli-enable-cmd "cable upstream graceful-tcs-reduction {{.}}";
+                  cs:cli-disable-cmd "no cable upstream graceful-tcs-reduction {{.}}";
+                  type enumeration {
+                    enum enable;
+                    enum no;
+                  }
+                }
+                leaf ranging-poll {
+                  cs:cli-enable-cmd "cable upstream ranging-poll {{.}}";
+                  cs:cli-disable-cmd "no cable upstream ranging-poll {{.}}";
+                  type enumeration {
+                    enum t4-multiplier;
+                    enum no;
+                  }
+                }
+              }
+              container energy-mgmt {
+                leaf low-power-1x1 {
+                  cs:cli-enable-cmd "cable energy-mgmt low-power-1x1 {{.}}";
+                  cs:cli-disable-cmd "no cable energy-mgmt low-power-1x1 {{.}}";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+              }
+              container cm-status {
+                leaf enabled {
+                  cs:cli-enable-cmd "cable cm-status enabled";
+                  cs:cli-disable-cmd "no cable cm-status enabled";
+                  type empty;
+                }
+                container event-type {
+                  when '(../enabled)';
+                  container all {
+                    leaf enabled {
+                      cs:cli-enable-cmd "cable cm-staus event-type all enabled";
+                      cs:cli-disable-cmd "no cable cm-staus event-type all enabled";
+                      type empty;
+                    }
+                    leaf max-event-holdoff {
+                      cs:cli-enable-cmd "cable cm-status event-type all max-event-holdoff {{.}}";
+                      cs:cli-disable-cmd "no cable cm-status event-type all max-event-holdoff {{.}}";
+                      when '(../enabled)';
+                      type enumeration {
+                        enum no;
+                      }
+                    }
+                    leaf max-num-reports {
+                      cs:cli-enable-cmd "cable cm-status event-type all max-num-reports {{.}}";
+                      cs:cli-disable-cmd "no cable cm-status event-type all max-num-reports {{.}}";
+                      when '(../enabled)';
+                      type uint16;
+                    }
+                  }
+                }
+              }
+              container privacy {
+                leaf default-cert-trust {
+                  cs:cli-enable-cmd "cable privacy default-cert-trust {{.}}";
+                  cs:cli-disable-cmd "no cable privacy default-cert-trust {{.}}";
+                  type enumeration {
+                    enum untrusted;
+                    enum trusted;
+                  }
+                }
+                leaf chk-validity-period {
+                  cs:cli-enable-cmd "cable privacy chk-validity-period {{.}}";
+                  cs:cli-disable-cmd "no cable privacy chk-validity-period {{.}}";
+                  type enumeration {
+                    enum true;
+                    enum false;
+                  }
+                }
+                leaf mandatory {
+                  cs:cli-enable-cmd "cable privacy mandatory {{.}}";
+                  cs:cli-disable-cmd "no cable privacy mandatory {{.}}";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+                leaf eae-policy {
+                  cs:cli-enable-cmd "cable privacy eae-policy {{.}}";
+                  cs:cli-disable-cmd "no cable privacy eae-policy {{.}}";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+                container kek {
+                  leaf life-time {
+                    cs:cli-enable-cmd "cable privacy kek life-time {{.}}";
+                    cs:cli-disable-cmd "no cable privacy kek life-time {{.}}";
+                    type uint32;
+                    default "604800";
+                  }
+                }
+                container tek {
+                  leaf life-time {
+                    cs:cli-enable-cmd "cable privacy tek life-time {{.}}";
+                    cs:cli-disable-cmd "no cable privacy tek life-time {{.}}";
+                    type uint32;
+                    default "604800";
+                  }
+                }
+              }
+              container ofdm {
+                leaf docsis-mode {
+                  cs:cli-enable-cmd "ofdm {{.}}";
+                  cs:cli-disable-cmd "no ofdm {{.}}";
+                  type ct:docsis-version;
+                }
+                leaf profile-guard-time {
+                  cs:cli-enable-cmd "ofdm profile-guard-time {{.}}";
+                  cs:cli-disable-cmd "no ofdm profile-guard-time {{.}}";
+                  type uint16;
+                  default "300";
+                }
+                leaf preeq-probe-interval {
+                  cs:cli-enable-cmd "ofdm preeq-probe-interval {{.}}";
+                  cs:cli-disable-cmd "no ofdm preeq-probe-interval {{.}}";
+                  type uint16;
+                  default "120";
+                }
+              }
+            }
+          }
+        }
+        container cable-mac-sub {
+          list sub-instances {
+            cs:cli-begin "interface cable-mac {{./instance}}[[.{{./sub-instance}}]]";
+            cs:cli-end "exit";
+            cs:cli-disable-cmd "no interface cable-mac {{./instance}}[[.{{./sub-instance}}]]";
+            key "instance";
+            leaf instance {
+              type leafref {
+                path "../../../cable-mac/instances/instance";
+                require-instance true;
+              }
+            }
+            leaf sub-instance {
+              type uint8;
+            }
+            leaf description {
+              cs:cli-enable-cmd "description {{.}}";
+              cs:cli-disable-cmd "no description {{.}}";
+              type string;
+            }
+            leaf proxy-arp {
+              cs:cli-enable-cmd "proxy-arp";
+              cs:cli-disable-cmd "no proxy-arp";
+              type empty;
+            }
+            leaf restricted-proxy-arp {
+              cs:cli-enable-cmd "restricted-proxy-arp";
+              cs:cli-disable-cmd "no restricted-proxy-arp";
+              type empty;
+            }
+            container ip {
+              container ipv4 {
+                leaf directed-broadcast {
+                  cs:cli-enable-cmd "ip directed-broadcast {{.}}";
+                  cs:cli-disable-cmd "no ip directed-broadcast {{.}}";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+                leaf unreachables {
+                  cs:cli-enable-cmd "ip unreachables";
+                  cs:cli-disable-cmd "no ip unreachables";
+                  type empty;
+                }
+                list addresses {
+                  cs:cli-enable-cmd "ip address {{./address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                  cs:cli-disable-cmd "no ip address {{.address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                  key "address";
+                  leaf address {
+                    type union {
+                      type leafref {
+                        path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                        require-instance true;
+                      }
+                      type enumeration {
+                        enum dhcp;
+                      }
+                    }
+                  }
+                  leaf subnet-mask {
+                    when "../address != 'dhcp'";
+                    type ct:ipv4-subnet-mask;
+                  }
+                  leaf scope {
+                    when "../address != 'dhcp'";
+                    type enumeration {
+                      enum secondary;
+                    }
+                  }
+                }
+              }
+              container ipv6 {
+                leaf enable {
+                  cs:cli-enable-cmd "ipv6 enable";
+                  cs:cli-disable-cmd "no ipv6 enable";
+                  type empty;
+                }
+                list addresses {
+                  cs:cli-enable-cmd "ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                  cs:cli-disable-cmd "no ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                  key "address";
+                  when '(../enable)';
+                  leaf address {
+                    type union {
+                      type leafref {
+                        path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                        require-instance true;
+                      }
+                      type enumeration {
+                        enum dhcp;
+                      }
+                    }
+                  }
+                  leaf generate-method {
+                    when "../address != 'dhcp'";
+                    type enumeration {
+                      enum eui-64;
+                    }
+                  }
+                  leaf scope {
+                    when "../address != 'dhcp'";
+                    type ct:ipv6-network-scope;
+                  }
+                }
+              }
+              container vrf {
+                leaf forwarding {
+                  cs:cli-enable-cmd "ip vrf forwarding {{.}}";
+                  cs:cli-disable-cmd "no ip vrf forwarding {{.}}";
+                  type enumeration {
+                    enum default;
+                  }
+                }
+              }
+            }
+          }
+        }
+        container ethernet {
+          cs:cli-begin "interface ethernet {{./instance}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no interface ethernet {{./instance}}";
+          list instances {
+            key "instance";
+            leaf instance {
+              type string;
+            }
+            leaf enabled {
+              cs:cli-enable-cmd "no shutdown";
+              cs:cli-disable-cmd "shutdown";
+              type empty;
+            }
+            leaf description {
+              when '(../enabled)';
+              cs:cli-enable-cmd "description \"{{.}}\"";
+              cs:cli-disable-cmd "no description \"{{.}}\"";
+              type string;
+            }
+            leaf gratuitous-arp {
+              when '(../enabled)';
+              cs:cli-enable-cmd "gratuitous-arp";
+              cs:cli-disable-cmd "no gratuitous-arp";
+              type empty;
+            }
+            leaf pre-shared-key {
+              when '(../enabled)';
+              cs:cli-enable-cmd "pre-shared-key \"{{../pre-shared-key}}\"";
+              cs:cli-disable-cmd "pre-shared-key no";
+              type string;
+            }
+            container encapsulation {
+              when '(../enabled)';
+              cs:cli-enable-cmd "encapsulation {{./mode}} {{./vlan-id}}[[ priority {{./priority}}]]";
+              cs:cli-disable-cmd "no encapsulation {{./mode}} {{./vlan-id}}[[ priority {{./priority}}]]";
+              leaf outer {
+                type ct:ip-vlan-id;
+                default "1";
+              }
+              leaf vlan-id {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner/cp:identifier";
+                  require-instance true;
+                }
+              }
+              leaf mode {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner[cp:identifier=current()/../rd2322:vlan-id]/cp:type";
+                  require-instance true;
+                }
+                default "dot1q";
+              }
+              leaf priority {
+                type uint16;
+                default "0";
+              }
+            }
+            container macsec {
+              when '(../enabled)';
+              leaf mode {
+                cs:cli-enable-cmd "macsec mode {{../mode}}";
+                cs:cli-disable-cmd "macsec mode disabled";
+                description
+                  "the enums need clarification";
+                type ct:ip-macsec-mode;
+              }
+            }
+            container ip {
+              when '(../enabled)';
+              leaf unreachables {
+                cs:cli-enable-cmd "ip unreachables";
+                cs:cli-disable-cmd "ip unreachables no";
+                type empty;
+              }
+              leaf directed-broadcast {
+                cs:cli-enable-cmd "ip directed-broadcast";
+                cs:cli-disable-cmd "ip directed-broadcast no";
+                type empty;
+              }
+              container address {
+                cs:cli-enable-cmd "ip address {{./address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                cs:cli-disable-cmd "no ip address {{.address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                leaf address {
+                  type union {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    type enumeration {
+                      enum dhcp;
+                    }
+                  }
+                }
+                leaf subnet-mask {
+                  when "../address != 'dhcp'";
+                  type ct:ipv4-subnet-mask;
+                }
+                leaf scope {
+                  when "../address != 'dhcp'";
+                  type enumeration {
+                    enum secondary;
+                  }
+                }
+              }
+              container vrf {
+                leaf forwarding {
+                  cs:cli-enable-cmd "ip vrf forwarding {{.}}";
+                  cs:cli-disable-cmd "no ip vrf forwarding {{.}}";
+                  type leafref {
+                    path "../../../../../../vrf/vrfs/identifier";
+                    require-instance true;
+                  }
+                }
+              }
+              leaf mtu {
+                cs:cli-enable-cmd "ip mtu {{.}}";
+                cs:cli-disable-cmd "no ip mtu";
+                type uint16 {
+                  range "68..9202";
+                }
+              }
+            }
+            container ipv6 {
+              when '(../enabled)';
+              leaf enabled {
+                cs:cli-enable-cmd "ipv6 enable";
+                cs:cli-disable-cmd "no ipv6 enable";
+                type empty;
+              }
+              container address {
+                when '(../enabled)';
+                cs:cli-enable-cmd "ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                cs:cli-disable-cmd "no ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                leaf address {
+                  type union {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    type enumeration {
+                      enum dhcp;
+                    }
+                  }
+                }
+                leaf generate-method {
+                  when "../address != 'dhcp'";
+                  type enumeration {
+                    enum eui-64;
+                  }
+                }
+                leaf scope {
+                  when "../address != 'dhcp'";
+                  type ct:ipv6-network-scope;
+                }
+              }
+              container icmp {
+                when '(../enabled)';
+                leaf unreachables {
+                  cs:cli-enable-cmd "ipv6 icmp unreachables";
+                  cs:cli-disable-cmd "no ipv6 icmp unreachables";
+                  type empty;
+                }
+                leaf too-big {
+                  cs:cli-enable-cmd "ipv6 icmp too-big";
+                  cs:cli-disable-cmd "no ipv6 icmp too-big";
+                  type empty;
+                }
+                leaf param-problem {
+                  cs:cli-enable-cmd "ipv6 icmp param-problem";
+                  cs:cli-disable-cmd "no ipv6 icmp param-problem";
+                  type empty;
+                }
+                leaf time-exceeded {
+                  cs:cli-enable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+                  cs:cli-disable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+              }
+              container nd {
+                when '(../enabled)';
+                leaf managed-config {
+                  cs:cli-enable-cmd "ipv6 nd managed-config-flag";
+                  cs:cli-disable-cmd "ipv6 no nd managed-config-flag";
+                  type empty;
+                }
+                leaf other-config {
+                  cs:cli-enable-cmd "ipv6 nd other-config-flag";
+                  cs:cli-disable-cmd "ipv6 no nd other-config-flag";
+                  type empty;
+                }
+                leaf ns-interval {
+                  cs:cli-enable-cmd "ipv6 nd ns-interval {{.}}";
+                  cs:cli-disable-cmd "ipv6 nd ns-interval no";
+                  type uint16;
+                }
+                leaf reachable-time {
+                  cs:cli-enable-cmd "ipv6 nd reachable-time {{.}}";
+                  cs:cli-disable-cmd "ipv6 nd reachable-time no";
+                  type uint32;
+                }
+                container dad {
+                  leaf attempts {
+                    cs:cli-enable-cmd "ipv6 nd dad attempts {{.}}";
+                    cs:cli-disable-cmd "ipv6 nd dad attempts no";
+                    type uint16;
+                  }
+                }
+                container ra {
+                  container interval {
+                    cs:cli-enable-cmd "ipv6 nd ra interval {{./begin}} {{./end}}";
+                    cs:cli-disable-cmd "ipv6 nd ra interval {{./begin}} {{./end}}";
+                    leaf begin {
+                      type uint16;
+                    }
+                    leaf end {
+                      type uint16;
+                    }
+                  }
+                  leaf suppress {
+                    cs:cli-enable-cmd "ipv6 nd ra suppress";
+                    cs:cli-disable-cmd "ipv6 nd ra suppress no";
+                    type empty;
+                  }
+                }
+              }
+              leaf mtu {
+                cs:cli-enable-cmd "ipv6 mtu {{.}}";
+                cs:cli-disable-cmd "no ipv6 mtu";
+                type uint16 {
+                  range "68..9202";
+                }
+              }
+            }
+          }
+        }
+        container loopback {
+          cs:cli-begin "interface loopback {{./instance}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no interface loopback {{./instance}}";
+          list instances {
+            key "instance";
+            leaf instance {
+              type uint8;
+            }
+            leaf enabled {
+              cs:cli-enable-cmd "no shutdown";
+              cs:cli-disable-cmd "shutdown";
+              type empty;
+            }
+            leaf description {
+              when '(../enabled)';
+              cs:cli-enable-cmd "description \"{{.}}\"";
+              cs:cli-disable-cmd "no description \"{{.}}\"";
+              type string;
+            }
+            container ip {
+              when '(../enabled)';
+              container address {
+                cs:cli-enable-cmd "ip address {{./address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                cs:cli-disable-cmd "no ip address {{.address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                leaf address {
+                  type union {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    type enumeration {
+                      enum dhcp;
+                    }
+                  }
+                }
+                leaf subnet-mask {
+                  when "../address != 'dhcp'";
+                  type ct:ipv4-subnet-mask;
+                }
+                leaf scope {
+                  when "../address != 'dhcp'";
+                  type ct:ip-dhcp-priority;
+                }
+              }
+              container vrf {
+                leaf forwarding {
+                  cs:cli-enable-cmd "ip vrf forwarding {{.}}";
+                  cs:cli-disable-cmd "no ip vrf forwarding {{.}}";
+                  type leafref {
+                    path "../../../../../../vrf/vrfs/identifier";
+                    require-instance true;
+                  }
+                }
+              }
+            }
+            container ipv6 {
+              when '(../enabled)';
+              leaf enabled {
+                cs:cli-enable-cmd "ipv6 enable";
+                cs:cli-disable-cmd "no ipv6 enable";
+                type empty;
+              }
+              container address {
+                when '(../enabled)';
+                cs:cli-enable-cmd "ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                cs:cli-disable-cmd "no ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                leaf address {
+                  type union {
+                    type leafref {
+                      path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                      require-instance true;
+                    }
+                    type enumeration {
+                      enum dhcp;
+                    }
+                  }
+                }
+                leaf generate-method {
+                  when "../address != 'dhcp'";
+                  type enumeration {
+                    enum eui-64;
+                  }
+                }
+                leaf scope {
+                  when "../address != 'dhcp'";
+                  type ct:ipv6-network-scope;
+                }
+              }
+            }
+          }
+        }
+        container null {
+          cs:cli-begin "interface null {{./instance}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no interface null {{./instance}}";
+          list instances {
+            key "instance";
+            leaf instance {
+              type uint8;
+            }
+            leaf description {
+              cs:cli-enable-cmd "description {{.}}";
+              cs:cli-disable-cmd "no description {{.}}";
+              type string;
+            }
+            container ip;
+            container ipv6 {
+              container icmp {
+                leaf unreachables {
+                  cs:cli-enable-cmd "ipv6 icmp unreachables";
+                  cs:cli-disable-cmd "no ipv6 icmp unreachables";
+                  type empty;
+                }
+                leaf too-big {
+                  cs:cli-enable-cmd "ipv6 icmp too-big";
+                  cs:cli-disable-cmd "no ipv6 icmp too-big";
+                  type empty;
+                }
+                leaf param-problem {
+                  cs:cli-enable-cmd "ipv6 icmp param-problem";
+                  cs:cli-disable-cmd "no ipv6 icmp param-problem";
+                  type empty;
+                }
+                leaf time-exceeded {
+                  cs:cli-enable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+                  cs:cli-disable-cmd "ipv6 icmp time-exceeded[[ {{.}}]]";
+                  type enumeration {
+                    enum no;
+                  }
+                }
+              }
+            }
+          }
+        }
+        container mgmt {
+          container ns {
+            cs:cli-begin "interface mgmt ns/{{./instance}}";
+            cs:cli-end "exit";
+            cs:cli-disable-cmd "no interface mgmt ns/{{./instance}}";
+            list instances {
+              key "instance";
+              leaf instance {
+                type uint8;
+              }
+              leaf description {
+                cs:cli-enable-cmd "description {{.}}";
+                cs:cli-disable-cmd "no description {{.}}";
+                type string;
+              }
+              leaf enabled {
+                cs:cli-enable-cmd "no shutdown";
+                cs:cli-disable-cmd "shutdown";
+                type empty;
+              }
+            }
+            container encapsulation {
+              cs:cli-enable-cmd "encapsulation {{./method}}[[ {{./vlan-id}}]]";
+              cs:cli-disable-cmd "no encapsulation";
+              leaf method {
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner[cp:identifier=current()/../rd2322:vlan-id]/cp:type";
+                  require-instance true;
+                }
+                default "dot1q";
+              }
+              leaf outer {
+                type ct:ip-vlan-id;
+                default "1";
+              }
+              leaf vlan-id {
+                when "../method = 'dot1q'";
+                type leafref {
+                  path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../rd2322:outer]/cp:inner/cp:identifier";
+                  require-instance true;
+                }
+              }
+            }
+            list sub-instances {
+              cs:cli-begin "interface ns/{{./instance}}[[.{{./sub-instance}}]]";
+              cs:cli-end "exit";
+              cs:cli-disable-cmd "no interface ns/{{./instance}}[[.{{./sub-instance}}]]";
+              key "instance";
+              leaf instance {
+                type leafref {
+                  path "../../../ns/instances/instance";
+                  require-instance true;
+                }
+              }
+              leaf sub-instance {
+                type uint8;
+              }
+              leaf description {
+                cs:cli-enable-cmd "description {{.}}";
+                cs:cli-disable-cmd "no description {{.}}";
+                type string;
+              }
+              container ip {
+                container ipv4 {
+                  list addresses {
+                    cs:cli-enable-cmd "ip address {{./address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                    cs:cli-disable-cmd "no ip address {{.address}} {{./subnet-mask}}[[ {{./scope}}]]";
+                    key "address";
+                    leaf address {
+                      type union {
+                        type leafref {
+                          path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv4/cp:addresses/cp:address";
+                          require-instance true;
+                        }
+                        type enumeration {
+                          enum dhcp;
+                        }
+                      }
+                    }
+                    leaf subnet-mask {
+                      when "../address != 'dhcp'";
+                      type ct:ipv4-subnet-mask;
+                    }
+                    leaf scope {
+                      when "../address != 'dhcp'";
+                      type enumeration {
+                        enum secondary;
+                      }
+                    }
+                    container dhcp-options {
+                      when "../address = 'dhcp'";
+                      leaf wait-time {
+                        cs:cli-enable-cmd "ip dhcp wait-time {{.}}";
+                        cs:cli-disable-cmd "no ip dhcp wait-time {{.}}";
+                        type uint16;
+                        default "1800";
+                      }
+                    }
+                  }
+                }
+                container ipv6 {
+                  leaf enable {
+                    cs:cli-enable-cmd "ipv6 enable";
+                    cs:cli-disable-cmd "no ipv6 enable";
+                    type empty;
+                  }
+                  list addresses {
+                    cs:cli-enable-cmd "ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                    cs:cli-disable-cmd "no ipv6 address {{./address}}[[ {{./generate-method}}]][[ {{./scope}}]]";
+                    key "address";
+                    when '(../enable)';
+                    leaf address {
+                      type union {
+                        type leafref {
+                          path "/c:sdnc/cp:pools/cp:ip/cp:address/cp:ipv6/cp:addresses/cp:address";
+                          require-instance true;
+                        }
+                        type enumeration {
+                          enum dhcp;
+                        }
+                      }
+                    }
+                    leaf generate-method {
+                      when "../address != 'dhcp'";
+                      type enumeration {
+                        enum eui-64;
+                      }
+                    }
+                    leaf scope {
+                      when "../address != 'dhcp'";
+                      type enumeration {
+                        enum interface-local;
+                        enum link-local;
+                        enum realm-local;
+                        enum admin-local;
+                        enum site-local;
+                        enum organization-local;
+                        enum global;
+                        enum reserved;
+                      }
+                    }
+                    container dhcp-options {
+                      when "../address = 'dhcp'";
+                      leaf wait-time {
+                        cs:cli-enable-cmd "ipv6 dhcp wait-time {{.}}";
+                        cs:cli-disable-cmd "no ipv6 dhcp wait-time {{.}}";
+                        type uint16;
+                        default "1800";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        container rpd {
+          list rpds {
+            cs:cli-begin "interface rpd {{./identifier}}";
+            cs:cli-end "exit";
+            cs:cli-disable-cmd "no interface rpd {{./identifier}}";
+            key "identifier";
+            leaf identifier {
+              type ct:name;
+            }
+            leaf description {
+              cs:cli-enable-cmd "description \"{{.}}\" ";
+              cs:cli-disable-cmd "no description \"{{.}}\" ";
+              type string;
+            }
+            list ds-conn {
+              key "instance";
+              leaf instance {
+                type uint8;
+              }
+              leaf ds-group {
+                cs:cli-enable-cmd "ds-conn {{../instance}} ds-group \"{{.}}\" ";
+                cs:cli-disable-cmd "no ds-conn {{../instance}} ds-group \"{{.}}\" ";
+                type string;
+              }
+              leaf power-level {
+                cs:cli-enable-cmd "ds-conn {{../instance}} power-level {{.}}";
+                cs:cli-disable-cmd "no ds-conn {{../instance}} power-level {{.}}";
+                type uint16;
+              }
+              leaf tilt-power-adjust {
+                cs:cli-enable-cmd "ds-conn {{../instance}} tilt-power-adjust {{.}}";
+                cs:cli-disable-cmd "no ds-conn {{../instance}} tilt-power-adjust {{.}}";
+                type uint16;
+              }
+              leaf tilt-max-frequency {
+                cs:cli-enable-cmd "ds-conn {{../instance}} tilt-max-frequency {{.}}";
+                cs:cli-disable-cmd "no ds-conn {{../instance}} tilt-max-frequency {{.}}";
+                type uint64;
+              }
+            }
+            list us-conn {
+              key "instance";
+              leaf instance {
+                type uint8;
+              }
+              leaf base-target-power {
+                cs:cli-enable-cmd "us-conn {{../instance}} base-target-power {{.}}";
+                cs:cli-disable-cmd "no us-conn {{../instance}} base-target-power {{.}}";
+                type uint16;
+              }
+            }
+          }
+        }
+      }
+      container l2vpn {
+        cs:cli-begin "l2vpn";
+        cs:cli-end "exit";
+        cs:cli-disable-cmd "no l2vpn";
+        leaf forwarding {
+          cs:cli-enable-cmd "forwarding {{.}}";
+          cs:cli-disable-cmd "no forwarding {{.}}";
+          type enumeration {
+            enum disabled;
+            enum enabled;
+          }
+        }
+        container cm {
+          container capability {
+            leaf esafe-ident {
+              cs:cli-enable-cmd "cm capability esafe-ident {{.}}";
+              cs:cli-disable-cmd "no cm capability esafe-ident {{.}}";
+              type enumeration {
+                enum required;
+              }
+            }
+            leaf dut-filter {
+              cs:cli-enable-cmd "cm capability dut-filter {{.}}";
+              cs:cli-disable-cmd "no cm capability dut-filter {{.}}";
+              type enumeration {
+                enum required;
+              }
+            }
+          }
+        }
+        container network-interface {
+          cs:cli-enable-cmd "network-interface {{./type}} ethertype {{./ethertype}}";
+          cs:cli-disable-cmd "no network-interface {{./type}} ethertype {{./ethertype}}";
+          leaf type {
+            type enumeration {
+              enum dot1ad;
+            }
+          }
+          leaf ethertype {
+            type string {
+              length "5";
+              pattern '[a-f0-9]x[a-f0-9][a-f0-9][a-f0-9][a-f0-9]';
+            }
+          }
+        }
+      }
+      container operation {
+        list modes {
+          key "mode";
+          cs:cli-enable-cmd "operation mode {{./mode}}[[ {{./enabled}}]]";
+          cs:cli-disable-cmd "no operation mode {{./mode}}[[ {{./enabled}}]]";
+          leaf mode {
+            type enumeration {
+              enum adjrxpwrctl;
+              enum USIngressNoiseMitigation;
+              enum enbudptcpfltr;
+              enum DSPeakTrafficRateTLV2516;
+              enum cpeNacksForceCmReset;
+              enum LBalDynUnbondUcast;
+              enum upDownTrapIfDescr;
+              enum upstreamRngRspFreqLimit;
+              enum mplsLdpPwMtu1504;
+              enum cmstatusoperational;
+              enum docsis20test;
+              enum showCmFormatCV;
+              enum USAmbiguityListReduction;
+              enum downstreamOverride;
+              enum suppress-dcd;
+              enum dcamSparingScqamOfdmSync;
+              enum allowZeroCmTxPwr;
+              enum docsis10plus;
+              enum virtualCm;
+              enum ofdmSparingCleanup;
+              enum onlyRegOnRangedChans;
+              enum ciscoBaccTlv;
+            }
+          }
+          leaf enabled {
+            type enumeration {
+              enum no;
+            }
+            default "no";
+          }
+        }
+      }
+      container packetcable {
+        leaf pepid-hostname {
+          cs:cli-enable-cmd "packetcable pepid-hostname {{.}}";
+          cs:cli-disable-cmd "packetcable pepid-hostname no";
+          type inet:host;
+        }
+        container dqos {
+          leaf enabled {
+            cs:cli-enable-cmd "packetcable dqos shutdown no";
+            cs:cli-disable-cmd "packetcable dqos shutdown";
+            type empty;
+          }
+          container timer {
+            when '(../enabled)';
+            leaf t0 {
+              cs:cli-enable-cmd "packetcable dqos timer t0 {{.}}";
+              cs:cli-disable-cmd "no packetcable dqos timer t0 {{.}}";
+              type uint8;
+            }
+            leaf t1 {
+              cs:cli-enable-cmd "packetcable dqos timer t1 {{.}}";
+              cs:cli-disable-cmd "no packetcable dqos timer t1 {{.}}";
+              type uint8;
+            }
+          }
+        }
+        container eventmsg {
+          leaf element-id {
+            cs:cli-enable-cmd "packetcable eventmsg element-id {{.}}";
+            cs:cli-disable-cmd "no packetcable eventmsg element-id {{.}}";
+            type string;
+          }
+          leaf batch-size {
+            cs:cli-enable-cmd "packetcable eventmsg retry batch-size {{.}}";
+            cs:cli-disable-cmd "no packetcable eventmsg retry batch-size {{.}}";
+            type uint16;
+          }
+          leaf billing-events {
+            cs:cli-enable-cmd "packetcable eventmsg billing-events {{.}}";
+            cs:cli-disable-cmd "packetcable eventmsg no billing-events";
+            type uint16;
+          }
+          leaf max-age {
+            cs:cli-enable-cmd "packetcable eventmsg retry max-age {{.}}";
+            cs:cli-disable-cmd "no packetcable eventmsg retry max-age {{.}}";
+            type uint16;
+          }
+          container retry {
+            leaf timer {
+              cs:cli-enable-cmd "packetcable eventmsg retry timer {{.}}";
+              cs:cli-disable-cmd "no packetcable eventmsg retry timer {{.}}";
+              type uint16;
+            }
+            leaf limit {
+              cs:cli-enable-cmd "packetcable eventmsg retry limit {{.}}";
+              cs:cli-disable-cmd "no packetcable eventmsg retry limit {{.}}";
+              type uint16;
+            }
+          }
+        }
+        container gate {
+          leaf send-subscriber-id {
+            cs:cli-enable-cmd "packetcable gate send-subscriberID";
+            cs:cli-disable-cmd "packetcable gate send-subscriberID no";
+            type empty;
+          }
+        }
+        container pcmm {
+          leaf enabled {
+            cs:cli-enable-cmd "packetcable pcmm shutdown no";
+            cs:cli-disable-cmd "packetcable pcmm shutdown";
+            type empty;
+          }
+          leaf subscriber-id {
+            when '(../enabled)';
+            cs:cli-enable-cmd "packetcable pcmm subscriber-id {{.}}";
+            cs:cli-disable-cmd "no packetcable pcmm subscriber-id {{.}}";
+            type enumeration {
+              enum "vrf default";
+            }
+          }
+          leaf version {
+            when '(../enabled)';
+            cs:cli-enable-cmd "packetcable pcmm version {{.}}";
+            cs:cli-disable-cmd "no packetcable pcmm version {{.}}";
+            type ct:docsis-packetcable-pcmm-version;
+          }
+          container timer {
+            when '(../enabled)';
+            leaf t0 {
+              cs:cli-enable-cmd "packetcable pcmm timer t0 {{.}}";
+              cs:cli-disable-cmd "no packetcable pcmm timer t0 {{.}}";
+              type uint8;
+            }
+            leaf t1 {
+              cs:cli-enable-cmd "packetcable pcmm timer t1 {{.}}";
+              cs:cli-disable-cmd "no packetcable pcmm timer t1 {{.}}";
+              type uint8;
+            }
+          }
+        }
+        container throttle {
+          leaf normal-threshold {
+            cs:cli-enable-cmd "packetcable throttle normal-threshold {{.}}";
+            cs:cli-disable-cmd "no packetcable throttle normal-threshold";
+            type uint16;
+          }
+          leaf red-threshold {
+            cs:cli-enable-cmd "packetcable throttle red-threshold {{.}}";
+            cs:cli-disable-cmd "no packetcable throttle red-threshold";
+            type uint16;
+          }
+          leaf yellow-threshold {
+            cs:cli-enable-cmd "packetcable throttle yellow-threshold {{.}}";
+            cs:cli-disable-cmd "no packetcable throttle yellow-threshold";
+            type uint16;
+          }
+        }
+        container voice-limit {
+          list voice-limits {
+            key "direction";
+            leaf direction {
+              type enumeration {
+                enum upstream;
+                enum downstream;
+              }
+            }
+            leaf allowed-total {
+              cs:cli-enable-cmd "packetcable voice-limits allowed-total {{.}} {{../direction}}";
+              cs:cli-disable-cmd "no packetcable voice-limits allowed-total {{.}} {{../direction}}";
+              type uint16;
+            }
+            leaf allowed-normal {
+              cs:cli-enable-cmd "packetcable voice-limits allowed-normal {{.}} {{../direction}}";
+              cs:cli-disable-cmd "no packetcable voice-limits allowed-normal {{.}} {{../direction}}";
+              type uint16;
+            }
+            leaf allowed-emergency {
+              cs:cli-enable-cmd "packetcable voice-limits allowed-emergency {{.}} {{../direction}}";
+              cs:cli-disable-cmd "no packetcable voice-limits allowed-emergency {{.}} {{../direction}}";
+              type uint16;
+            }
+            leaf reserved-normal {
+              cs:cli-enable-cmd "packetcable voice-limits reserved-normal {{.}} {{../direction}}";
+              cs:cli-disable-cmd "no packetcable voice-limits reserved-normal {{.}} {{../direction}}";
+              type uint16;
+            }
+            leaf reserved-emergency {
+              cs:cli-enable-cmd "packetcable voice-limits reserved-emergency {{.}} {{../direction}}";
+              cs:cli-disable-cmd "no packetcable voice-limits reserved-emergency {{.}} {{../direction}}";
+              type uint16;
+            }
+          }
+        }
+      }
+      container ntp {
+        leaf version {
+          cs:cli-enable-cmd "ntp version {{.}}";
+          cs:cli-disable-cmd "no ntp version {{.}}";
+          type ct:ntp-version;
+          default "4";
+        }
+        leaf authentication {
+          cs:cli-enable-cmd "ntp authentication";
+          cs:cli-disable-cmd "ntp authentication no";
+          type empty;
+        }
+        leaf minpoll {
+          cs:cli-enable-cmd "ntp minpoll {{.}}";
+          cs:cli-disable-cmd "no ntp minpoll {{.}}";
+          type uint8;
+          default "6";
+        }
+        leaf maxpoll {
+          cs:cli-enable-cmd "ntp maxpoll {{.}}";
+          cs:cli-disable-cmd "no ntp maxpoll {{.}}";
+          type uint8;
+          default "7";
+        }
+      }
+      container tod {
+        list servers {
+          cs:cli-enable-cmd "tod server {{./server}}[[ {{./protocol}}]][[ {{./not-use}}]]";
+          cs:cli-disable-cmd "no tod server {{./server}}[[ {{./protocol}}]][[ {{./not-use}}]]";
+          key "server";
+          leaf server {
+            type inet:ip-address-no-zone;
+          }
+          leaf protocol {
+            type ct:ip-protocol-type;
+            default "udp";
+          }
+          leaf not-use {
+            type enumeration {
+              enum no;
+            }
+          }
+        }
+      }
+      container overlay {
+        container downstream {
+          leaf enabled {
+            cs:cli-enable-cmd "overlay upstream enable";
+            cs:cli-disable-cmd "overlay upstream enable no";
+            type empty;
+          }
+          leaf attenuator {
+            when '(../enabled)';
+            cs:cli-enable-cmd "overlay downstream attenuator {{.}}";
+            cs:cli-disable-cmd "overlay downstream attenuator {{.}}";
+            type uint16;
+          }
+          leaf hysteresis {
+            when '(../enabled)';
+            cs:cli-enable-cmd "overlay downstream hysteresis {{.}}";
+            cs:cli-disable-cmd "overlay downstream hysteresis {{.}}";
+            type uint8;
+          }
+          container optical-agc {
+            when '(../enabled)';
+            leaf enabled {
+              cs:cli-enable-cmd "overlay downstream optical-agc enable";
+              cs:cli-disable-cmd "overlay downstream optical-agc enable no";
+              type empty;
+            }
+            leaf attenuator-reference {
+              when '(../enabled)';
+              cs:cli-enable-cmd "overlay downstream optical-agc attenuator-reference {{.}}";
+              cs:cli-disable-cmd "overlay downstream optical-agc attenuator-reference {{.}}";
+              type uint16;
+            }
+            leaf input-power-reference {
+              when '(../enabled)';
+              cs:cli-enable-cmd "overlay downstream optical-agc input-power-reference {{.}}";
+              cs:cli-disable-cmd "overlay downstream optical-agc input-power-reference {{.}}";
+              type uint16;
+            }
+          }
+        }
+        container upstream {
+          leaf enabled {
+            cs:cli-enable-cmd "overlay upstream enable";
+            cs:cli-disable-cmd "overlay upstream enable no";
+            type empty;
+          }
+        }
+      }
+      container overload-control {
+        leaf sensitivity {
+          cs:cli-enable-cmd "operation overload-control sensitivity {{.}}";
+          cs:cli-disable-cmd "no operation overload-control sensitivity {{.}}";
+          type uint8;
+          default "2";
+        }
+        leaf threshold {
+          cs:cli-enable-cmd "operation overload-control threshold {{.}}";
+          cs:cli-disable-cmd "no operation overload-control threshold {{.}}";
+          type uint8;
+          default "2";
+        }
+      }
+      container ofdm {
+        container global {
+          leaf plc-dpd-ocd-interval {
+            cs:cli-enable-cmd "ofdm global plc-dpd-ocd-interval {{.}}";
+            cs:cli-disable-cmd "no ofdm global plc-dpd-ocd-interval {{.}}";
+            type uint8;
+          }
+          leaf profile0-dpd-interval {
+            cs:cli-enable-cmd "ofdm profile0-dpd-interval {{.}}";
+            cs:cli-disable-cmd "no ofdm profile0-dpd-interval {{.}}";
+            type uint8;
+          }
+          leaf enable-short-codewords {
+            cs:cli-enable-cmd "ofdm global enable-short-codewords {{.}}";
+            cs:cli-disable-cmd "no ofdm global enable-short-codewords {{.}}";
+            type empty;
+          }
+          leaf iuc-short-term-threshold {
+            cs:cli-enable-cmd "ofdm global iuc-short-term-threshold {{.}}";
+            cs:cli-disable-cmd "no ofdm global iuc-short-term-threshold {{.}}";
+            type uint8;
+          }
+          leaf iuc13-impair-enable {
+            cs:cli-enable-cmd "ofdm global iuc13-impair-enable";
+            cs:cli-disable-cmd "no ofdm global iuc13-impair-enable";
+            type empty;
+          }
+        }
+        container modulation-profile {
+          list modulation-profiles {
+            cs:cli-begin "ofdm modulation-profile {{./instance}}";
+            cs:cli-end "exit";
+            cs:cli-disable-cmd "no ofdm modulation-profile {{./instance}}";
+            key "instance";
+            leaf instance {
+              type uint16 {
+                range "1..max";
+              }
+            }
+            leaf name {
+              cs:cli-enable-cmd "name \"{{.}}\"";
+              cs:cli-disable-cmd "no name \"{{.}}\"";
+              type ct:name;
+            }
+            leaf description {
+              cs:cli-enable-cmd "description \"{{.}}\"";
+              cs:cli-disable-cmd "no description \"{{.}}\"";
+              type string;
+            }
+            leaf cyclic-prefix {
+              cs:cli-enable-cmd "cyclic-prefix {{.}}";
+              cs:cli-disable-cmd "no cyclic-prefix {{.}}";
+              type uint8;
+            }
+            leaf rolloff-period {
+              cs:cli-enable-cmd "rolloff-period {{.}}";
+              cs:cli-disable-cmd "no rolloff-period {{.}}";
+              type uint8;
+            }
+            leaf symbols-per-frame {
+              cs:cli-enable-cmd "symbols-per-frame {{.}}";
+              cs:cli-disable-cmd "no symbols-per-frame {{.}}";
+              type uint8;
+            }
+            container iuc {
+              leaf instance {
+                type uint16 {
+                  range "1..max";
+                }
+              }
+              leaf modulation {
+                cs:cli-enable-cmd "iuc {{../instance}} modulation {{.}}";
+                cs:cli-disable-cmd "no iuc {{../instance}} modulation {{.}}";
+                type ct:docsis-modulation-profile;
+              }
+              leaf pilot-pattern {
+                cs:cli-enable-cmd "iuc {{../instance}} pilot-pattern {{.}}";
+                cs:cli-disable-cmd "no iuc {{../instance}} pilot-pattern {{.}}";
+                type uint8;
+              }
+            }
+            container initial-ranging {
+              cs:cli-enable-cmd "initial-ranging frequency-width {{./frequency-width}}[[ preamble-length {{./preamble-length}}]][[ total-guard-band-size {{./total-guard-band-size}}]]";
+              cs:cli-disable-cmd "no initial-ranging frequency-width {{./frequency-width}}[[ preamble-length {{./preamble-length}}]][[ total-guard-band-size {{./total-guard-band-size}}]]";
+              leaf frequency-width {
+                type uint16;
+                default "32";
+              }
+              leaf preamble-length {
+                type uint8;
+              }
+              leaf tutal-guard-band-size {
+                type uint8;
+              }
+            }
+            container fine-ranging {
+              cs:cli-enable-cmd "fine-ranging frequency-width {{./frequency-width}}[[ preamble-length {{./preamble-length}}]]";
+              cs:cli-disable-cmd "no fine-ranging frequency-width {{./frequency-width}}[[ preamble-length {{./preamble-length}}]]";
+              leaf frequency-width {
+                type uint16;
+                default "32";
+              }
+              leaf preamble-length {
+                type uint8;
+              }
+            }
+          }
+        }
+        container profile-mgmt {
+          leaf threshold {
+            cs:cli-enable-cmd "ofdm profile-mgmt threshold {{.}}";
+            cs:cli-disable-cmd "no ofdm profile-mgmt threshold {{.}}";
+            type uint8;
+          }
+          leaf retry-interval {
+            cs:cli-enable-cmd "ofdm profile-mgmt retry-interval {{.}}";
+            cs:cli-disable-cmd "no ofdm profile-mgmt retry-interval {{.}}";
+            type uint8;
+          }
+          leaf guard-time {
+            cs:cli-enable-cmd "ofdm profile-mgmt guard-time {{.}}";
+            cs:cli-disable-cmd "no ofdm profile-mgmt guard-time {{.}}";
+            type uint16;
+          }
+          leaf max-retries {
+            cs:cli-enable-cmd "ofdm profile-mgmt max-retries {{.}}";
+            cs:cli-disable-cmd "no ofdm profile-mgmt max-retries {{.}}";
+            type uint8;
+          }
+          container modulation-profile {
+            list modulation-margins {
+              cs:cli-enable-cmd "ofdm profile-mgmt modulation-profile {{./modulation}} mer-adjust {{./mer-adjust}}";
+              cs:cli-disable-cmd "no ofdm profile-mgmt modulation-profile {{./modulation}} mer-adjust {{./mer-adjust}}";
+              key "modulation";
+              leaf modulation {
+                type ct:docsis-modulation-profile;
+              }
+              leaf mer-adjust {
+                type uint8;
+                default "12";
+              }
+            }
+          }
+        }
+      }
+      container qos-sc {
+        list qos-scs {
+          key "name";
+          leaf name {
+            type ct:name;
+          }
+          leaf priority {
+            cs:cli-enable-cmd "qos-sc name {{../name}} priority {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} priority {{.}}";
+            type uint16;
+          }
+          leaf max-tr-rate {
+            cs:cli-enable-cmd "qos-sc name {{../name}} max-tr-rate {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} max-tr-rate {{.}}";
+            type uint16;
+          }
+          leaf max-tr-burst {
+            cs:cli-enable-cmd "qos-sc name {{../name}} max-tr-burst {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} max-tr-burst {{.}}";
+            type uint16;
+          }
+          leaf min-res-rate {
+            cs:cli-enable-cmd "qos-sc name {{../name}} min-res-rate {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} min-res-rate {{.}}";
+            type uint16;
+          }
+          leaf min-res-pkt {
+            cs:cli-enable-cmd "qos-sc name {{../name}} min-res-pkt {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} min-res-pkt {{.}}";
+            type uint16;
+          }
+          leaf max-burst {
+            cs:cli-enable-cmd "qos-sc name {{../name}} max-burst {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} max-burst {{.}}";
+            type uint16;
+          }
+          leaf poll-int {
+            cs:cli-enable-cmd "qos-sc name {{../name}} poll-int {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} poll-int {{.}}";
+            type uint16;
+          }
+          leaf poll-jitter {
+            cs:cli-enable-cmd "qos-sc name {{../name}} poll-jitter {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} poll-jitter {{.}}";
+            type uint16;
+          }
+          leaf grant-size {
+            cs:cli-enable-cmd "qos-sc name {{../name}} grant-size {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} grant-size {{.}}";
+            type uint16;
+          }
+          leaf grant-int {
+            cs:cli-enable-cmd "qos-sc name {{../name}} grant-int {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} grant-int {{.}}";
+            type uint16;
+          }
+          leaf grant-jitter {
+            cs:cli-enable-cmd "qos-sc name {{../name}} grant-jitter {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} grant-jitter {{.}}";
+            type uint16;
+          }
+          leaf grants-per-int {
+            cs:cli-enable-cmd "qos-sc name {{../name}} grants-per-int {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} grants-per-int {{.}}";
+            type uint16;
+          }
+          leaf active-tmout {
+            cs:cli-enable-cmd "qos-sc name {{../name}} active-tmout {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} active-tmout {{.}}";
+            type uint16;
+          }
+          leaf adm-tmout {
+            cs:cli-enable-cmd "qos-sc name {{../name}} adm-tmout {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} adm-tmout {{.}}";
+            type uint16;
+          }
+          leaf type {
+            cs:cli-enable-cmd "qos-sc name {{../name}} type {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} type {{.}}";
+            type uint16;
+          }
+          leaf req-policy {
+            cs:cli-enable-cmd "qos-sc name {{../name}} req-policy {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} req-policy {{.}}";
+            type string {
+              length "10";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]';
+            }
+          }
+          leaf and-mask {
+            cs:cli-enable-cmd "qos-sc name {{../name}} and-mask {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} and-mask {{.}}";
+            type string {
+              length "4";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f]';
+            }
+          }
+          leaf or-mask {
+            cs:cli-enable-cmd "qos-sc name {{../name}} or-mask {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} or-mask {{.}}";
+            type string {
+              length "4";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f]';
+            }
+          }
+          leaf dir {
+            cs:cli-enable-cmd "qos-sc name {{../name}} dir {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} dir {{.}}";
+            type uint16;
+          }
+          leaf required-attr-mask-value {
+            cs:cli-enable-cmd "qos-sc name {{../name}} required-attr-mask-value {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} required-attr-mask-value {{.}}";
+            type string {
+              length "10";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]';
+            }
+          }
+          leaf forbidden-attr-mask-value {
+            cs:cli-enable-cmd "qos-sc name {{../name}} forbidden-attr-mask-value {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} forbidden-attr-mask-value {{.}}";
+            type string {
+              length "10";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]';
+            }
+          }
+          leaf attr-aggr-rule-mask-value {
+            cs:cli-enable-cmd "qos-sc name {{../name}} attr-aggr-rule-mask-value {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} attr-aggr-rule-mask-value {{.}}";
+            type string {
+              length "10";
+              pattern '[0-9a-f]x[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]';
+            }
+          }
+          leaf peak-tr-rate {
+            cs:cli-enable-cmd "qos-sc name {{../name}} peak-tr-rate {{.}}";
+            cs:cli-disable-cmd "no qos-sc name {{../name}} peak-tr-rate {{.}}";
+            type uint16;
+          }
+        }
+      }
+      container vrf {
+        list vrfs {
+          cs:cli-begin "vrf {{./identifier}}";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no vrf {{./identifier}}";
+          key "identifier";
+          leaf identifier {
+            type leafref {
+              path "/c:sdnc/cp:pools/cp:ip/cp:vrf/cp:vrfs/cp:identifier";
+              require-instance true;
+            }
+          }
+          leaf auto-import {
+            cs:cli-enable-cmd "auto-import enable";
+            cs:cli-disable-cmd "no auto-import enable";
+            type empty;
+          }
+          leaf icmp-time-exceeded {
+            cs:cli-enable-cmd "icmp-time-exceeded no";
+            cs:cli-disable-cmd "icmp-time-exceeded";
+            type empty;
+          }
+        }
+      }
+      container rpd {
+        container global {
+          container l2tp {
+            leaf version {
+              type ct:ip-l2tp-version;
+              default "v3";
+            }
+            leaf hello-interval {
+              cs:cli-enable-cmd "rpd global l2tp{{../version}}-hello-interval {{.}}";
+              cs:cli-disable-cmd "no rpd global l2tp{{../version}}-hello-interval {{.}}";
+              type ct:yes-no;
+            }
+            leaf retries {
+              cs:cli-enable-cmd "rpd global l2tp{{../version}}-retries {{.}}";
+              cs:cli-disable-cmd "no rpd global l2tp{{../version}}-retries {{.}}";
+              type ct:yes-no;
+            }
+            leaf setup-wait-time {
+              cs:cli-enable-cmd "rpd global l2tp{{../version}}-setup-wait-time {{.}}";
+              cs:cli-disable-cmd "no rpd global l2tp{{../version}}-setup-wait-time {{.}}";
+              type uint16;
+            }
+          }
+          container gcp {
+            leaf keepalive-interval {
+              cs:cli-enable-cmd "rpd global gcp-keepalive-interval {{.}}";
+              cs:cli-disable-cmd "no rpd global gcp-keepalive-interval {{.}}";
+              type uint16;
+            }
+            leaf keepalive-timeout {
+              cs:cli-enable-cmd "rpd global gcp-keepalive-timeout {{.}}";
+              cs:cli-disable-cmd "no rpd global gcp-keepalive-timeout {{.}}";
+              type uint16;
+            }
+          }
+          leaf max-mtu {
+            cs:cli-enable-cmd "rpd global max-mtu {{.}}";
+            cs:cli-disable-cmd "no rpd global max-mtu {{.}}";
+            type uint16 {
+              range "68..9202";
+            }
+          }
+          leaf status-refresh-interval {
+            cs:cli-enable-cmd "rpd global status-refresh-interval {{.}}";
+            cs:cli-disable-cmd "no rpd global status-refresh-interval {{.}}";
+            type uint16;
+          }
+          container mcast-session-id {
+            cs:cli-enable-cmd "rpd global min-mcast-session-id {{./min}} max-mcast-session-id {{./max}}";
+            cs:cli-disable-cmd "no rpd global min-mcast-session-id {{./min}} max-mcast-session-id {{./max}}";
+            leaf min {
+              type string {
+                length "10";
+                pattern '[a-f0-9]x([a-f0-9]*)';
+              }
+            }
+            leaf max {
+              type string {
+                length "10";
+                pattern '[a-f0-9]x([a-f0-9]*)';
+              }
+            }
+          }
+          container multicast-interface {
+            leaf enabled {
+              cs:cli-enable-cmd "rpd global multicast-interface";
+              cs:cli-disable-cmd "rpd global multicast-interface no";
+              type empty;
+            }
+            leaf mode {
+              cs:cli-enable-cmd "rpd global multicast-interface {{.}}";
+              cs:cli-disable-cmd "no rpd global multicast-interface {{.}}";
+              when '(../enabled)';
+              type enumeration {
+                enum auto-switchback;
+              }
+            }
+          }
+          leaf cin-if-timeout {
+            cs:cli-enable-cmd "rpd global cin-if-timeout {{.}}";
+            cs:cli-disable-cmd "no rpd global cin-if-timeout {{.}}";
+            type uint8;
+          }
+        }
+      }
+      container snmp-server {
+        leaf contact {
+          cs:cli-enable-cmd "snmp-server contact \"{{.}}\"";
+          cs:cli-disable-cmd "no snmp-server contact \"{{.}}\"";
+          type ct:email-address;
+        }
+        leaf location {
+          cs:cli-enable-cmd "snmp-server location \"{{.}}\"";
+          cs:cli-disable-cmd "no snmp-server location \"{{.}}\"";
+          type string;
+        }
+        leaf context {
+          cs:cli-enable-cmd "snmp-server context \"{{.}}\"";
+          cs:cli-disable-cmd "no snmp-server context \"{{.}}\"";
+          type string;
+        }
+        container enable {
+          container traps {
+            leaf snmp {
+              cs:cli-enable-cmd "snmp-server enable traps snmp";
+              cs:cli-disable-cmd "snmp-server disable traps snmp";
+              type empty;
+            }
+          }
+        }
+        container data {
+          container snmp-agent {
+            leaf max-read-ahead {
+              cs:cli-enable-cmd "snmp-server data snmp-agent max-read-ahead {{.}}";
+              cs:cli-disable-cmd "no snmp-server data snmp-agent max-read-ahead {{.}}";
+              type uint16;
+            }
+            leaf refresh-time {
+              cs:cli-enable-cmd "snmp-server data snmp-agent refresh-time {{.}}";
+              cs:cli-disable-cmd "no snmp-server data snmp-agent refresh-time {{.}}";
+              type uint16;
+            }
+          }
+          leaf max-read-ahead {
+            cs:cli-enable-cmd "snmp-server data max-read-ahead {{.}}";
+            cs:cli-disable-cmd "no snmp-server data max-read-ahead {{.}}";
+            type uint16;
+          }
+          leaf refresh-time {
+            cs:cli-enable-cmd "snmp-server data refresh-time {{.}}";
+            cs:cli-disable-cmd "no snmp-server data refresh-time {{.}}";
+            type uint16;
+          }
+        }
+        container community {
+          list communities {
+            cs:cli-enable-cmd "snmp-server community {{./community}} {{./access}}[[ index {{./index}}]][[ ttag {{./ttag}}]] {{./transmsssion}}";
+            cs:cli-disable-cmd "no snmp-server community {{./community}} {{./access}}[[ index {{./index}}]][[ ttag {{./ttag}}]] {{./transmsssion}}";
+            key "community";
+            leaf community {
+              type ct:snmp-community-name;
+            }
+            leaf access {
+              type ct:snmp-access-type;
+            }
+            leaf index {
+              type ct:name;
+            }
+            leaf ttag {
+              type string;
+            }
+            leaf transmsssion {
+              type ct:snmp-transmission-type;
+              default "encrypted";
+            }
+          }
+        }
+        container host {
+          list hosts {
+            cs:cli-enable-cmd "snmp-server host {{./host}} name {{./name}} udp-port {{./udp-port}} informs version {{./version}}[[ taglist {{./inform-taglist}}]][[ tparam {{./tparam}}]][[ timeout {{./timeout}}]][[ retry {{./retry}}]][[ notify-filter {{./notify-filter}}]][[ mms {{./mms}}]]";
+            cs:cli-disable-cmd "no snmp-server host {{./host}} name {{./name}} udp-port {{./udp-port}} informs version {{./version}}[[ taglist {{./inform-taglist}}]][[ tparam {{./tparam}}]][[ timeout {{./timeout}}]][[ retry {{./retry}}]][[ notify-filter {{./notify-filter}}]][[ mms {{./mms}}]]";
+            key "host";
+            leaf host {
+              type inet:host;
+            }
+            leaf name {
+              type ct:name;
+            }
+            leaf udp-port {
+              type inet:port-number;
+              default "8127";
+            }
+            leaf version {
+              type ct:snmp-version;
+            }
+            leaf inform-taglist {
+              type string;
+            }
+            leaf tparam {
+              type string;
+            }
+            leaf timeout {
+              type uint16;
+              default "1000";
+            }
+            leaf retry {
+              type uint16;
+              default "5";
+            }
+            leaf notify-filter {
+              type string;
+            }
+            leaf mms {
+              type uint16;
+              default "484";
+            }
+          }
+        }
+        container notify-filter {
+          list profiles {
+            cs:cli-enable-cmd "snmp-server notify-filter profile {{./profile}}[[ subtree {{./subtree}}]][[ type {{./type}}]]";
+            cs:cli-disable-cmd "no snmp-server notify-filter profile {{./profile}}[[ subtree {{./subtree}}]][[ type {{./type}}]]";
+            key "profile";
+            leaf profile {
+              type ct:name;
+            }
+            leaf subtree {
+              type string {
+                pattern '[0-9.]*';
+              }
+            }
+            leaf type {
+              type ct:snmp-notify-filter-type;
+            }
+          }
+        }
+        container port-trap-inh {
+          list interfaces {
+            cs:cli-enable-cmd "snmp-server port-trap-inh {{./interface}} {{./identifier}} {{./hex}}";
+            cs:cli-disable-cmd "no snmp-server port-trap-inh {{./interface}} {{./identifier}} {{./hex}}";
+            key "interface identifier";
+            leaf interface {
+              type enumeration {
+                enum ethernet;
+                enum cable-mac;
+              }
+            }
+            leaf identifier {
+              type string;
+            }
+            leaf hex {
+              type string {
+                length "4";
+                pattern '[a-f0-9]x[a-f0-9][a-f0-9]';
+              }
+            }
+          }
+        }
+        container user {
+          list users {
+            cs:cli-enable-cmd "snmp-server user {{./username}} {{./password}} {{./vendor}}";
+            cs:cli-disable-cmd "no snmp-server user {{./username}} {{./password}} {{./vendor}}";
+            key "username";
+            leaf username {
+              type ct:name;
+            }
+            leaf password {
+              type string;
+            }
+            leaf version {
+              type ct:snmp-version;
+            }
+          }
+        }
+        container group {
+          list groups {
+            cs:cli-enable-cmd "snmp-server group \"{{./name}}\" {{./version}} read \"{{./read}}\" write \"{{./write}}\" notify \"{{./notify}}\"";
+            cs:cli-disable-cmd "no snmp-server group \"{{./name}}\" {{./version}} read \"{{./read}}\" write \"{{./write}}\" notify \"{{./notify}}\"";
+            key "name version";
+            leaf name {
+              type ct:name;
+            }
+            leaf version {
+              type ct:snmp-version;
+            }
+            leaf read {
+              type ct:name;
+            }
+            leaf write {
+              type ct:name;
+            }
+            leaf notify {
+              type ct:name;
+            }
+          }
+        }
+        container view {
+          list views {
+            cs:cli-enable-cmd "snmp-server view \"{{./name}}\" \"{{./subtree}}\" {{./type}}";
+            cs:cli-disable-cmd "no snmp-server view \"{{./name}}\" \"{{./subtree}}\" {{./type}}";
+            key "name";
+            leaf name {
+              type ct:name;
+            }
+            leaf subtree {
+              type string {
+                pattern '[0-9.]*';
+              }
+            }
+            leaf type {
+              type ct:snmp-notify-filter-type;
+              default "included";
+            }
+          }
+        }
+      }
+      container cli-footer {
+        config false;
+        cs:cli-end "end";
+      }
+    }
+  }
+}

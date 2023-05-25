@@ -1,0 +1,26 @@
+module sdnc-notifications {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:notifications";
+  prefix cn;
+
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc YANG Notification Definitions";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  grouping notification-event {
+    uses cg:common-notification-event;
+  }
+}

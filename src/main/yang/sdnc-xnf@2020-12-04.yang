@@ -1,0 +1,1362 @@
+module sdnc-xnf {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:xnf";
+  prefix cnf;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import sdnc-snmp {
+    prefix css;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-call-home {
+    prefix cch;
+    revision-date 2022-06-23;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+  import yang-ext {
+    prefix ext;
+    revision-date 2013-07-09;
+  }
+  import network-topology {
+    prefix nt;
+    revision-date 2013-10-21;
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Network Functions/Unified Inventory";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-xnf {
+    status current;
+  }
+
+  grouping nf-notification-common {
+    leaf instance {
+      type leafref {
+        path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    leaf model-namespace {
+      type leafref {
+        path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    leaf model-revision {
+      type leafref {
+        path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    leaf parent-instance {
+      type leafref {
+        path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+        require-instance true;
+      }
+      mandatory false;
+    }
+    leaf management-name {
+      type string;
+      mandatory false;
+    }
+  }
+
+  rpc list-all-instances {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all instances, regardless of relationship and model";
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-all-instances-by-namespace {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all instances by specified SKU model-namespace";
+    input {
+      leaf model-namespace {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+        leaf model-revision {
+          type ct:module-revision;
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-all-instances-by-namespace-revision {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all instances by specified SKU namespace and revision";
+    input {
+      leaf model-namespace {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf model-revision {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+      }
+    }
+  }
+
+  rpc list-all-dependants {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all child instances by specified parent instance";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+        leaf model-namespace {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf model-revision {
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-all-dependants-by-model {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all child instances by specified parent instance and model";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf model-namespace {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+          mandatory true;
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+        leaf model-revision {
+          type ct:module-revision;
+          mandatory true;
+        }
+      }
+    }
+  }
+
+  rpc list-all-dependants-by-model-revision {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "return list of all child instances by specified parent instance, model and revision";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf model-namespace {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf model-revision {
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+    output {
+      list instances {
+        key "instance";
+        ordered-by system;
+        leaf instance {
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+        }
+        leaf management-name {
+          type string;
+          mandatory false;
+        }
+      }
+    }
+  }
+
+  rpc define {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    description
+      "instantiate new device model";
+    input {
+      leaf model-namespace {
+        description
+          "existing SDNc known model";
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+          require-instance true;
+        }
+        mandatory true;
+      }
+      leaf model-revision {
+        description
+          "existing SDNc known model to upgrade to";
+        type leafref {
+          path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+          require-instance true;
+        }
+      }
+      leaf identifier {
+        description
+          "Primary identifier such as serial number, default MAC address or other unique definable attribute";
+        type ct:nf-identifier;
+        mandatory true;
+      }
+      leaf name {
+        description
+          "Human-friendly name, rather than device hostname, can be used as pOLT name and ONU name etc.";
+        type string;
+        mandatory true;
+      }
+      leaf description {
+        type string;
+      }
+      leaf location-decimal-degrees {
+        type ct:location-decimal-degrees-type;
+      }
+      leaf parent-instance {
+        description
+          "Parent network function that is associated/managed through, i.e. VOLT-MF <-- xOLT <-- ONU";
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+      }
+      leaf host {
+        when "not(./protocol='parent')";
+        type inet:host;
+      }
+      leaf port {
+        when "not(./protocol='parent')";
+        type inet:port-number;
+      }
+      leaf username {
+        type string;
+        mandatory true;
+      }
+      leaf password {
+        type string;
+        mandatory true;
+      }
+      leaf data-model {
+        type ct:model-construct;
+        mandatory true;
+      }
+      leaf protocol {
+        type ct:management-protocol;
+        mandatory true;
+      }
+      leaf incarnation {
+        type ct:xnf-incarnation;
+        default "pnf";
+      }
+      leaf state {
+        type ct:xnf-state;
+        default "intent";
+      }
+      choice protocol-transport {
+        case cli-ssh {
+          leaf enable-username {
+            when "./protocol='cli-ssh'";
+            type string;
+          }
+          leaf enable-password {
+            when "./protocol='cli-ssh'";
+            type string;
+          }
+          container snmp {
+            leaf security-group-identifier {
+              type leafref {
+                path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+                require-instance true;
+              }
+            }
+            leaf request-group-identifier {
+              description
+                "Generated snmp request group identifier";
+              type leafref {
+                path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+                require-instance true;
+              }
+            }
+          }
+        }
+        case netconf {
+          leaf tcp-only {
+            type boolean;
+            default "false";
+          }
+          leaf connection-timeout-millis {
+            type uint32;
+            default "32000";
+          }
+          leaf default-request-timeout-millis {
+            type uint32;
+            default "60000";
+          }
+          leaf between-attempts-timeout-millis {
+            type uint16;
+            default "2000";
+          }
+          leaf sleep-factor {
+            type decimal64 {
+              fraction-digits 1;
+            }
+            default "1.5";
+          }
+          leaf keepalive-delay {
+            type uint32;
+            default "120";
+          }
+          leaf schema-cache-directory {
+            type string;
+          }
+          leaf concurrent-rpc-limit {
+            type uint16;
+            default "0";
+          }
+          leaf max-connection-attempts {
+            type uint32;
+            default "0";
+          }
+          leaf reconnect-on-changed-schema {
+            type boolean;
+            default "false";
+          }
+          leaf netconf-username {
+            type string;
+          }
+          leaf netconf-password {
+            type string;
+          }
+          leaf netconf-authentication-method {
+            type enumeration {
+              enum password;
+            }
+            default "password";
+          }
+          container capability-override {
+            leaf override {
+              type boolean;
+              default "false";
+            }
+            leaf-list capability {
+              type string;
+            }
+          }
+          container call-home {
+            reference
+              "RFC 8071: NETCONF Call Home and RESTCONF Call Home";
+            leaf unique-id {
+              description
+                "Identifier of device, which will be used to identify device. If not supplied the supplied identifier to XNF will be used";
+              type string;
+              mandatory false;
+            }
+            choice protocol {
+              case ssh {
+                leaf host-key {
+                  description
+                    "BASE-64 encoded public SSH host key which device will use during connection.";
+                  type string;
+                }
+              }
+              case tls {
+                list chain {
+                  key "certificate-id";
+                  min-elements 1;
+                  ordered-by user;
+                  leaf certificate-id {
+                    description
+                      "Certificate identifier which will be used during two-way TLS authentication.";
+                    type leafref {
+                      path "/c:sdnc/cch:call-home/cch:tls/cch:certificates/cch:id";
+                      require-instance true;
+                    }
+                  }
+                  leaf key-id {
+                    description
+                      "Key identifier inside the NetConf keystore which will be used during two-way TLS authentication.";
+                    type leafref {
+                      path "/c:sdnc/cch:call-home/cch:tls/cch:certificates/cch:id";
+                      require-instance true;
+                    }
+                  }
+                }
+              }
+            }
+            leaf username {
+              description
+                "Username to be used for authentication";
+              type string {
+                length "4..max";
+              }
+            }
+            leaf password {
+              description
+                "Password to be used for authentication.";
+              type string {
+                length "4..max";
+              }
+            }
+          }
+        }
+      }
+    }
+    output {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  rpc nf-change-cli-credentials {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined credentails for connections";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='cli-ssh'";
+      }
+      leaf username {
+        type string;
+        mandatory true;
+      }
+      leaf password {
+        type string;
+      }
+    }
+  }
+
+  rpc nf-change-enable-credentials {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined config/enable mode credentails";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='cli-ssh'";
+      }
+      leaf enable-username {
+        type string;
+        mandatory true;
+      }
+      leaf enable-password {
+        type string;
+      }
+    }
+  }
+
+  rpc nf-change-netconf-credentials {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined NETCONF credentails for connections";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf netconf-username {
+        type string;
+        mandatory true;
+      }
+      leaf netconf-password {
+        type string;
+      }
+    }
+  }
+
+  rpc nf-change-call-home-credentials {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined NETCONF Call-Home credentails for connections";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf username {
+        type string;
+        mandatory true;
+      }
+      leaf password {
+        type string;
+      }
+    }
+  }
+
+  rpc nf-change-call-home-host-key {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined NETCONF Call-Home credentails for connections";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf host-key {
+        description
+          "BASE-64 encoded public SSH host key which device will use during connection.";
+        type string;
+      }
+    }
+  }
+
+  rpc nf-change-netconf-host-port {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "change nodes defined NETCONF node known host address and port for connections";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf host {
+        type inet:host;
+        mandatory true;
+      }
+      leaf port {
+        type inet:port-number;
+      }
+    }
+  }
+
+  rpc nf-config-to-history {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "Performs NETCONF get-config from mounted node to
+       SDNc XNF config history, if different from last
+       held config history";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf source-datastore {
+        type ct:netconf-datastores;
+        default "running";
+      }
+    }
+  }
+
+  rpc history-to-nf-config {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    description
+      "Performs NETCONF edit-config (global replace) from SDNc XNF
+        config history to mounted device, i.e. call-home";
+    input {
+      leaf instance {
+        type leafref {
+          path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+          require-instance true;
+        }
+        must "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=instance]/cnf:management/cnf:protocol='netconf'";
+      }
+      leaf target-datastore {
+        type ct:netconf-datastores;
+        default "startup";
+      }
+      leaf history-timestamp {
+        description
+          "timestamp of held config-history instance to restore.
+           If not supplied, use most recent history instance";
+        type yang:date-and-time;
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container xnf {
+      config true;
+      description
+        "Managed network functions";
+      if-feature "c:sdnc";
+      if-feature "cs:sdnc-sku";
+      list nf {
+        key "instance";
+        leaf instance {
+          type yang:uuid;
+        }
+        action undefine {
+          description
+            "uninstantiate existing device model";
+        }
+        action upgrade {
+          description
+            "upgrade model/firmware mapping on existing device model";
+          input {
+            leaf model-namespace {
+              description
+                "existing SDNc known model to upgrade to";
+              type leafref {
+                path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            leaf model-revision {
+              description
+                "existing SDNc known model to upgrade to";
+              type leafref {
+                path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+                require-instance true;
+              }
+            }
+          }
+        }
+        action downgrade {
+          description
+            "downgrade model/firmware mapping on existing device model";
+          input {
+            leaf model-namespace {
+              description
+                "existing SDNc known model to downgrade to";
+              type leafref {
+                path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+                require-instance true;
+              }
+              mandatory true;
+            }
+            leaf model-revision {
+              description
+                "existing SDNc known model to upgrade to";
+              type leafref {
+                path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+                require-instance true;
+              }
+            }
+          }
+        }
+        leaf model-namespace {
+          description
+            "SDNc known device model";
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models/cs:model-namespace";
+            require-instance true;
+          }
+        }
+        leaf model-revision {
+          description
+            "SDNc known model version";
+          type leafref {
+            path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions/cs:model-revision";
+            require-instance true;
+          }
+        }
+        leaf parent-instance {
+          description
+            "Parent network function that is associated/managed through, i.e. VOLT-MF <-- xOLT <-- ONU";
+          type leafref {
+            path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+            require-instance true;
+          }
+        }
+        container management {
+          leaf host {
+            when "not(./protocol='parent')";
+            type inet:host;
+          }
+          leaf port {
+            when "not(./protocol='parent')";
+            type inet:port-number;
+          }
+          leaf node-id {
+            when "./protocol='netconf'";
+            type leafref {
+              path "/nt:network-topology/nt:topology/nt:node/nt:node-id";
+              require-instance false;
+            }
+          }
+          leaf data-model {
+            type ct:model-construct;
+            mandatory true;
+          }
+          leaf protocol {
+            type ct:management-protocol;
+            mandatory true;
+          }
+          leaf identifier {
+            description
+              "Primary identifier such as serial number, default MAC address or other unique definable attribute";
+            type ct:nf-identifier;
+          }
+          leaf name {
+            description
+              "Human-friendly name, rather than device hostname";
+            type string;
+            mandatory true;
+          }
+          leaf description {
+            type string;
+          }
+          leaf incarnation {
+            type ct:xnf-incarnation;
+            mandatory true;
+          }
+          leaf state {
+            type ct:xnf-state;
+            mandatory true;
+          }
+          leaf asset-id {
+            description
+              "Unique system identifier to help operator to easily allocate hardware.
+               This is equivalent to assetID value defined in the R-OSSI model, and
+               it can be configured from the CLI and/or be part of RMDConfigFile.";
+            type string;
+          }
+          leaf username {
+            type string;
+            mandatory true;
+          }
+          leaf password {
+            type string;
+            mandatory true;
+          }
+          choice protocol-transport {
+            case cli-ssh {
+              leaf enable-username {
+                type string;
+              }
+              leaf enable-password {
+                type string;
+              }
+            }
+            case netconf {
+              leaf tcp-only {
+                type boolean;
+                default "false";
+              }
+              leaf connection-timeout-millis {
+                type uint32;
+                default "32000";
+              }
+              leaf default-request-timeout-millis {
+                type uint32;
+                default "60000";
+              }
+              leaf between-attempts-timeout-millis {
+                type uint16;
+                default "2000";
+              }
+              leaf sleep-factor {
+                type decimal64 {
+                  fraction-digits 1;
+                }
+                default "1.5";
+              }
+              leaf keepalive-delay {
+                type uint32;
+                default "120";
+              }
+              container hello-message-capabilities {
+                leaf-list capability {
+                  type inet:uri;
+                  description
+                    "Certain devices are non-accepting of ODL's hello message.  This allows specification of
+                     a custom ODL hello message based on a list of supported capabilities.";
+                }
+              }
+              leaf schema-cache-directory {
+                type string;
+              }
+              leaf concurrent-rpc-limit {
+                type uint16;
+                default "0"; // 0=no limit - use positive values with extreme caution
+              }
+              leaf max-connection-attempts {
+                type uint32;
+                default "0"; // 0=retry forever
+              }
+              leaf reconnect-on-changed-schema {
+                type boolean;
+                default "false";
+              }
+              leaf authentication-method {
+                type enumeration {
+                  enum password;
+                }
+                default "password";
+              }
+              container capability-override {
+                leaf override {
+                  description
+                    "Whether to override or merge this list of capabilities with capabilities from device";
+                  type boolean;
+                  default "false";
+                }
+                leaf-list capability {
+                  description
+                    "Set a list of capabilities to override capabilities provided in device's hello message.
+                     Can be used for devices that do not report any yang modules in their hello message";
+                  type string;
+                }
+              }
+              container call-home {
+                reference
+                  "RFC 8071: NETCONF Call Home and RESTCONF Call Home";
+                leaf unique-id {
+                  description
+                    "Identifier of device, which will be used to identify device.";
+                  type string;
+                }
+                action revoke {
+                  description
+                    "remove nodes call-home definition and permission";
+                }
+                choice protocol {
+                  case ssh {
+                    leaf host-key {
+                      description
+                        "BASE-64 encoded public SSH host key which device will use during connection.";
+                      type string;
+                    }
+                  }
+                  case tls {
+                    list chain {
+                      key "certificate-id";
+                      min-elements 1;
+                      ordered-by user;
+                      leaf certificate-id {
+                        description
+                          "Certificate identifier which will be used during two-way TLS authentication.";
+                        type leafref {
+                          path "/c:sdnc/cch:call-home/cch:tls/cch:certificates/cch:id";
+                          require-instance true;
+                        }
+                      }
+                      leaf key-id {
+                        description
+                          "Key identifier inside the NetConf keystore which will be used during two-way TLS authentication.";
+                        type leafref {
+                          path "/c:sdnc/cch:call-home/cch:tls/cch:certificates/cch:id";
+                          require-instance true;
+                        }
+                        must "/c:sdnc/cch:call-home/cch:tls/cch:certificates[cch:id=current()]/cch:category='private-key'" {
+                          error-app-tag "call-home-certificate-category-invalid";
+                          error-message "call home certificate must be category private-key";
+                        }
+                      }
+                    }
+                  }
+                }
+                leaf username {
+                  description
+                    "Username to be used for authentication";
+                  type string {
+                    length "4..max";
+                  }
+                }
+                leaf password {
+                  description
+                    "Password to be used for authentication.";
+                  type string {
+                    length "4..max";
+                  }
+                }
+              }
+            }
+          }
+          container firmware {
+            list revisions {
+              key "name";
+              leaf name {
+                type string;
+                mandatory true;
+              }
+              leaf version {
+                type ct:firmware-version-type;
+              }
+            }
+          }
+        }
+        container snmp {
+          leaf security-group-identifier {
+            type leafref {
+              path "/c:sdnc/css:snmp/css:security-groups/css:security-group/css:identifier";
+              require-instance true;
+            }
+          }
+          leaf request-group-identifier {
+            description
+              "Generated snmp request group identifier";
+            type leafref {
+              path "/c:sdnc/css:snmp/css:requests/css:request-groups/css:identifier";
+              require-instance true;
+            }
+          }
+        }
+        container location {
+          leaf decimal-degrees {
+            type ct:location-decimal-degrees-type;
+          }
+          container geographic-coordinate {
+            leaf latitude {
+              type ct:location-latitude;
+            }
+            leaf longitude {
+              type ct:location-longitude;
+            }
+          }
+          container postal-address {
+            leaf room {
+              type string;
+            }
+            leaf floor {
+              type uint8 {
+                range "1..max";
+              }
+            }
+            leaf building-name-or-number {
+              type string;
+            }
+            leaf street-name {
+              type string;
+            }
+            leaf district {
+              type string;
+            }
+            leaf city {
+              type string;
+            }
+            leaf state {
+              type string;
+            }
+            leaf postal-code {
+              type string;
+            }
+            leaf country {
+              type ct:location-iso3166-1-alpha-3;
+            }
+          }
+        }
+        container configs {
+          leaf config-histories-to-keep {
+            type uint8 {
+              range "1..255";
+            }
+            default "3";
+          }
+          leaf config-slices-to-keep {
+            type uint8 {
+              range "1..255";
+            }
+            default "54";
+          }
+          list config-history {
+            key "timestamp";
+            leaf timestamp {
+              type yang:date-and-time;
+            }
+            leaf model-revision {
+              description
+                "associated SDNc model revision";
+              type leafref {
+                path "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../../../cnf:model-namespace]/cs:versions/cs:model-revision";
+                require-instance true;
+              }
+            }
+            leaf raw {
+              type string;
+              description
+                "Expected to hold full configuration, rather than just a slice";
+            }
+          }
+          list config-slices {
+            key "instance-slice";
+            leaf instance-slice {
+              type yang:uuid;
+              mandatory true;
+            }
+            leaf raw {
+              type string;
+              description
+                "Contains a single child element that corresponds
+                 to the entire retrieved network function config.
+                 This is to serve as object for subsequent parsing
+                 or generation of CLI";
+            }
+            leaf validate-only {
+              type empty;
+              description
+                "if exists, config will be verified by network
+                 function but not saved nor implemented. This is
+                 limited to capabilities of network function, i.e.
+                 VyOS: commit-confirm without follow-up confirm.
+                 response will be validate-ok or validate-fail
+                 in delivery-result node ";
+            }
+            leaf generation-timestamp {
+              description
+                "Time of generation";
+              type yang:date-and-time;
+            }
+            leaf delivery-timestamp {
+              description
+                "Time of delivery";
+              type yang:date-and-time;
+            }
+            leaf delivery-result {
+              type ct:nf-config-delivery-result;
+            }
+            leaf delivery-response {
+              type string;
+              description
+                "Contains any generated response received during
+                 delivery of config to device";
+            }
+          }
+          // device augments will go here
+          // augment "/c:sdnc/c:xnf/c:nf/c:configs/xxx:config"
+        }
+      }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    when '(/nt:network-topology/nt:topology/nt:node and /c:sdnc/cnf:xnf/cnf:nf)';
+    container sdnc {
+      presence "The presence of the container node may indicate
+                this node is being managed indirectly by SDNc";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/cnf:sdnc" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    when '(/nt:network-topology/nt:topology/nt:node/cnf:sdnc)';
+    ext:augment-identifier "sdnc-managed-node";
+    leaf instance {
+      type leafref {
+        path "/c:sdnc/cnf:xnf/cnf:nf/cnf:instance";
+        require-instance true;
+      }
+    }
+  }
+
+  notification nf-added {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-change {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-deleted {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-config-change {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+    leaf instance-slice {
+      type yang:uuid;
+      mandatory true;
+    }
+  }
+
+  notification nf-config-generated {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+    leaf instance-slice {
+      type yang:uuid;
+      mandatory true;
+    }
+  }
+
+  notification nf-config-delivery {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+    leaf instance-slice {
+      type leafref {
+        path "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=current()/../cnf:instance]/cnf:configs/cnf:config-slices/cnf:instance-slice";
+        require-instance true;
+      }
+      mandatory true;
+    }
+    leaf timestamp {
+      description
+        "Time of delivery";
+      type yang:date-and-time;
+      mandatory true;
+    }
+    leaf result {
+      type ct:nf-config-delivery-result;
+      mandatory true;
+    }
+  }
+
+  notification nf-connected {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-disconnected {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-connecting {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-unable-to-connect {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-failed-auth-failure {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+
+  notification nf-failed-not-allowed {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    leaf host {
+      type inet:host;
+      mandatory true;
+    }
+    leaf port {
+      type inet:port-number;
+      mandatory true;
+    }
+  }
+
+  notification nf-failed {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    uses cnf:nf-notification-common;
+  }
+}

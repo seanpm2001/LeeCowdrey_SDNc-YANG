@@ -1,0 +1,674 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-types.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-types 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+package "if:ietf-interfaces" as if_ietf_interfaces { 
+} 
+note top of ct_sdnc_types : <b>Namespace: </b> urn:com:vendor:yang:sdnc:types \n<b>Prefix: </b> ct \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "ct:sdnc-types" as ct_sdnc_types { 
+yang_ietf_yang_types +-- ct_sdnc_types
+inet_ietf_inet_types +-- ct_sdnc_types
+if_ietf_interfaces +-- ct_sdnc_types
+class "sdnc-types" as sdnc_types << (M, #33CCFF) module>> 
+class "identifier" as identifier << (T, YellowGreen) typedef>>
+identifier : string {pattern = [A-Za-z_][A-Za-z0-9_...}
+class "identifier-ref" as identifier_ref << (T, YellowGreen) typedef>>
+identifier_ref : string {pattern = ([A-Za-z_][A-Za-z0-9...}
+class "name" as name << (T, YellowGreen) typedef>>
+name : string {length = 2..64} {pattern = ([A-Za-z0-9\-_\s]+)}
+class "email-address" as email_address << (T, YellowGreen) typedef>>
+email_address : string {pattern = [a-zA-Z0-9!#$%&'*+/=...}
+enum "yes-no" as sdnc_types_I_yes_no {
+yes
+no
+}
+enum "enable-disable" as sdnc_types_I_enable_disable {
+disable
+enable
+}
+enum "ok-fail" as sdnc_types_I_ok_fail {
+ok
+fail
+}
+class "module-namespace" as module_namespace << (T, YellowGreen) typedef>>
+module_namespace : inet:uri
+class "module-revision" as module_revision << (T, YellowGreen) typedef>>
+module_revision : string {length = 10} {pattern = \d{4}-\d{2}-\d{2}}
+enum "netconf-datastores" as sdnc_types_I_netconf_datastores {
+candidate
+running
+startup
+operational
+intended
+}
+enum "tls-certificate-type" as sdnc_types_I_tls_certificate_type {
+ca
+intermediate
+csr
+private-key
+public-certificate
+host
+}
+enum "system-log-level" as sdnc_types_I_system_log_level {
+trace
+warn
+info
+debug
+error
+}
+enum "xnf-incarnation" as sdnc_types_I_xnf_incarnation {
+pnf
+vnf
+cnf
+hnf
+}
+enum "dependency-role" as sdnc_types_I_dependency_role {
+leader
+follower
+observer
+autonomous
+}
+enum "xnf-state" as sdnc_types_I_xnf_state {
+operational
+intent
+ztp
+fault
+recycle
+swim
+}
+enum "topology-base-class-type" as sdnc_types_I_topology_base_class_type {
+underlay
+overlay
+pon
+ip
+docsis
+wifi
+mesh
+bluetooth
+cellular
+microwave
+satellite
+service
+}
+enum "topology-service-class-type" as sdnc_types_I_topology_service_class_type {
+ip-fwd
+ip-rfw
+ip-vpws
+ip-vpls
+ip-vlan
+ip-vxlan
+ip-evpn
+ip-vpn
+ip-l2tp
+docsis-sg
+}
+class "firmware-version-type" as firmware_version_type << (T, YellowGreen) typedef>>
+firmware_version_type : string {pattern = \d{1,2}.\d{1,2}.\d{1...}
+class "location-decimal-degrees-type" as location_decimal_degrees_type << (T, YellowGreen) typedef>>
+location_decimal_degrees_type : string {length = 7..22} {pattern = ([-]?)[0-9]([0-9]?)....}
+class "location-latitude" as location_latitude << (T, YellowGreen) typedef>>
+location_latitude : decimal64 [-90..90]
+class "location-longitude" as location_longitude << (T, YellowGreen) typedef>>
+location_longitude : decimal64 [-180..180]
+enum "location-iso3166-1-alpha-3" as sdnc_types_I_location_iso3166_1_alpha_3 {
+ABW
+AFG
+AGO
+AIA
+ALA
+ALB
+AND
+ARE
+ARG
+ARM
+ASM
+ATA
+ATF
+ATG
+AUS
+AUT
+AZE
+BDI
+BEL
+BEN
+BES
+BFA
+BGD
+BGR
+BHR
+MORE
+}
+enum "model-construct" as sdnc_types_I_model_construct {
+indirect
+cli
+yang
+}
+enum "management-protocol" as sdnc_types_I_management_protocol {
+parent
+cli-ssh
+netconf
+}
+enum "nf-config-delivery-result" as sdnc_types_I_nf_config_delivery_result {
+ok
+error
+warning
+retry
+unreachable
+unaccessible
+timeout
+validate-ok
+validate-fail
+reserved
+}
+enum "l3-mpls-routing-mode" as sdnc_types_I_l3_mpls_routing_mode {
+p
+pe
+ce
+}
+enum "l2-operational-mode" as sdnc_types_I_l2_operational_mode {
+core
+aggregation
+access
+spine
+leaf
+tor
+mor
+eor
+mct
+stack
+fabric
+mixed
+}
+enum "rxd-operational-mode" as sdnc_types_I_rxd_operational_mode {
+1x1
+1x2
+2x2
+}
+class "sha-256" as sha_256 << (T, YellowGreen) typedef>>
+sha_256 : string {length = 64} {pattern = [a-f0-9]+}
+class "snmp-object-identifier" as snmp_object_identifier << (T, YellowGreen) typedef>>
+snmp_object_identifier : string {length = 2..128} {pattern = ([0-2])((\.0)|(\.[1-...}
+class "snmp-wildcard-object-identifier" as snmp_wildcard_object_identifier << (T, YellowGreen) typedef>>
+snmp_wildcard_object_identifier : string
+class "snmp-object-identifier-name" as snmp_object_identifier_name << (T, YellowGreen) typedef>>
+snmp_object_identifier_name : string {length = 2..max} {pattern = ([\.])([A-Za-z0-9\.-...}
+class "snmp-tag-value" as snmp_tag_value << (T, YellowGreen) typedef>>
+snmp_tag_value : string {length = 0..255}
+class "snmp-community-name" as snmp_community_name << (T, YellowGreen) typedef>>
+snmp_community_name : string {length = 1..64} {pattern = ([A-Za-z0-9\-_]+)}
+enum "snmp-transmission-type" as sdnc_types_I_snmp_transmission_type {
+encrypted
+unencrypted
+}
+enum "snmp-version" as sdnc_types_I_snmp_version {
+v1
+v2c
+v3
+}
+class "snmp-engine-id" as snmp_engine_id << (T, YellowGreen) typedef>>
+snmp_engine_id : yang:hex-string {pattern = ([0-9a-fA-F]){2}(:([...}
+enum "snmp-access-type" as sdnc_types_I_snmp_access_type {
+ro
+rw
+}
+enum "snmp-authentication-method" as sdnc_types_I_snmp_authentication_method {
+no-auth-no-priv
+auth-no-priv
+auth-priv
+}
+class "snmp-username" as snmp_username << (T, YellowGreen) typedef>>
+snmp_username : string {length = 1..32} {pattern = ([A-Za-z0-9]+)}
+enum "snmp-authentication-encryption-protocol" as sdnc_types_I_snmp_authentication_encryption_protocol {
+md5
+des
+}
+enum "snmp-security-model" as sdnc_types_I_snmp_security_model {
+v1
+v2c
+usm
+tsm
+}
+class "snmp-authentication-password" as snmp_authentication_password << (T, YellowGreen) typedef>>
+snmp_authentication_password : string {length = 8..12} {pattern = ([A-Za-z0-9]+)}
+class "snmp-privacy-password" as snmp_privacy_password << (T, YellowGreen) typedef>>
+snmp_privacy_password : string {length = 8} {pattern = ([A-Za-z0-9]+)}
+enum "snmp-set-commands" as sdnc_types_I_snmp_set_commands {
+SetRequest
+}
+enum "snmp-get-commands" as sdnc_types_I_snmp_get_commands {
+GetRequest
+GetNextRequest
+GetBulkRequest
+}
+enum "snmp-other-commands" as sdnc_types_I_snmp_other_commands {
+Response
+Trap
+InformRequest
+}
+class "snmp-commands" as snmp_commands << (T, YellowGreen) typedef>>
+snmp_commands : union{ct:snmp-set-commands, ct:snmp-get-commands}
+enum "snmp-notify-filter-type" as sdnc_types_I_snmp_notify_filter_type {
+included
+excluded
+}
+enum "telemetry-classification" as sdnc_types_I_telemetry_classification {
+general
+environmental
+rf
+traffic
+management
+other
+reserved
+}
+enum "ip-protocol-type" as sdnc_types_I_ip_protocol_type {
+tcp
+udp
+}
+enum "ip-dhcp-priority" as sdnc_types_I_ip_dhcp_priority {
+primary
+secondary
+tertiary
+}
+enum "ipv4-network-usage" as sdnc_types_I_ipv4_network_usage {
+reserved
+unicast
+anycast
+multicast
+loopback
+}
+class "ipv4-subnet-mask" as ipv4_subnet_mask << (T, YellowGreen) typedef>>
+ipv4_subnet_mask : yang:dotted-quad
+class "ipv4-subnet-bits" as ipv4_subnet_bits << (T, YellowGreen) typedef>>
+ipv4_subnet_bits : uint8 [8..32]
+class "ip-metric" as ip_metric << (T, YellowGreen) typedef>>
+ip_metric : uint8 [0..255]
+class "ip-ttl" as ip_ttl << (T, YellowGreen) typedef>>
+ip_ttl : uint8 [1..255]
+enum "ipv6-address-type" as sdnc_types_I_ipv6_address_type {
+unspecified
+loopback
+multicast
+link-local
+global
+}
+enum "ipv6-network-scope" as sdnc_types_I_ipv6_network_scope {
+interface-local
+link-local
+realm-local
+admin-local
+site-local
+organization-local
+global
+reserved
+}
+class "ipv6-prefix" as ipv6_prefix << (T, YellowGreen) typedef>>
+ipv6_prefix : uint8 [1..128]
+enum "ipv6-network-usage" as sdnc_types_I_ipv6_network_usage {
+reserved
+unicast
+anycast
+multicast
+loopback
+}
+class "ip-vrf" as ip_vrf << (T, YellowGreen) typedef>>
+ip_vrf : string {length = 1..15} {pattern = ([A-Za-z0-9\-_]+)}
+enum "ip-vrf-type" as sdnc_types_I_ip_vrf_type {
+vrf
+vrf-lite
+}
+class "ip-vlan-id" as ip_vlan_id << (T, YellowGreen) typedef>>
+ip_vlan_id : uint16 [1..4095]
+enum "ip-vlan-classification" as sdnc_types_I_ip_vlan_classification {
+reserved
+normal
+extended
+}
+enum "ip-vlan-type" as sdnc_types_I_ip_vlan_type {
+default
+untagged
+tagged
+dot1q
+qinq
+port
+}
+enum "ip-vlan-group" as sdnc_types_I_ip_vlan_group {
+1x1
+Nx1
+}
+enum "ip-vlan-tagmode" as sdnc_types_I_ip_vlan_tagmode {
+double
+single
+Nx1
+}
+class "ip-vxlan-vni" as ip_vxlan_vni << (T, YellowGreen) typedef>>
+ip_vxlan_vni : uint64 [4096..16777215]
+enum "ip-vxlan-scope" as sdnc_types_I_ip_vxlan_scope {
+reserved
+network-wide
+local
+}
+class "ip-vrid" as ip_vrid << (T, YellowGreen) typedef>>
+ip_vrid : uint8 [1..255]
+enum "ip-rt-type" as sdnc_types_I_ip_rt_type {
+existing
+0x00
+0x01
+0x02
+0x06
+generic
+ipv6
+}
+enum "ip-rd-type" as sdnc_types_I_ip_rd_type {
+existing
+0
+1
+2
+6
+generic
+}
+class "ip-asn" as ip_asn << (T, YellowGreen) typedef>>
+ip_asn : uint64 [0..4294967295]
+enum "ip-asn-type" as sdnc_types_I_ip_asn_type {
+reserved
+public
+private
+}
+enum "ip-macsec-mode" as sdnc_types_I_ip_macsec_mode {
+single-host
+multi-host
+multi-domain
+}
+enum "ip-l2tp-version" as sdnc_types_I_ip_l2tp_version {
+v3
+}
+enum "docsis-version" as sdnc_types_I_docsis_version {
+docsis-30
+docsis-31
+docsis-40
+}
+enum "docsis-annex-type" as sdnc_types_I_docsis_annex_type {
+na
+a
+b
+c
+f
+j
+}
+enum "docsis-license-entitlement" as sdnc_types_I_docsis_license_entitlement {
+downstream-service-group
+upstream-service-group
+mac-docsis-ds-30-B
+mac-docsis-ds-ofdm
+mac-docsis-us-30
+mac-docsis-us-ofdma
+system-calea
+system-laes
+system-legal-intercept
+}
+enum "docsis-cable-direction" as sdnc_types_I_docsis_cable_direction {
+downstream
+upstream
+}
+enum "docsis-modulation-carrier" as sdnc_types_I_docsis_modulation_carrier {
+single
+ofdm
+}
+enum "docsis-modulation-profile" as sdnc_types_I_docsis_modulation_profile {
+qpsk
+8qam
+16qam
+32qam
+64qam
+128qam
+256qam
+512qam
+1024qam
+2048qam
+4096qam
+}
+enum "docsis-forward-error-correction" as sdnc_types_I_docsis_forward_error_correction {
+Reed Solomon
+LDPC/BCH
+}
+enum "docsis-modulation-type" as sdnc_types_I_docsis_modulation_type {
+tdma
+s-cdma
+atdma
+}
+enum "docsis-modulation-multiple-method" as sdnc_types_I_docsis_modulation_multiple_method {
+tdma
+s-cdma
+ofdma
+}
+enum "docsis-packetcable-pcmm-version" as sdnc_types_I_docsis_packetcable_pcmm_version {
+I02
+I03
+I04
+I05
+}
+enum "ntp-version" as sdnc_types_I_ntp_version {
+4
+3
+2
+1
+}
+class "oui-prefix" as oui_prefix << (T, YellowGreen) typedef>>
+oui_prefix : string {length = 8} {pattern = [0-9a-f][0-9a-f].[0-...}
+class "mac-address" as mac_address << (T, YellowGreen) typedef>>
+mac_address : string {length = 12..17} {pattern = [0-9a-f]{12}}
+class "nf-identifier" as nf_identifier << (T, YellowGreen) typedef>>
+nf_identifier : union{ct:mac-address, string}
+class "ip-rd" as ip_rd << (T, YellowGreen) typedef>>
+ip_rd : string {pattern = (0:(6553[0-5]|655[0-...}
+class "ipv4-route-target" as ipv4_route_target << (T, YellowGreen) typedef>>
+ipv4_route_target : string {pattern = (0:(6553[0-5]|655[0-...}
+class "ipv6-route-target" as ipv6_route_target << (T, YellowGreen) typedef>>
+ipv6_route_target : string {pattern = ((:|[0-9a-f]{0,4}):)...}
+class "ip-rt" as ip_rt << (T, YellowGreen) typedef>>
+ip_rt : union{ct:ipv4-route-target, ct:ipv6-route-target}
+enum "iana-timezones" as sdnc_types_I_iana_timezones {
+Europe/Andorra
+Asia/Dubai
+Asia/Kabul
+America/Antigua
+America/Anguilla
+Europe/Tirane
+Asia/Yerevan
+Africa/Luanda
+Antarctica/McMurdo
+Antarctica/Rothera
+Antarctica/Palmer
+Antarctica/Mawson
+Antarctica/Davis
+Antarctica/Casey
+Antarctica/Vostok
+Antarctica/DumontDUrville
+Antarctica/Syowa
+America/Argentina/Buenos_Aires
+America/Argentina/Cordoba
+America/Argentina/Salta
+America/Argentina/Jujuy
+America/Argentina/Tucuman
+America/Argentina/Catamarca
+America/Argentina/La_Rioja
+America/Argentina/San_Juan
+MORE
+}
+class "string-hex14" as string_hex14 << (T, YellowGreen) typedef>>
+string_hex14 : string {pattern = [a-fA-F0-9]{14}}
+class "pon-id-display-type" as pon_id_display_type << (T, YellowGreen) typedef>>
+pon_id_display_type : union{uint32, string-hex14}
+class "composite-channel-id-type" as composite_channel_id_type << (T, YellowGreen) typedef>>
+composite_channel_id_type : union{uint8, enumeration}
+enum "pon-port-mode" as sdnc_types_I_pon_port_mode {
+gpon
+epon
+xgs
+xgpon
+xgspon
+ngpon2
+}
+class "composite-downstream-wavelength-type" as composite_downstream_wavelength_type << (T, YellowGreen) typedef>>
+composite_downstream_wavelength_type : union{uint32, enumeration}
+enum "auth-method-type" as sdnc_types_I_auth_method_type {
+serial-number
+loid
+registration-id
+omci
+dot1x
+as-per-v-ani-expected
+}
+enum "raman-mitigation-type" as sdnc_types_I_raman_mitigation_type {
+raman-none
+raman-8b10b
+raman-miller
+}
+class "ip-address-or-unresolved" as ip_address_or_unresolved << (T, YellowGreen) typedef>>
+ip_address_or_unresolved : union{inet:ip-address, enumeration}
+class "onu-id" as onu_id << (T, YellowGreen) typedef>>
+onu_id : uint32 [0..1020]
+class "onu-serial-number" as onu_serial_number << (T, YellowGreen) typedef>>
+onu_serial_number : string {pattern = [a-zA-Z]{4}[0-9a-fA-...}
+class "int16-or-unknown" as int16_or_unknown << (T, YellowGreen) typedef>>
+int16_or_unknown : union{int16, enumeration}
+class "name-string" as name_string << (T, YellowGreen) typedef>>
+name_string : string {length = 1..64}
+class "percent" as percent << (T, YellowGreen) typedef>>
+percent : uint8 [0..100]
+class "performance-counter32" as performance_counter32 << (T, YellowGreen) typedef>>
+performance_counter32 : uint32
+class "performance-counter32-or-inactive" as performance_counter32_or_inactive << (T, YellowGreen) typedef>>
+performance_counter32_or_inactive : union{uint32, enumeration}
+class "performance-counter64" as performance_counter64 << (T, YellowGreen) typedef>>
+performance_counter64 : uint64
+class "string-ascii63-or-empty" as string_ascii63_or_empty << (T, YellowGreen) typedef>>
+string_ascii63_or_empty : string {length = 0..63} {pattern = [ -~]*}
+class "string-ascii64" as string_ascii64 << (T, YellowGreen) typedef>>
+string_ascii64 : string {length = 1..64} {pattern = [ -~]*}
+class "string-ascii64-or-empty" as string_ascii64_or_empty << (T, YellowGreen) typedef>>
+string_ascii64_or_empty : string {length = 0..64} {pattern = [ -~]*}
+enum "undetermined" as sdnc_types_I_undetermined {
+undetermined
+}
+class "data-rate32" as data_rate32 << (T, YellowGreen) typedef>>
+data_rate32 : uint32
+class "data-rate32-or-undetermined" as data_rate32_or_undetermined << (T, YellowGreen) typedef>>
+data_rate32_or_undetermined : union{undetermined, data-rate32}
+class "alloc-id-values" as alloc_id_values << (T, YellowGreen) typedef>>
+alloc_id_values : string {pattern = ((25[6-9]|2[6-9][0-9...}
+enum "ip-gemport-type" as sdnc_types_I_ip_gemport_type {
+point-to-point
+point-to-multipoint
+}
+enum "ip-allocation-strategy" as sdnc_types_I_ip_allocation_strategy {
+increment
+decrement
+}
+class "gemport-values" as gemport_values << (T, YellowGreen) typedef>>
+gemport_values : string {pattern = ((25[4-9]|2[6-9][0-9...}
+class "onu-id-values" as onu_id_values << (T, YellowGreen) typedef>>
+onu_id_values : string {pattern = (([0-9]|[1-9][0-9]|[...}
+enum "vomci-entity-state" as sdnc_types_I_vomci_entity_state {
+disabled-general
+enabled
+}
+enum "onu-alignment-status" as sdnc_types_I_onu_alignment_status {
+aligned
+unaligned
+}
+enum "onu-discovery-result" as sdnc_types_I_onu_discovery_result {
+successful
+failed-connectivity
+failed-unknown
+}
+class "onu-password" as onu_password << (T, YellowGreen) typedef>>
+onu_password : string {length = 0..10}
+class "onu-vendor-id" as onu_vendor_id << (T, YellowGreen) typedef>>
+onu_vendor_id : string {pattern = [a-zA-Z]{4}}
+class "onu-name" as onu_name << (T, YellowGreen) typedef>>
+onu_name : ct:string-ascii64
+class "omci-sequence-number" as omci_sequence_number << (T, YellowGreen) typedef>>
+omci_sequence_number : uint16
+class "olt-name" as olt_name << (T, YellowGreen) typedef>>
+olt_name : ct:string-ascii64
+enum "pon-nf-type" as sdnc_types_I_pon_nf_type {
+access-vnf-type
+vomci-function-type
+vomci-proxy-type
+voltmf-type
+dpu
+msan
+dslam
+olt
+onu
+fast-cpe
+vdsl2-cpe
+}
+class "broadband-line-characteristics" as broadband_line_characteristics << (T, YellowGreen) typedef>>
+broadband_line_characteristics : bits
+class "interface-ref" as interface_ref << (T, YellowGreen) typedef>>
+interface_ref : leafref : ...if:name
+class "element-name" as element_name << (T, YellowGreen) typedef>>
+element_name : string {length = 3..255}
+enum "element-family" as sdnc_types_I_element_family {
+RMD
+auxCore
+Server
+OLT
+}
+enum "element-vendor" as sdnc_types_I_element_vendor {
+CommScope
+CiscoSystems
+JuniperNetworks
+Adtran
+Nokia
+HiSense
+CIG
+ExtremeNetworks
+Ruckus
+Generic
+}
+enum "element-model" as sdnc_types_I_element_model {
+RD2322
+VUE
+DHCP
+}
+enum "element-management-protocol" as sdnc_types_I_element_management_protocol {
+SSH
+NETCONF
+RESTCONF
+}
+enum "element-traffic-types" as sdnc_types_I_element_traffic_types {
+cable-modem
+host
+cpe
+mta
+cable-home-ps
+dsg-stb
+embeddded-rtr
+any
+}
+class "element-vendor-classes" as element_vendor_classes << (T, YellowGreen) typedef>>
+element_vendor_classes : string {pattern = ([0-9]|[12][0-9]|3[0...}
+class "/if:interfaces/if:interface" as ietf_interfaces_I_interfaces_I_interface <<leafref>> 
+} 
+
+interface_ref-->"if:name"ietf_interfaces_I_interfaces_I_interface: interface-ref
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

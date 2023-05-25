@@ -1,0 +1,75 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/rxd-rd1322.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title rxd-rd1322 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cg:sdnc-groupings" as cg_sdnc_groupings { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of rd1322_rxd_rd1322 : <b>Namespace: </b> urn:com:vendor:yang:rxd:rd1322 \n<b>Prefix: </b> rd1322 \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-04-01 \n
+package "rd1322:rxd-rd1322" as rd1322_rxd_rd1322 { 
+c_sdnc +-- rd1322_rxd_rd1322
+ct_sdnc_types +-- rd1322_rxd_rd1322
+cs_sdnc_sku +-- rd1322_rxd_rd1322
+cnf_sdnc_xnf +-- rd1322_rxd_rd1322
+cg_sdnc_groupings +-- rd1322_rxd_rd1322
+inet_ietf_inet_types +-- rd1322_rxd_rd1322
+class "rxd-rd1322" as rxd_rd1322 << (M, #33CCFF) module>> 
+rxd_rd1322 : feature : rxd_rd1322 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+rxd_rd1322 *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cs:sdnc-sku
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+class "cli-header" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header
+<b>Config = </b>false
+end note 
+class "hardware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : cg:common-hardware {uses} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : operational-mode : ct:rxd-operational-mode   = 1x1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : shelfname : string  
+class "cli-footer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer
+<b>Config = </b>false
+end note 
+} 
+
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

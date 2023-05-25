@@ -1,0 +1,407 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-xnf.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-xnf 
+package "c:sdnc" as c_sdnc { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "css:sdnc-snmp" as css_sdnc_snmp { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cch:sdnc-call-home" as cch_sdnc_call_home { 
+} 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+package "ext:yang-ext" as ext_yang_ext { 
+} 
+package "nt:network-topology" as nt_network_topology { 
+} 
+note top of cnf_sdnc_xnf : <b>Namespace: </b> urn:com:vendor:yang:sdnc:xnf \n<b>Prefix: </b> cnf \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+c_sdnc +-- cnf_sdnc_xnf
+cs_sdnc_sku +-- cnf_sdnc_xnf
+css_sdnc_snmp +-- cnf_sdnc_xnf
+ct_sdnc_types +-- cnf_sdnc_xnf
+cch_sdnc_call_home +-- cnf_sdnc_xnf
+yang_ietf_yang_types +-- cnf_sdnc_xnf
+inet_ietf_inet_types +-- cnf_sdnc_xnf
+ext_yang_ext +-- cnf_sdnc_xnf
+nt_network_topology +-- cnf_sdnc_xnf
+class "sdnc-xnf" as sdnc_xnf << (M, #33CCFF) module>> 
+sdnc_xnf : feature : sdnc_xnf 
+class "nf-notification-common" as sdnc_xnf_I_nf_notification_common_grouping <<(G,Lime) grouping>> 
+sdnc_xnf_I_nf_notification_common_grouping : instance : leafref : ...cnf:instance   {mandatory}
+sdnc_xnf_I_nf_notification_common_grouping : model-namespace : leafref : ...cs:model-namespace   {mandatory}
+sdnc_xnf_I_nf_notification_common_grouping : model-revision : leafref : ...cs:model-revision   {mandatory}
+sdnc_xnf_I_nf_notification_common_grouping : parent-instance : leafref : ...cnf:instance  
+sdnc_xnf_I_nf_notification_common_grouping : management-name : string  
+sdnc_xnf : list-all-instances( out: instances)
+sdnc_xnf : list-all-instances-by-namespace( in: model_namespace out: instances)
+sdnc_xnf : list-all-instances-by-namespace-revision( in: model_namespace in: model_revision out: instances)
+sdnc_xnf : list-all-dependants( in: instance out: instances)
+sdnc_xnf : list-all-dependants-by-model( in: instance in: model_namespace out: instances)
+sdnc_xnf : list-all-dependants-by-model-revision( in: instance in: model_namespace in: model_revision out: instances)
+sdnc_xnf : define( in: model_namespace in: model_revision in: identifier in: name in: description in: location_decimal_degrees in: parent_instance in: host in: port in: username in: password in: data_model in: protocol in: incarnation in: state out: instance)
+sdnc_xnf : nf-change-cli-credentials( in: instance in: username in: password)
+sdnc_xnf : nf-change-enable-credentials( in: instance in: enable_username in: enable_password)
+sdnc_xnf : nf-change-netconf-credentials( in: instance in: netconf_username in: netconf_password)
+sdnc_xnf : nf-change-call-home-credentials( in: instance in: username in: password)
+sdnc_xnf : nf-change-call-home-host-key( in: instance in: host_key)
+sdnc_xnf : nf-change-netconf-host-port( in: instance in: host in: port)
+sdnc_xnf : nf-config-to-history( in: instance in: source_datastore)
+sdnc_xnf : history-to-nf-config( in: instance in: target_datastore in: history_timestamp)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_xnf *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "xnf" as  sdnc_I_sdnc_I_xnf <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_xnf 
+note bottom of sdnc_I_sdnc_I_xnf
+<b>Config = </b>true
+end note 
+note bottom of sdnc_I_sdnc_I_xnf
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_I_sdnc_I_xnf
+<b>if-feature: </b>cs:sdnc-sku
+end note 
+class "nf" as sdnc_I_sdnc_I_xnf_I_nf << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf 
+sdnc_I_sdnc_I_xnf_I_nf : +instance : yang:uuid  {key} 
+sdnc_I_sdnc_I_xnf_I_nf : undefine()
+sdnc_I_sdnc_I_xnf_I_nf : upgrade( in: model_namespace in: model_revision)
+sdnc_I_sdnc_I_xnf_I_nf : downgrade( in: model_namespace in: model_revision)
+sdnc_I_sdnc_I_xnf_I_nf : model-namespace : leafref : ...cs:model-namespace  
+sdnc_I_sdnc_I_xnf_I_nf : model-revision : leafref : ...cs:model-revision  
+sdnc_I_sdnc_I_xnf_I_nf : parent-instance : leafref : ...cnf:instance  
+class "management" as  sdnc_I_sdnc_I_xnf_I_nf_I_management <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_management 
+sdnc_I_sdnc_I_xnf_I_nf_I_management : host : inet:host  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_management
+<b>When</b> (host):
+not(./protocol='parent')
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_management : port : inet:port-number  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_management
+<b>When</b> (port):
+not(./protocol='parent')
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_management : node-id : leafref : ...nt:node-id  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_management
+<b>When</b> (node-id):
+./protocol='netconf'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_management : data-model : ct:model-construct   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : protocol : ct:management-protocol   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : identifier : ct:nf-identifier  
+sdnc_I_sdnc_I_xnf_I_nf_I_management : name : string   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : description : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_management : incarnation : ct:xnf-incarnation   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : state : ct:xnf-state   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : asset-id : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_management : username : string   {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management : password : string   {mandatory}
+class "protocol-transport" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport <<choice>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport : choice 
+class "cli-ssh" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_cli_ssh_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_cli_ssh_case  : choice protocol-transport
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_cli_ssh_case : enable-username : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_cli_ssh_case : enable-password : string  
+class "netconf" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case  : choice protocol-transport
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : tcp-only : boolean   = false 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : connection-timeout-millis : uint32   = 32000 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : default-request-timeout-millis : uint32   = 60000 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : between-attempts-timeout-millis : uint16   = 2000 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : sleep-factor : decimal64   = 1.5 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : keepalive-delay : uint32   = 120 
+class "hello-message-capabilities" as  sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_hello_message_capabilities <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_hello_message_capabilities 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_hello_message_capabilities : capability []: inet:uri 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : schema-cache-directory : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : concurrent-rpc-limit : uint16   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : max-connection-attempts : uint32   = 0 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : reconnect-on-changed-schema : boolean   = false 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case : authentication-method : enumeration : {password,}   = password 
+class "capability-override" as  sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_capability_override <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_capability_override 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_capability_override : override : boolean   = false 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_capability_override : capability []: string 
+class "call-home" as  sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_case *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home : unique-id : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home : revoke()
+class "protocol" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol <<choice>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol : choice 
+class "ssh" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_ssh_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_ssh_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_ssh_case : host-key : string  
+class "tls" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_case  : choice protocol
+class "chain" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_case *-- "1..N" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain : ordered-by : user
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain : +certificate-id : leafref : ...cch:id  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain : key-id : leafref : ...cch:id  
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain
+<b>Must</b> (key-id):
+/c:sdnc/cch:call-home/cch:tls/cch:certificates[cch:id=current()]/cch:category='private-key'
+
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home : username : string {length = 4..max}  
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home : password : string {length = 4..max}  
+class "firmware" as  sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware 
+class "revisions" as sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware_I_revisions << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware_I_revisions 
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware_I_revisions : +name : string  {key}  {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_firmware_I_revisions : version : ct:firmware-version-type  
+class "snmp" as  sdnc_I_sdnc_I_xnf_I_nf_I_snmp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_snmp 
+sdnc_I_sdnc_I_xnf_I_nf_I_snmp : security-group-identifier : leafref : ...css:identifier  
+sdnc_I_sdnc_I_xnf_I_nf_I_snmp : request-group-identifier : leafref : ...css:identifier  
+class "location" as  sdnc_I_sdnc_I_xnf_I_nf_I_location <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_location 
+sdnc_I_sdnc_I_xnf_I_nf_I_location : decimal-degrees : ct:location-decimal-degrees-type  
+class "geographic-coordinate" as  sdnc_I_sdnc_I_xnf_I_nf_I_location_I_geographic_coordinate <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_location *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_location_I_geographic_coordinate 
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_geographic_coordinate : latitude : ct:location-latitude  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_geographic_coordinate : longitude : ct:location-longitude  
+class "postal-address" as  sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_location *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address 
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : room : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : floor : uint8 [1..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : building-name-or-number : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : street-name : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : district : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : city : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : state : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : postal-code : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_location_I_postal_address : country : ct:location-iso3166-1-alpha-3  
+class "configs" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs : config-histories-to-keep : uint8 [1..255]   = 3 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs : config-slices-to-keep : uint8 [1..255]   = 54 
+class "config-history" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history : +timestamp : yang:date-and-time  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history : model-revision : leafref : ...cs:model-revision  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history : raw : string  
+class "config-slices" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : +instance-slice : yang:uuid  {key}  {mandatory}
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : raw : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : validate-only : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : generation-timestamp : yang:date-and-time  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : delivery-timestamp : yang:date-and-time  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : delivery-result : ct:nf-config-delivery-result  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices : delivery-response : string  
+class "/nt:network-topology/nt:topology/nt:node" as nt_network_topology_nt_topology_nt_node << (A,CadetBlue) augment>>
+sdnc_xnf *--  nt_network_topology_nt_topology_nt_node 
+note bottom of nt_network_topology_nt_topology_nt_node
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of nt_network_topology_nt_topology_nt_node
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of nt_network_topology_nt_topology_nt_node
+<b>When: </b>(/nt:network-topology/nt:topology/nt:node and /c:sdnc/cnf:xnf/cnf:nf)
+end note 
+class "sdnc" as  network_topology_I_network_topology_I_topology_I_node_I_sdnc <<container>> 
+nt_network_topology_nt_topology_nt_node *-- "0..1" network_topology_I_network_topology_I_topology_I_node_I_sdnc 
+note bottom of network_topology_I_network_topology_I_topology_I_node_I_sdnc
+<b>Presence: </b>The presence of the container node may indicate
+this node is being managed indirectly by SDNc
+end note 
+class "/nt:network-topology/nt:topology/nt:node/cnf:sdnc" as nt_network_topology_nt_topology_nt_node_cnf_sdnc << (A,CadetBlue) augment>>
+sdnc_xnf *--  nt_network_topology_nt_topology_nt_node_cnf_sdnc 
+note bottom of nt_network_topology_nt_topology_nt_node_cnf_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of nt_network_topology_nt_topology_nt_node_cnf_sdnc
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of nt_network_topology_nt_topology_nt_node_cnf_sdnc
+<b>When: </b>(/nt:network-topology/nt:topology/nt:node/cnf:sdnc)
+end note 
+nt_network_topology_nt_topology_nt_node_cnf_sdnc : instance : leafref : ...cnf:instance  
+class "nf-added" as sdnc_xnf_I_nf_added << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_added : notification 
+note bottom of sdnc_xnf_I_nf_added
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_added
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_added : cnf:nf-notification-common {uses} 
+class "nf-change" as sdnc_xnf_I_nf_change << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_change : notification 
+note bottom of sdnc_xnf_I_nf_change
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_change
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_change : cnf:nf-notification-common {uses} 
+class "nf-deleted" as sdnc_xnf_I_nf_deleted << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_deleted : notification 
+note bottom of sdnc_xnf_I_nf_deleted
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_deleted
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_deleted : cnf:nf-notification-common {uses} 
+class "nf-config-change" as sdnc_xnf_I_nf_config_change << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_config_change : notification 
+note bottom of sdnc_xnf_I_nf_config_change
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_config_change
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_config_change : cnf:nf-notification-common {uses} 
+sdnc_xnf_I_nf_config_change : +instance-slice : yang:uuid  {key}  {mandatory}
+class "nf-config-generated" as sdnc_xnf_I_nf_config_generated << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_config_generated : notification 
+note bottom of sdnc_xnf_I_nf_config_generated
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_config_generated
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_config_generated : cnf:nf-notification-common {uses} 
+sdnc_xnf_I_nf_config_generated : +instance-slice : yang:uuid  {key}  {mandatory}
+class "nf-config-delivery" as sdnc_xnf_I_nf_config_delivery << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_config_delivery : notification 
+note bottom of sdnc_xnf_I_nf_config_delivery
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_config_delivery
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_config_delivery : cnf:nf-notification-common {uses} 
+sdnc_xnf_I_nf_config_delivery : +instance-slice : leafref : ...cnf:instance-slice  {key}  {mandatory}
+sdnc_xnf_I_nf_config_delivery : timestamp : yang:date-and-time   {mandatory}
+sdnc_xnf_I_nf_config_delivery : result : ct:nf-config-delivery-result   {mandatory}
+class "nf-connected" as sdnc_xnf_I_nf_connected << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_connected : notification 
+note bottom of sdnc_xnf_I_nf_connected
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_connected
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_connected : cnf:nf-notification-common {uses} 
+class "nf-disconnected" as sdnc_xnf_I_nf_disconnected << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_disconnected : notification 
+note bottom of sdnc_xnf_I_nf_disconnected
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_disconnected
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_disconnected : cnf:nf-notification-common {uses} 
+class "nf-connecting" as sdnc_xnf_I_nf_connecting << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_connecting : notification 
+note bottom of sdnc_xnf_I_nf_connecting
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_connecting
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_connecting : cnf:nf-notification-common {uses} 
+class "nf-unable-to-connect" as sdnc_xnf_I_nf_unable_to_connect << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_unable_to_connect : notification 
+note bottom of sdnc_xnf_I_nf_unable_to_connect
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_unable_to_connect
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_unable_to_connect : cnf:nf-notification-common {uses} 
+class "nf-failed-auth-failure" as sdnc_xnf_I_nf_failed_auth_failure << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_failed_auth_failure : notification 
+note bottom of sdnc_xnf_I_nf_failed_auth_failure
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_failed_auth_failure
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_failed_auth_failure : cnf:nf-notification-common {uses} 
+class "nf-failed-not-allowed" as sdnc_xnf_I_nf_failed_not_allowed << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_failed_not_allowed : notification 
+note bottom of sdnc_xnf_I_nf_failed_not_allowed
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_failed_not_allowed
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_failed_not_allowed : host : inet:host   {mandatory}
+sdnc_xnf_I_nf_failed_not_allowed : port : inet:port-number   {mandatory}
+class "nf-failed" as sdnc_xnf_I_nf_failed << (N,#00D1B2) notification>> 
+sdnc_xnf -- sdnc_xnf_I_nf_failed : notification 
+note bottom of sdnc_xnf_I_nf_failed
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of sdnc_xnf_I_nf_failed
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+sdnc_xnf_I_nf_failed : cnf:nf-notification-common {uses} 
+class "/c:sdnc/cs:sku/cs:models" as sdnc_I_sdnc_I_sku_I_models <<leafref>> 
+class "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../cnf:model-namespace]/cs:versions" as sdnc_I_sdnc_I_sku_I_models_I_versions <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/nt:network-topology/nt:topology/nt:node" as network_topology_I_network_topology_I_topology_I_node <<leafref>> 
+class "/c:sdnc/cch:call-home/cch:tls/cch:certificates" as sdnc_I_sdnc_I_call_home_I_tls_I_certificates <<leafref>> 
+class "/c:sdnc/cch:call-home/cch:tls/cch:certificates" as sdnc_I_sdnc_I_call_home_I_tls_I_certificates <<leafref>> 
+class "/c:sdnc/css:snmp/css:security-groups/css:security-group" as sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group <<leafref>> 
+class "/c:sdnc/css:snmp/css:requests/css:request-groups" as sdnc_I_sdnc_I_snmp_I_requests_I_request_groups <<leafref>> 
+class "/c:sdnc/cs:sku/cs:models[cs:model-namespace=current()/../../../cnf:model-namespace]/cs:versions" as sdnc_I_sdnc_I_sku_I_models_I_versions <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf[cnf:instance=current()/../cnf:instance]/cnf:configs/cnf:config-slices" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices <<leafref>> 
+} 
+
+sdnc_xnf_I_nf_added --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_change --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_deleted --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_config_change --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_config_generated --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_config_delivery --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_connected --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_disconnected --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_connecting --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_unable_to_connect --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_failed_auth_failure --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_xnf_I_nf_failed --> sdnc_xnf_I_nf_notification_common_grouping : uses 
+sdnc_I_sdnc_I_xnf_I_nf-->"cs:model-namespace"sdnc_I_sdnc_I_sku_I_models: model-namespace
+sdnc_I_sdnc_I_xnf_I_nf-->"cs:model-revision"sdnc_I_sdnc_I_sku_I_models_I_versions: model-revision
+sdnc_I_sdnc_I_xnf_I_nf-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: parent-instance
+sdnc_I_sdnc_I_xnf_I_nf_I_management-->"nt:node-id"network_topology_I_network_topology_I_topology_I_node: node-id
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain-->"cch:id"sdnc_I_sdnc_I_call_home_I_tls_I_certificates: certificate-id
+sdnc_I_sdnc_I_xnf_I_nf_I_management_I_protocol_transport_I_netconf_I_call_home_I_protocol_I_tls_I_chain-->"cch:id"sdnc_I_sdnc_I_call_home_I_tls_I_certificates: key-id
+sdnc_I_sdnc_I_xnf_I_nf_I_snmp-->"css:identifier"sdnc_I_sdnc_I_snmp_I_security_groups_I_security_group: security-group-identifier
+sdnc_I_sdnc_I_xnf_I_nf_I_snmp-->"css:identifier"sdnc_I_sdnc_I_snmp_I_requests_I_request_groups: request-group-identifier
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_history-->"cs:model-revision"sdnc_I_sdnc_I_sku_I_models_I_versions: model-revision
+network_topology_I_network_topology_I_topology_I_node_I_sdnc-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_xnf_I_nf_config_delivery-->"cnf:instance-slice"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices: instance-slice
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

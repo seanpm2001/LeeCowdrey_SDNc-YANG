@@ -1,0 +1,997 @@
+module sdnc-halo-docs {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:halo:docs";
+  prefix chd;
+
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2013-07-15;
+    reference
+      "RFC 6991";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Docs Swagger APIs";
+
+  revision 2022-06-23 {
+    description
+      "initial";
+  }
+
+  feature sdnc-halo-docs {
+    status current;
+  }
+
+  extension substatement {
+    argument name {
+      chd:arg-type {
+        type string;
+      }
+    }
+    chd:substatement "chd:occurrence";
+    description
+      "Specifies which statements can occur as substatement to the
+       given statement.";
+  }
+
+  extension arg-type {
+    chd:substatement "default";
+    description
+      "Specifies the type of the argument.";
+  }
+
+  extension json-name-label {
+    argument definition {
+      chd:arg-type {
+        type string {
+          length "1..64";
+          pattern '[ -~]+';
+        }
+      }
+    }
+  }
+
+  extension protocol {
+    argument definition {
+      chd:arg-type {
+        type enumeration {
+          enum http;
+          enum https;
+        }
+      }
+    }
+  }
+
+  extension http-header {
+    argument definition {
+      chd:arg-type {
+        type string {
+          pattern '(\w+)(-(\w+)+)*:\s[ -~]+';
+        }
+      }
+    }
+  }
+
+  extension http-method {
+    argument definition {
+      chd:arg-type {
+        type enumeration {
+          enum GET;
+          enum HEAD;
+          enum POST;
+          enum PUT;
+          enum DELETE;
+          enum CONNECT;
+          enum OPTIONS;
+          enum TRACE;
+          enum PATCH;
+        }
+      }
+    }
+  }
+
+  extension http-response-code {
+    argument definition {
+      chd:arg-type {
+        type uint16 {
+          range "100..103|110..113|199|200..208|214|226|299|300..308|400..418|421..426|428..429|431|444|451|494..499|500..508|510..511";
+        }
+      }
+    }
+  }
+
+  // OpenAPI/Swagger constructs
+  //
+  // URL GET https://petstore.swagger.io/v2/pets/findBYStatus?status=available
+  //
+  // GET - operation (http method)
+  // https - scheme (protocol)
+  // petstore.manager.io - host
+  // /v2 - base-path
+  // /pets/findByStatus - path
+  // status=available - query parameter
+  //
+
+  extension openapi-host {
+    argument definition {
+      chd:arg-type {
+        type inet:host;
+      }
+    }
+  }
+
+  extension openapi-base-path {
+    argument definition {
+      chd:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension openapi-path {
+    argument definition {
+      chd:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension openapi-query-parameter {
+    argument definition {
+      chd:arg-type {
+        type string;
+      }
+    }
+  }
+
+  extension openapi-specification {
+    argument definition {
+      chd:arg-type {
+        type string {
+          pattern '(\d+\.)?(\d+\.)?(\*|\d+)';
+        }
+      }
+    }
+  }
+
+  extension openapi-version {
+    argument definition {
+      chd:arg-type {
+        type string {
+          pattern '(\d+\.)?(\d+\.)?(\*|\d+)';
+        }
+      }
+    }
+  }
+
+  grouping response-common {
+    chd:http-header "Cache-Control: No-Store";
+  }
+
+  grouping ok {
+    uses chd:response-common;
+    chd:http-response-code "200";
+  }
+
+  grouping created {
+    uses chd:response-common;
+    chd:http-response-code "201";
+  }
+
+  grouping accepted {
+    uses chd:response-common;
+    chd:http-response-code "202";
+  }
+
+  grouping no-content {
+    uses chd:response-common;
+    chd:http-response-code "204";
+  }
+
+  grouping reset-content {
+    uses chd:response-common;
+    chd:http-response-code "205";
+  }
+
+  grouping partial-content {
+    uses chd:response-common;
+    chd:http-response-code "206";
+  }
+
+  grouping bad-request {
+    uses chd:response-common;
+    chd:http-response-code "400";
+    leaf badRequest {
+      chd:json-name-label "message";
+      type string;
+    }
+    // YANG XML:
+    //   <container1>
+    //     <error_list>value1</error_list>
+    //     <error_list>value2</error_list>
+    //   </container1>
+    // YANG JSON:
+    //   "container1": {
+    //     "error_list": [
+    //       "value1",
+    //       "value2"
+    //     ]
+    //   }
+    //
+    leaf-list error_list {
+      type string;
+    }
+  }
+
+  grouping unauthorized {
+    uses chd:response-common;
+    chd:http-response-code "401";
+  }
+
+  grouping payment-required {
+    uses chd:response-common;
+    chd:http-response-code "402";
+  }
+
+  grouping forbidden {
+    uses chd:response-common;
+    chd:http-response-code "403";
+  }
+
+  grouping not-found {
+    uses chd:response-common;
+    chd:http-response-code "404";
+    leaf notFound {
+      type string;
+    }
+  }
+
+  grouping method-not-allowed {
+    uses chd:response-common;
+    chd:http-response-code "405";
+  }
+
+  grouping not-acceptable {
+    uses chd:response-common;
+    chd:http-response-code "406";
+  }
+
+  grouping proxy-authentication-required {
+    uses chd:response-common;
+    chd:http-response-code "407";
+  }
+
+  grouping request-timeout {
+    uses chd:response-common;
+    chd:http-response-code "408";
+  }
+
+  grouping conflict {
+    uses chd:response-common;
+    chd:http-response-code "409";
+    leaf conflict {
+      chd:json-name-label "message";
+      type string;
+    }
+  }
+
+  grouping gone {
+    uses chd:response-common;
+    chd:http-response-code "410";
+  }
+
+  grouping length-required {
+    uses chd:response-common;
+    chd:http-response-code "411";
+  }
+
+  grouping precondition-failed {
+    uses chd:response-common;
+    chd:http-response-code "412";
+  }
+
+  grouping payload-too-long {
+    uses chd:response-common;
+    chd:http-response-code "413";
+  }
+
+  grouping uri-too-long {
+    uses chd:response-common;
+    chd:http-response-code "414";
+  }
+
+  grouping unsupported-media-type {
+    uses chd:response-common;
+    chd:http-response-code "415";
+  }
+
+  grouping range-not-satisfiable {
+    uses chd:response-common;
+    chd:http-response-code "416";
+  }
+
+  grouping expectation-failed {
+    uses chd:response-common;
+    chd:http-response-code "417";
+  }
+
+  grouping device-structure {
+    leaf elementName {
+      type ct:element-name;
+      mandatory true;
+    }
+    leaf elementFamily {
+      type ct:element-family;
+      mandatory true;
+    }
+    leaf elementVendor {
+      type ct:element-vendor;
+      mandatory true;
+    }
+    leaf elementModel {
+      type ct:element-model;
+      mandatory true;
+    }
+    leaf primaryMacAddress {
+      type ct:mac-address;
+      mandatory true;
+    }
+    leaf groupId {
+      type string;
+      default "Default";
+    }
+    leaf description {
+      type string;
+    }
+    leaf location {
+      type string;
+    }
+    leaf gpsLocation {
+      type ct:location-decimal-degrees-type;
+    }
+    leaf ipv4Address {
+      type inet:ipv4-address;
+    }
+    leaf ipv6Address {
+      type inet:ipv6-address;
+    }
+    list trafficTypes {
+      key "trafficType";
+      ordered-by user;
+      max-elements 8;
+      leaf trafficType {
+        type ct:element-traffic-types;
+      }
+    }
+    list vendorClasses {
+      key "vendorClass";
+      leaf vendorClass {
+        type ct:element-vendor-classes;
+      }
+    }
+    container mgmtConfig {
+      leaf username {
+        type string {
+          length "1..256";
+        }
+      }
+      leaf password {
+        type string {
+          length "1..256";
+        }
+      }
+      leaf ipAddress {
+        type inet:ip-address;
+      }
+      leaf protocol {
+        type ct:element-management-protocol;
+        default "SSH";
+      }
+      leaf sshPublicKey {
+        type string;
+        when "../protocol = 'SSH' or ../protocol = 'NETCONF'";
+      }
+      leaf port {
+        type uint16 {
+          range "1..65535";
+        }
+        default "22";
+      }
+      leaf snmpV2Public {
+        type ct:snmp-community-name;
+      }
+    }
+    leaf assetId {
+      type string {
+        length "1..17";
+      }
+    }
+    leaf deviceAlias {
+      type string {
+        length "1..255";
+      }
+    }
+    leaf serialNumber {
+      type string;
+    }
+    leaf operationalMode {
+      type ct:rxd-operational-mode;
+    }
+    leaf intraNodeCabling {
+      type ct:rxd-operational-mode;
+    }
+    container licenseConfig {
+      leaf lawfulIntercept {
+        type boolean;
+        default "false";
+      }
+      leaf calea {
+        description
+          "Indicates that the CALEA license should be requested for this RMD";
+        type boolean;
+        default "false";
+      }
+      leaf laes {
+        description
+          "Indicates that the LAES license should be requested for this RMD";
+        type boolean;
+        default "false";
+      }
+      container downstream {
+        leaf serviceGroupCnt {
+          description
+            "Number of downstream service group licenses required";
+          type uint8 {
+            range "1..2";
+          }
+          default "1";
+        }
+        leaf enterprise {
+          description
+            "Explicit indicator which indicates enterprise license have been activated on downstream";
+          type boolean;
+          default "false";
+        }
+        leaf eneterpriseCnt {
+          description
+            "Enterprise license count";
+          type uint8 {
+            range "1..2";
+          }
+          default "1";
+        }
+        leaf docsisDS30aCnt {
+          description
+            "DOCSIS 3.0 Downstream SC-QAM channel count - Annex A";
+          type uint16 {
+            range "0..288";
+          }
+          default "0";
+        }
+        leaf docsisDS30bCnt {
+          description
+            "DOCSIS 3.0 Downstream SC-QAM channel count - Annex B";
+          type uint16 {
+            range "0..384";
+          }
+          default "0";
+        }
+        leaf docsisDSOfdmCnt {
+          description
+            "DOCSIS 3.1 Downstream OFDM channel count";
+          type uint16 {
+            range "0..788";
+          }
+          default "0";
+        }
+      }
+      container upstream {
+        leaf serviceGroupCnt {
+          description
+            "Number of upstream service group licenses required";
+          type uint8 {
+            range "1..2";
+          }
+          default "1";
+        }
+        leaf enterprise {
+          description
+            "Explicit indicator which indicates enterprise license have been activated on upstream";
+          type boolean;
+          default "false";
+        }
+        leaf eneterpriseCnt {
+          description
+            "Enterprise license count";
+          type uint8 {
+            range "1..2";
+          }
+          default "1";
+        }
+        leaf docsisDS30bCnt {
+          description
+            "DOCSIS 3.0 upstream SC-QAM channel count";
+          type uint8 {
+            range "0..24";
+          }
+          default "0";
+        }
+        leaf docsisDSOfdmaCnt {
+          description
+            "DOCSIS 3.1 upstream OFDM channel count";
+          type uint16 {
+            range "0..3800";
+          }
+          default "0";
+        }
+      }
+    }
+    container onboarding {
+      leaf onboarded {
+        type boolean;
+      }
+      leaf ssdIdentifier {
+        type string;
+      }
+      leaf softwareVersion {
+        type string;
+      }
+      leaf time {
+        type yang:date-and-time;
+      }
+    }
+    container auxCore {
+      leaf auxCoreId {
+        type string {
+          pattern '[0-9A-Fa-f]{12}';
+          length "12";
+        }
+      }
+      leaf gcpIpAddress {
+        type inet:ip-address;
+      }
+    }
+    leaf softwareVersion {
+      type string;
+    }
+    leaf startupTemplate {
+      type string;
+    }
+    leaf securityTemplate {
+      type string;
+    }
+    leaf useLag {
+      type boolean;
+      default "true";
+    }
+    leaf annex {
+      type ct:docsis-annex-type;
+    }
+  }
+
+  grouping device-ethernet-interfaces {
+    leaf name {
+      type string {
+        length "1..32";
+      }
+      mandatory true;
+    }
+    leaf templateId {
+      type string;
+    }
+    leaf ipAddress {
+      type inet:ip-address;
+    }
+    leaf subnetMask {
+      type ct:ipv4-subnet-mask;
+    }
+    leaf ipv6Address {
+      type inet:ipv6-address;
+    }
+    leaf ipv6Prefix {
+      type inet:ipv6-prefix;
+    }
+    leaf description {
+      type string;
+    }
+    leaf vlanId {
+      type ct:ip-vlan-id;
+    }
+  }
+
+  chd:protocol "http";
+  chd:openapi-host "10.173.130.17";
+  chd:openapi-base-path "";
+  chd:openapi-specification "3.0.3";
+  chd:openapi-version "1.2";
+
+  rpc controller-create-device {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Creates a new device, of a specific type, within the device inventory.";
+    chd:openapi-path "/controller/v1/devices";
+    chd:http-method "POST";
+    input {
+      uses device-structure;
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:created;
+          leaf elementId {
+            type yang:uuid;
+            mandatory true;
+          }
+          uses device-structure;
+        }
+        case error-bad-request {
+          uses chd:bad-request;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-conflict {
+          uses chd:conflict;
+        }
+      }
+    }
+  }
+
+  rpc controller-retrieve-devices {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "This end point can be used to retrieve a list of devices which match a given set of properties.";
+    chd:openapi-path "/controller/v1/devices";
+    chd:http-method "GET";
+    input {
+      leaf elementFamily {
+        type ct:element-family;
+      }
+      leaf elementVendor {
+        type ct:element-vendor;
+      }
+      leaf elementModel {
+        type ct:element-model;
+      }
+      leaf elementName {
+        type ct:element-name;
+      }
+      leaf fields {
+        description
+          "Any field in the top level of the respective data model can be used, with some examples provided in the table below.
+           The default behaviour in release 1.1 is to return all attributes, but this will change to return only those properties in the base model in a subsequent release. When specifying fields, they will be included along with those properties in the 'Base Device Model'. Multiple fields can be specificed - seperated by commas.";
+        type union {
+          type enumeration {
+            enum all;
+          }
+          type string {
+            pattern '(([a-zA-Z0-9](,)?)*)+';
+          }
+        }
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+          leaf elementId {
+            type yang:uuid;
+            mandatory true;
+          }
+          uses device-structure;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+      }
+    }
+  }
+
+  rpc controller-get-device {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Returns the details for a specific device created previously";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}";
+    chd:http-method "GET";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+          leaf elementId {
+            type yang:uuid;
+            mandatory true;
+          }
+          uses device-structure;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-update-device {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "This endpoint can be used to manipulate the properties of any of the devices provisionable on this end point. Patching in this way allows individual properties to be set / changed without the need to res-submit the entire document";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}";
+    chd:http-method "PATCH";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+      uses device-structure;
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+        }
+        case error-bad-request {
+          uses chd:bad-request;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-delete-device {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Remove the device from the device inventory.";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}";
+    chd:http-method "DELETE";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:no-content;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-get-device-interfaces-ethernet {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Retrieves the list of ethernet interfaces for the specific device";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}/interfaces/ethernet";
+    chd:http-method "GET";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+          list ethernets {
+            key "_id";
+            leaf _id {
+              type string {
+                length "1..32";
+                pattern '[A-Za-z0-9]+';
+              }
+              mandatory true;
+            }
+            uses chd:device-ethernet-interfaces;
+          }
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-create-device-interfaces-ethernet {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Creates a new ethernet interface for the given device";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}/interfaces/ethernet/{{ifld}}";
+    chd:http-method "POST";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+      leaf ifId {
+        type string {
+          pattern '[A-Za-z0-9]+';
+        }
+        mandatory true;
+      }
+      uses chd:device-ethernet-interfaces;
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:created;
+          leaf _id {
+            type string {
+              length "1..32";
+              pattern '[A-Za-z0-9]+';
+            }
+            mandatory true;
+          }
+          uses chd:device-ethernet-interfaces;
+        }
+        case error-bad-request {
+          uses chd:bad-request;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-get-device-interface-ethernet {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Retrieves the details for a specific interface on a specific device";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}/interfaces/ethernet/{{ifld}}";
+    chd:http-method "GET";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+      leaf ifId {
+        type string {
+          pattern '[A-Za-z0-9]+';
+        }
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+          leaf _id {
+            type string {
+              length "1..32";
+              pattern '[A-Za-z0-9]+';
+            }
+            mandatory true;
+          }
+          uses chd:device-ethernet-interfaces;
+        }
+        case error-bad-request {
+          uses chd:bad-request;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-update-device-interface-ethernet {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Updates / modifies the properties associated with the interface";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}/interfaces/ethernet/{{ifld}}";
+    chd:http-method "PATCH";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+      leaf ifId {
+        type string {
+          pattern '[A-Za-z0-9]+';
+        }
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:ok;
+          leaf _id {
+            type string {
+              length "1..32";
+              pattern '[A-Za-z0-9]+';
+            }
+            mandatory true;
+          }
+          uses chd:device-ethernet-interfaces;
+        }
+        case error-bad-request {
+          uses chd:bad-request;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+
+  rpc controller-delete-device-interface-ethernet {
+    if-feature "chd:sdnc-halo-docs";
+    description
+      "Removes the interface from the device";
+    chd:openapi-path "/controller/v1/devices/{{elementId}}/interfaces/ethernet/{{ifld}}";
+    chd:http-method "DELETE";
+    input {
+      leaf elementId {
+        type yang:uuid;
+        mandatory true;
+      }
+      leaf ifId {
+        type string {
+          pattern '[A-Za-z0-9]+';
+        }
+        mandatory true;
+      }
+    }
+    output {
+      choice response {
+        case success {
+          uses chd:no-content;
+        }
+        case error-unauthorized {
+          uses chd:unauthorized;
+        }
+        case error-not-found {
+          uses chd:not-found;
+        }
+      }
+    }
+  }
+}

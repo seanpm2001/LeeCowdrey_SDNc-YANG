@@ -1,0 +1,50 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/test-generic.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title test-generic 
+package "c:sdnc" as c_sdnc { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of tg_test_generic : <b>Namespace: </b> urn:com:vendor:yang:test:generic \n<b>Prefix: </b> tg \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-10-18 \n
+package "tg:test-generic" as tg_test_generic { 
+c_sdnc +-- tg_test_generic
+cnf_sdnc_xnf +-- tg_test_generic
+cs_sdnc_sku +-- tg_test_generic
+inet_ietf_inet_types +-- tg_test_generic
+class "test-generic" as test_generic << (M, #33CCFF) module>> 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+test_generic *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host  
+} 
+
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

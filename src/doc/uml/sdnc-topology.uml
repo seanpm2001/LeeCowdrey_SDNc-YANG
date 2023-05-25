@@ -1,0 +1,81 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-topology.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-topology 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of ctop_sdnc_topology : <b>Namespace: </b> urn:com:vendor:yang:sdnc:topology \n<b>Prefix: </b> ctop \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "ctop:sdnc-topology" as ctop_sdnc_topology { 
+c_sdnc +-- ctop_sdnc_topology
+ct_sdnc_types +-- ctop_sdnc_topology
+cnf_sdnc_xnf +-- ctop_sdnc_topology
+yang_ietf_yang_types +-- ctop_sdnc_topology
+inet_ietf_inet_types +-- ctop_sdnc_topology
+class "sdnc-topology" as sdnc_topology << (M, #33CCFF) module>> 
+sdnc_topology : feature : sdnc_topology 
+sdnc_topology : is-known( in: link_id out: exists)
+sdnc_topology : define-link( in: topology_base_class in: leader_link_id in: topology_service_class in: source in: destination out: link_id)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_topology *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "topology" as  sdnc_I_sdnc_I_topology <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_topology 
+class "link" as  sdnc_I_sdnc_I_topology_I_link <<container>> 
+sdnc_I_sdnc_I_topology *-- "1" sdnc_I_sdnc_I_topology_I_link 
+class "links" as sdnc_I_sdnc_I_topology_I_link_I_links << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_topology_I_link *-- "0..N" sdnc_I_sdnc_I_topology_I_link_I_links 
+sdnc_I_sdnc_I_topology_I_link_I_links : +link-id : yang:uuid  {key} 
+sdnc_I_sdnc_I_topology_I_link_I_links : undefine( in: cascade)
+sdnc_I_sdnc_I_topology_I_link_I_links : topology-base-class : ct:topology-base-class-type   {mandatory}
+sdnc_I_sdnc_I_topology_I_link_I_links : leader-link-id : leafref : ...ctop:link-id  
+note bottom of sdnc_I_sdnc_I_topology_I_link_I_links
+<b>When</b> (leader-link-id):
+../topology-base-class = 'service'
+
+end note 
+sdnc_I_sdnc_I_topology_I_link_I_links : topology-service-class : ct:topology-service-class-type   {mandatory}
+note bottom of sdnc_I_sdnc_I_topology_I_link_I_links
+<b>When</b> (topology-service-class):
+../topology-base-class = 'service'
+
+end note 
+class "source" as  sdnc_I_sdnc_I_topology_I_link_I_links_I_source <<container>> 
+sdnc_I_sdnc_I_topology_I_link_I_links *-- "1" sdnc_I_sdnc_I_topology_I_link_I_links_I_source 
+sdnc_I_sdnc_I_topology_I_link_I_links_I_source : instance : leafref : ...cnf:instance   {mandatory}
+sdnc_I_sdnc_I_topology_I_link_I_links_I_source : termination-point : inet:uri  
+class "destination" as  sdnc_I_sdnc_I_topology_I_link_I_links_I_destination <<container>> 
+sdnc_I_sdnc_I_topology_I_link_I_links *-- "1" sdnc_I_sdnc_I_topology_I_link_I_links_I_destination 
+sdnc_I_sdnc_I_topology_I_link_I_links_I_destination : instance : leafref : ...cnf:instance   {mandatory}
+sdnc_I_sdnc_I_topology_I_link_I_links_I_destination : termination-point : inet:uri  
+class "/c:sdnc/ctop:topology/ctop:link/ctop:links" as sdnc_I_sdnc_I_topology_I_link_I_links <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_topology_I_link_I_links-->"ctop:link-id"sdnc_I_sdnc_I_topology_I_link_I_links: leader-link-id
+sdnc_I_sdnc_I_topology_I_link_I_links_I_source-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_topology_I_link_I_links_I_destination-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

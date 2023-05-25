@@ -1,0 +1,69 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-call-home.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-call-home 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+note top of cch_sdnc_call_home : <b>Namespace: </b> urn:com:vendor:yang:sdnc:call-home \n<b>Prefix: </b> cch \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2022-06-23 \n
+package "cch:sdnc-call-home" as cch_sdnc_call_home { 
+c_sdnc +-- cch_sdnc_call_home
+ct_sdnc_types +-- cch_sdnc_call_home
+class "sdnc-call-home" as sdnc_call_home << (M, #33CCFF) module>> 
+sdnc_call_home : feature : sdnc_call_home 
+sdnc_call_home : set-global-credentials( in: username in: passwords)
+sdnc_call_home : add-global-credential-passwords( in: username in: passwords)
+sdnc_call_home : ignore-ssh-host-keys( in: ignore)
+sdnc_call_home : set-tls-passphrase( in: key_id in: passphrase)
+sdnc_call_home : add-tls-certificate( in: id in: category in: certificate in: passphrase)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_call_home *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "call-home" as  sdnc_I_sdnc_I_call_home <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_call_home 
+class "credentials" as  sdnc_I_sdnc_I_call_home_I_credentials <<container>> 
+sdnc_I_sdnc_I_call_home *-- "1" sdnc_I_sdnc_I_call_home_I_credentials 
+sdnc_I_sdnc_I_call_home_I_credentials : username : string {length = 4..max}  
+sdnc_I_sdnc_I_call_home_I_credentials : remove()
+class "passwords" as sdnc_I_sdnc_I_call_home_I_credentials_I_passwords << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_call_home_I_credentials *-- "0..N" sdnc_I_sdnc_I_call_home_I_credentials_I_passwords : ordered-by : user
+sdnc_I_sdnc_I_call_home_I_credentials_I_passwords : +password : string {length = 4..max}  {key} 
+sdnc_I_sdnc_I_call_home_I_credentials_I_passwords : delete()
+class "ssh" as  sdnc_I_sdnc_I_call_home_I_ssh <<container>> 
+sdnc_I_sdnc_I_call_home *-- "1" sdnc_I_sdnc_I_call_home_I_ssh 
+class "ssh-host-keys" as  sdnc_I_sdnc_I_call_home_I_ssh_I_ssh_host_keys <<container>> 
+sdnc_I_sdnc_I_call_home_I_ssh *-- "1" sdnc_I_sdnc_I_call_home_I_ssh_I_ssh_host_keys 
+sdnc_I_sdnc_I_call_home_I_ssh_I_ssh_host_keys : ignore : boolean   = false 
+class "tls" as  sdnc_I_sdnc_I_call_home_I_tls <<container>> 
+sdnc_I_sdnc_I_call_home *-- "1" sdnc_I_sdnc_I_call_home_I_tls 
+class "certificates" as sdnc_I_sdnc_I_call_home_I_tls_I_certificates << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_call_home_I_tls *-- "0..N" sdnc_I_sdnc_I_call_home_I_tls_I_certificates : ordered-by : user
+sdnc_I_sdnc_I_call_home_I_tls_I_certificates : +id : string  {key}  {mandatory}
+sdnc_I_sdnc_I_call_home_I_tls_I_certificates : category : ct:tls-certificate-type   {mandatory}
+sdnc_I_sdnc_I_call_home_I_tls_I_certificates : certificate : string   {mandatory}
+sdnc_I_sdnc_I_call_home_I_tls_I_certificates : passphrase : string  
+note bottom of sdnc_I_sdnc_I_call_home_I_tls_I_certificates
+<b>When</b> (passphrase):
+../category='private-key'
+
+end note 
+sdnc_I_sdnc_I_call_home_I_tls_I_certificates : revoke()
+} 
+
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

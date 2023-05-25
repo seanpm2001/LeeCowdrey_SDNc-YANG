@@ -1,0 +1,38 @@
+module sdnc {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc";
+  prefix c;
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc Management System";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc {
+    description
+      "SDNc";
+    status current;
+  }
+
+  rpc about {
+    if-feature "c:sdnc";
+    output {
+      leaf about {
+        type string;
+      }
+    }
+  }
+
+  container sdnc {
+    description
+      "Root container";
+    if-feature "c:sdnc";
+  }
+}

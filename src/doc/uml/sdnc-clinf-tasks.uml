@@ -1,0 +1,62 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/sdnc-clinf-tasks.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title sdnc-clinf-tasks 
+package "c:sdnc" as c_sdnc { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "yang:ietf-yang-types" as yang_ietf_yang_types { 
+} 
+note top of cct_sdnc_clinf_tasks : <b>Namespace: </b> urn:com:vendor:yang:sdnc:clinf:tasks \n<b>Prefix: </b> cct \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2020-12-04 \n
+package "cct:sdnc-clinf-tasks" as cct_sdnc_clinf_tasks { 
+c_sdnc +-- cct_sdnc_clinf_tasks
+cnf_sdnc_xnf +-- cct_sdnc_clinf_tasks
+yang_ietf_yang_types +-- cct_sdnc_clinf_tasks
+class "sdnc-clinf-tasks" as sdnc_clinf_tasks << (M, #33CCFF) module>> 
+sdnc_clinf_tasks : feature : sdnc_clinf_tasks 
+sdnc_clinf_tasks : add( in: instance in: instance_slice out: task)
+sdnc_clinf_tasks : list-nf( out: instance)
+sdnc_clinf_tasks : list-tasks-by-nf( in: instance out: task out: instance_slice out: timestamp)
+class "/c:sdnc" as c_sdnc << (A,CadetBlue) augment>>
+sdnc_clinf_tasks *--  c_sdnc 
+note bottom of c_sdnc
+<b>if-feature: </b>c:sdnc
+end note 
+class "clinf" as  sdnc_I_sdnc_I_clinf <<container>> 
+c_sdnc *-- "1" sdnc_I_sdnc_I_clinf 
+class "tasks" as sdnc_I_sdnc_I_clinf_I_tasks << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_clinf *-- "0..N" sdnc_I_sdnc_I_clinf_I_tasks 
+sdnc_I_sdnc_I_clinf_I_tasks : +task : yang:uuid  {key}  {mandatory}
+sdnc_I_sdnc_I_clinf_I_tasks : empty()
+class "xnf" as sdnc_I_sdnc_I_clinf_I_tasks_I_xnf << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_clinf_I_tasks *-- "0..N" sdnc_I_sdnc_I_clinf_I_tasks_I_xnf 
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf : +instance : leafref : ...cnf:instance  {key}  {mandatory}
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf : purge()
+class "slices" as  sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices <<container>> 
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf *-- "1" sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices 
+class "slices" as sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices *-- "0..N" sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices 
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices : +instance-slice : leafref : ...cnf:instance-slice  {key}  {mandatory}
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices : timestamp : yang:date-and-time   {mandatory}
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices : delete()
+class "/c:sdnc/cnf:xnf/cnf:nf" as sdnc_I_sdnc_I_xnf_I_nf <<leafref>> 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs/cnf:config-slices" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
+sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices-->"cnf:instance-slice"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices: instance-slice
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

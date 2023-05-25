@@ -1,0 +1,785 @@
+module icx-generic {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:icx:generic";
+  prefix icx;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import sdnc-types {
+    prefix ct;
+    revision-date 2020-12-04;
+  }
+  import sdnc-sku {
+    prefix cs;
+    revision-date 2020-12-04;
+  }
+  import sdnc-pools {
+    prefix cp;
+    revision-date 2020-12-04;
+  }
+  import sdnc-xnf {
+    prefix cnf;
+    revision-date 2020-12-04;
+  }
+  import sdnc-groupings {
+    prefix cg;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "ICX Generic Device Model, aims to at minimum add RMD L2 Bridge
+     CIN (leaf-spine) network configuration to leaf switch to allow hold
+     IP DHCP helper addresses, IP pools etc.. For example:
+
+       !
+       vlan 1053 name X
+       tagged interface ethernet 1/1
+       router-interface ve 1053
+       !
+       interface ve 1053
+       port-name RMD Mgmt
+       ip address 172.18.5.1 255.255.255.0
+       ip helper-address 1 172.19.5.4
+       ip mtu 2000
+       ipv6 address fc00:d00:a:1805::1/64
+       ipv6 mtu 2000
+       ipv6 dhcp-relay destination fc00:d00:a::1905:0:4
+       ipv6 nd prefix-advertisement fc00:d00:a:1805::/64 1000 800 onlink
+       ipv6 nd ra-interval 30
+       !
+       interface ve 1054
+       port-name RMD Data
+       ip address 10.5.0.1 255.255.255.0
+       !
+    ";
+
+  revision 2021-06-01 {
+    description
+      "initial";
+  }
+
+  feature icx-generic {
+    status current;
+  }
+
+  cs:sku-model-revision "2021-06-01";
+  cs:sku-vendor "Vendor";
+  cs:sku-model-family "Ruckus ICX";
+  cs:sku-model-type "ICX 7x50 Generic";
+  cs:sku-firmware-name "boot";
+  cs:sku-firmware-version "8.0.30";
+  cs:sku-factory-enable-username "admin";
+  cs:sku-factory-enable-password "admin";
+  cs:sku-factory-access-username "admin";
+  cs:sku-factory-access-password "admin";
+  cs:sku-config-erase-cli "erase nvram";
+  cs:sku-config-reset-cli "reset nvram";
+  cs:sku-config-save-to-memory-cli "write memory";
+  cs:sku-config-copy-to-remote "copy running config {{../config-remote-endpoint}}";
+  cs:sku-config-remote-endpoint "tftp://tftp.vendor.com/path";
+  cs:sku-ssh-idle-cli "ip ssh idle-timeout {{../ssh-idle-timeout-duration}}";
+  cs:sku-ssh-idle-timeout-duration "360";
+  cs:cli-process "true";
+
+  augment "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" {
+    if-feature "c:sdnc";
+    if-feature "cnf:sdnc-xnf";
+    if-feature "cs:sdnc-sku";
+    container config {
+      config true;
+      leaf raw {
+        type string;
+      }
+      container cli-header {
+        config false;
+        cs:cli-begin "configure terminal";
+      }
+      //
+      container hardware {
+        uses cg:common-hardware {
+          refine "unit-name" {
+            default "Ruckus ICX";
+            mandatory false;
+          }
+          refine "unit-version" {
+            default "8.0.30";
+            mandatory false;
+          }
+        }
+        leaf operational-mode {
+          description
+            "The Operational Mode of the ICX";
+          type ct:l2-operational-mode;
+          default "mixed";
+        }
+        leaf stackable-capable {
+          description
+            "Unit is capable of being stacked, not that it is stacked (from HW: Stackable ICX6450-48-HPOE)";
+          type boolean;
+          default "false";
+        }
+        leaf legacy-license-identifier {
+          description
+            "Old Brocade style license idenntifier, LID (LID: dbvFJGKlFHr)";
+          type string {
+            length "11";
+          }
+        }
+      }
+      leaf hostname {
+        cs:cli-enable-cmd "hostname \"{{.}}\"";
+        cs:cli-modify-cmd "hostname \"{{.}}\"";
+        cs:cli-disable-cmd "no hostname \"{{.}}\"";
+        type inet:host;
+      }
+      container interfaces {
+        container ethernet {
+          list ports {
+            cs:cli-enable-cmd "interface ethernet {{./port-id}}";
+            cs:cli-disable-cmd "no interface ethernet {{./port-id}}";
+            key "port-id";
+            leaf port-id {
+              description
+                "StackID/Slot/Port";
+              type string {
+                pattern '[1-9]/[1-9](([0-9]*)?)/[1-9](([0-9]*)?)';
+              }
+            }
+          }
+        }
+        container group-ve;
+        container loopback;
+        container management;
+        container tunnel;
+        container ve {
+          list virtual-ethernet {
+            cs:cli-begin "interface ve {{./vif}}";
+            cs:cli-end "exit";
+            cs:cli-disable-cmd "no interface ve {{./vif}}";
+            key "vif";
+            leaf vif {
+              type leafref {
+                path "../../../../vlan/vlans/vlan-id";
+                require-instance true;
+              }
+            }
+            //
+            //  acl-logging                   enable logging of deny acl
+            //  bandwidth                     to set and communicate bandwidth value to
+            //                                higher-level protocols like OSPF and OSPFv3
+            //  clear                         Clear table/statistics/keys
+            //  disable                       Disable the interface
+            //  enable                        Enable the interface
+            //  end                           End Configuration level and go to Privileged
+            //                                level
+            //  exit                          Exit current level
+            //  ip                            IP interface
+            //  ipv6                          IPV6 interface
+            //  no                            Undo/disable commands
+            //  port-name                     Port name for the interface
+            //  quit                          Exit to User level
+            //  rate-limit                    Apply CAR to interface
+            //  show                          Show system information
+            //  source-guard                  Enable ip source guard
+            //  write                         Write running configuration to flash or terminal
+          }
+        }
+      }
+      container ip {
+        container mtu {
+          leaf mtu {
+            cs:cli-enable-cmd "ip mtu {{.}}";
+            cs:cli-disable-cmd "no ip mtu {{.}}";
+            type uint16 {
+              range "576..1500";
+            }
+          }
+        }
+      }
+      container vlan {
+        list vlans {
+          cs:cli-begin "vlan {{./vlan-id}} name \"{{./vlan-name}}\" [[by {{./by-type}}]]";
+          cs:cli-end "exit";
+          cs:cli-disable-cmd "no vlan {{./vlan-id}} name \"{{./vlan-name}}\" [[by {{./by-type}}]]";
+          key "vlan-id";
+          leaf outer {
+            type ct:ip-vlan-id;
+            default "1";
+          }
+          leaf vlan-id {
+            type leafref {
+              path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../icx:outer]/cp:inner/cp:identifier";
+              require-instance true;
+            }
+          }
+          leaf vlan-name {
+            type string;
+          }
+          leaf vlan-type {
+            type leafref {
+              path "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../icx:outer]/cp:inner[cp:identifier=current()/../icx:vlan-id]/cp:type";
+              require-instance true;
+            }
+          }
+          leaf by-type {
+            type enumeration {
+              enum port;
+            }
+          }
+          container protocol-name {
+            choice protocol {
+              case appletalk {
+                leaf atalk-name {
+                  cs:cli-enable-cmd "atalk-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no atalk-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+              case decnet {
+                leaf decnet-proto-name {
+                  cs:cli-enable-cmd "decnet-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no decnet-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+              case ip {
+                leaf ipv4-proto-name {
+                  cs:cli-enable-cmd "ip-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no ip-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+                leaf ipv6-proto-name {
+                  cs:cli-enable-cmd "ipv6-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no ipv6-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+              case ipx {
+                leaf ipx-name {
+                  cs:cli-enable-cmd "ipx-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no ipx-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+              case netbios {
+                leaf netbios-name {
+                  cs:cli-enable-cmd "netbios-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no netbios-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+              case other {
+                leaf other-name {
+                  cs:cli-enable-cmd "other-proto name \"{{.}}\"";
+                  cs:cli-disable-cmd "no other-proto name \"{{.}}\"";
+                  type string {
+                    length "1..32";
+                  }
+                }
+              }
+            }
+          }
+          container ethernet {
+            list loopbacks {
+              cs:cli-begin "ethernet loopback ethernet {{./port-id}}";
+              cs:cli-end "exit";
+              cs:cli-disable-cmd "no ethernet loopback ethernet {{./port-id}}";
+              key "port-id";
+              leaf port-id {
+                type leafref {
+                  path "../../../../../interfaces/ethernet/ports/port-id";
+                  require-instance true;
+                }
+              }
+            }
+          }
+          container ip-subnet {
+            leaf ip-address {
+              cs:cli-enable-cmd "ip-subnet \"{{.}}\"";
+              cs:cli-disable-cmd "no ip-subnet \"{{.}}\"";
+              type union {
+                type inet:ipv4-address-no-zone;
+                type inet:ipv4-address;
+              }
+            }
+          }
+          container ipx-network {
+            when '(../protocol-name/ipx-name)';
+            leaf network {
+              type string {
+                pattern '0x(([0-9a-fA-F])*)?';
+                length "3..10";
+              }
+            }
+          }
+          container loop-detection {
+            leaf enabled {
+              cs:cli-enable-cmd "loop-detection";
+              cs:cli-disable-cmd "no loop-detection";
+              type empty;
+            }
+          }
+          container metro {
+            list ring {
+              cs:cli-begin "metro-rings {{./ring-id}}";
+              cs:cli-end "exit";
+              cs:cli-disable-cmd "no metro-rings {{./ring-id}}";
+              key "ring-id";
+              leaf ring-id {
+                type uint16 {
+                  range "1..1023";
+                }
+              }
+              leaf enabled {
+                description
+                  "enable metro ring protocol on this bridge";
+                cs:cli-enable-cmd "enable";
+                cs:cli-disable-cmd "no enable";
+                type empty;
+              }
+              leaf hello-time {
+                description
+                  "hello time for ring packets";
+                cs:cli-enable-cmd "hello-time {{.}}";
+                cs:cli-disable-cmd "no hello-time {{.}}";
+                type uint16 {
+                  range "100..15000";
+                }
+              }
+              leaf master {
+                description
+                  "this bridge as ring master";
+                cs:cli-enable-cmd "master";
+                cs:cli-disable-cmd "no master";
+                type empty;
+              }
+              leaf ring-label {
+                description
+                  "ring name label";
+                cs:cli-enable-cmd "name {{.}}";
+                cs:cli-disable-cmd "no name {{.}}";
+                type string {
+                  length "1..64";
+                }
+              }
+              leaf preforwarding-time {
+                description
+                  "preforwarding time for ring interfaces";
+                cs:cli-enable-cmd "preforwarding-time {{.}}";
+                cs:cli-disable-cmd "no preforwarding-time {{.}}";
+                type uint16 {
+                  range "200..30000";
+                }
+              }
+              list ring-interface {
+                cs:cli-enable-cmd "ring-interfaces {{./port-id}}";
+                cs:cli-disable-cmd "no ring-interfaces {{./port-id}}";
+                key "port-id";
+                leaf port-id {
+                  type leafref {
+                    path "../../../../../../interfaces/ethernet/ports/port-id";
+                    require-instance true;
+                  }
+                }
+              }
+            }
+            list rings {
+              cs:cli-enable-cmd "metro-rings {{./ring-id}}";
+              cs:cli-disable-cmd "no metro-rings {{./ring-id}}";
+              key "ring-id";
+              leaf ring-id {
+                type uint16 {
+                  range "1..1023";
+                }
+              }
+            }
+          }
+          container monitoring {
+            list monitors {
+              description
+                "Monitor Ingress Traffic on this VLAN (Enable VLAN Mirroring)";
+              cs:cli-enable-cmd "monitor ethernet {{./port-id}}";
+              cs:cli-disable-cmd "no monitor ethernet {{./port-id}}";
+              key "port-id";
+              leaf port-id {
+                type leafref {
+                  path "../../../../../interfaces/ethernet/ports/port-id";
+                  require-instance true;
+                }
+              }
+            }
+          }
+          container multicast {
+            description
+              "IPv4 IGMP snooping";
+            leaf active {
+              cs:cli-enable-cmd "multicast active";
+              cs:cli-disable-cmd "no multicast active";
+              type empty;
+            }
+            leaf disable-igmp-snoop {
+              cs:cli-enable-cmd "multicast disable-igmp-snoop";
+              cs:cli-disable-cmd "no multicast disable-igmp-snoop";
+              type empty;
+            }
+            leaf disable-pimsm-snoop {
+              cs:cli-enable-cmd "multicast disable-pimsm-snoop";
+              cs:cli-disable-cmd "no multicast disable-pimsm-snoop";
+              type empty;
+            }
+            leaf fast-convergence {
+              cs:cli-enable-cmd "multicast fast-convergence";
+              cs:cli-disable-cmd "no multicast fast-convergence";
+              type empty;
+            }
+            leaf fast-leave-v2 {
+              cs:cli-enable-cmd "multicast fast-leave-v2";
+              cs:cli-disable-cmd "no multicast fast-leave-v2";
+              type empty;
+            }
+            leaf passive {
+              cs:cli-enable-cmd "multicast passive";
+              cs:cli-disable-cmd "no multicast passive";
+              type empty;
+            }
+            container pimsm-snooping {
+              leaf prune-wait {
+                cs:cli-enable-cmd "multicast pimsm-snooping prune-wait {{.}}";
+                cs:cli-disable-cmd "no multicast pimsm-snooping prune-wait {{.}}";
+                type uint16 {
+                  range "0..max";
+                }
+              }
+            }
+            leaf port-version {
+              cs:cli-enable-cmd "multicast port-version {{.}}";
+              cs:cli-disable-cmd "no multicast port-version {{.}}";
+              type enumeration {
+                enum 2;
+                enum 3;
+              }
+            }
+            leaf proxy-off {
+              cs:cli-enable-cmd "multicast proxy-off";
+              cs:cli-disable-cmd "no multicast proxy-off";
+              type empty;
+            }
+            container router-port {
+              leaf port-id {
+                cs:cli-enable-cmd "multicast router-port ethernet {{.}}";
+                cs:cli-disable-cmd "no multicast router-port ethernet {{.}}";
+                type leafref {
+                  path "../../../../../interfaces/ethernet/ports/port-id";
+                  require-instance true;
+                }
+              }
+            }
+            container static-group {
+              list groups {
+                key "ip-address";
+                leaf ip-address {
+                  type inet:ipv4-address-no-zone;
+                }
+                container count {
+                  leaf contiguous-groups {
+                    type uint16 {
+                      range "1..max";
+                    }
+                  }
+                  leaf drop {
+                    cs:cli-enable-cmd "multicast static-group {{../../ip-address}} count {{../contiguous-groups}} drop";
+                    cs:cli-disable-cmd "no multicast static-group {{../../ip-address}} count {{../contiguous-groups}} drop";
+                    type empty;
+                  }
+                  container ethernet {
+                    list ports {
+                      key "port-id";
+                      leaf port-id {
+                        cs:cli-enable-cmd "multicast static-group {{../../../../ip-address}} count {{../contiguous-groups}} ethernet {{../port-id}}";
+                        cs:cli-disable-cmd "no multicast static-group {{../../../../ip-address}} count {{../contiguous-groups}} ethernet {{../port-id}}";
+                        type empty;
+                      }
+                    }
+                  }
+                }
+                container ethernet {
+                  list ports {
+                    cs:cli-enable-cmd "multicast static-group {{../../../../ip-address}}";
+                    cs:cli-disable-cmd "no multicast static-group {{../../../../ip-address}}";
+                    key "port-id";
+                    leaf port-id {
+                      type leafref {
+                        path "../../../../../../../../interfaces/ethernet/ports/port-id";
+                        require-instance true;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          container multicast6 {
+            description
+              "IPv6 MLD snooping";
+            leaf active {
+              cs:cli-enable-cmd "multicast6 active";
+              cs:cli-disable-cmd "no multicast6 active";
+              type empty;
+            }
+            leaf disable-mld-snoop {
+              cs:cli-enable-cmd "multicast6 disable-mld-snoop";
+              cs:cli-disable-cmd "no multicast6 disable-mld-snoop";
+              type empty;
+            }
+            leaf disable-pimsm-snoop {
+              cs:cli-enable-cmd "multicast disable-pimsm-snoop";
+              cs:cli-disable-cmd "no multicast disable-pimsm-snoop";
+              type empty;
+            }
+            leaf fast-convergence {
+              cs:cli-enable-cmd "multicast6 fast-convergence";
+              cs:cli-disable-cmd "no multicast6 fast-convergence";
+              type empty;
+            }
+            leaf fast-leave-v1 {
+              cs:cli-enable-cmd "multicast6 fast-leave-v1";
+              cs:cli-disable-cmd "no multicast6 fast-leave-v1";
+              type empty;
+            }
+            leaf passive {
+              cs:cli-enable-cmd "multicast6 passive";
+              cs:cli-disable-cmd "no multicast6 passive";
+              type empty;
+            }
+            container pimsm-snooping {
+              leaf prune-wait {
+                cs:cli-enable-cmd "multicast6 pimsm-snooping prune-wait {{.}}";
+                cs:cli-disable-cmd "no multicast6 pimsm-snooping prune-wait {{.}}";
+                type uint16 {
+                  range "0..max";
+                }
+              }
+            }
+            leaf port-version {
+              cs:cli-enable-cmd "multicast6 port-version {{.}}";
+              cs:cli-disable-cmd "no multicast6 port-version {{.}}";
+              type enumeration {
+                enum 1;
+                enum 2;
+              }
+            }
+            leaf proxy-off {
+              cs:cli-enable-cmd "multicast6 proxy-off";
+              cs:cli-disable-cmd "no multicast6 proxy-off";
+              type empty;
+            }
+            container router-port {
+              leaf port-id {
+                cs:cli-enable-cmd "multicast6 router-port ethernet {{.}}";
+                cs:cli-disable-cmd "no multicast6 router-port ethernet {{.}}";
+                type leafref {
+                  path "../../../../../interfaces/ethernet/ports/port-id";
+                  require-instance true;
+                }
+              }
+            }
+            container static-group {
+              list groups {
+                key "ip-address";
+                leaf ip-address {
+                  type inet:ipv6-address-no-zone;
+                }
+                container count {
+                  leaf contiguous-groups {
+                    type uint16 {
+                      range "1..max";
+                    }
+                  }
+                  leaf drop {
+                    cs:cli-enable-cmd "multicast6 static-group {{../../ip-address}} count {{../contiguous-groups}} drop";
+                    cs:cli-disable-cmd "no multicast6 static-group {{../../ip-address}} count {{../contiguous-groups}} drop";
+                    type empty;
+                  }
+                  container ethernet {
+                    list ports {
+                      key "port-id";
+                      leaf port-id {
+                        cs:cli-enable-cmd "multicast6 static-group {{../../../../ip-address}} count {{../contiguous-groups}} ethernet {{../port-id}}";
+                        cs:cli-disable-cmd "no multicast6 static-group {{../../../../ip-address}} count {{../contiguous-groups}} ethernet {{../port-id}}";
+                        type empty;
+                      }
+                    }
+                  }
+                }
+                container ethernet {
+                  list ports {
+                    cs:cli-enable-cmd "multicast6 static-group {{../../../../ip-address}";
+                    cs:cli-disable-cmd "no multicast6 static-group {{../../../../ip-address}";
+                    key "port-id";
+                    leaf port-id {
+                      type leafref {
+                        path "../../../../../../../../interfaces/ethernet/ports/port-id";
+                        require-instance true;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            leaf tracking {
+              cs:cli-enable-cmd "multicast6 tracking";
+              cs:cli-disable-cmd "no multicast6 tracking";
+              type empty;
+            }
+            leaf version {
+              cs:cli-enable-cmd "multicast6 version {{.}}";
+              cs:cli-disable-cmd "no multicast6 version {{.}}";
+              type enumeration {
+                enum 1;
+                enum 2;
+              }
+            }
+          }
+          container pvlan;
+          container router-interface {
+            leaf vif {
+              cs:cli-enable-cmd "router-interface ve {{.}}";
+              cs:cli-disable-cmd "no router-interface ve {{.}}";
+              type leafref {
+                path "../../../../interfaces/ve/virtual-ethernet/vif";
+                require-instance true;
+              }
+            }
+          }
+          container spanning-tree;
+          container static-mac-address;
+          container tagged {
+            when "../vlan-type = 'tagged'";
+            container ethernet {
+              list ports {
+                cs:cli-enable-cmd "tagged ethernet {{./port-id}}";
+                cs:cli-disable-cmd "no tagged ethernet {{./port-id}}";
+                key "port-id";
+                leaf port-id {
+                  type leafref {
+                    path "../../../../../../interfaces/ethernet/ports/port-id";
+                    require-instance true;
+                  }
+                }
+              }
+            }
+          }
+          container untagged {
+            when "../vlan-type = 'untagged'";
+            container ethernet {
+              list ports {
+                cs:cli-enable-cmd "untagged ethernet {{./port-id}}";
+                cs:cli-disable-cmd "no untagged ethernet {{./port-id}}";
+                key "port-id";
+                leaf port-id {
+                  type leafref {
+                    path "../../../../../../interfaces/ethernet/ports/port-id";
+                    require-instance true;
+                  }
+                }
+              }
+            }
+          }
+          container uplink-switch {
+            container ethernet {
+              list ports {
+                cs:cli-enable-cmd "uplink-switch ethernet {{./port-id}}";
+                cs:cli-disable-cmd "no uplink-switch ethernet {{./port-id}}";
+                key "port-id";
+                leaf port-id {
+                  type leafref {
+                    path "../../../../../../interfaces/ethernet/ports/port-id";
+                    require-instance true;
+                  }
+                }
+              }
+            }
+          }
+          container vsrp {
+            choice auth-type {
+              case simple {
+                leaf simple-text-auth {
+                  cs:cli-enable-cmd "vsrp auth-type simple-text-auth \"{{.}}\"";
+                  cs:cli-disable-cmd "no vsrp auth-type simple-text-auth \"{{.}}\"";
+                  type string {
+                    length "1..8";
+                  }
+                }
+              }
+              case none {
+                leaf no-auth {
+                  cs:cli-enable-cmd "vsrp auth-type no-auth";
+                  cs:cli-disable-cmd "no vsrp auth-type no-auth";
+                  type empty;
+                }
+              }
+            }
+            leaf vrid {
+              description
+                "virtual router identifier";
+              cs:cli-enable-cmd "vsrp vrid {{.}}";
+              cs:cli-disable-cmd "no vsrp vrid {{.}}";
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:virtual-router/cp:virtual-routers/cp:identifier";
+                require-instance true;
+              }
+            }
+          }
+          container vsrp-aware {
+            leaf vrid {
+              description
+                "virtual router identifier";
+              cs:cli-enable-cmd "vsrp-aware vrid {{.}}";
+              cs:cli-disable-cmd "no vsrp-aware vrid {{.}}";
+              type leafref {
+                path "/c:sdnc/cp:pools/cp:ip/cp:virtual-router/cp:virtual-routers/cp:identifier";
+                require-instance true;
+              }
+            }
+          }
+          container webauth {
+            leaf enabled {
+              cs:cli-enable-cmd "webauth";
+              cs:cli-disable-cmd "no webauth";
+              type empty;
+            }
+          }
+        }
+      }
+      //
+      container cli-footer {
+        config false;
+        cs:cli-end "end";
+      }
+    }
+  }
+}

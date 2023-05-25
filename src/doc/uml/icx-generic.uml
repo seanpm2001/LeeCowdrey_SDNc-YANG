@@ -1,0 +1,319 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java -Xmx1024m  -jar plantuml.jar <file> 
+@startuml img/icx-generic.png 
+hide empty fields 
+hide empty methods 
+hide <<case>> circle
+hide <<augment>> circle
+hide <<choice>> circle
+hide <<leafref>> stereotype
+hide <<leafref>> circle
+page 1x1 
+Title icx-generic 
+package "c:sdnc" as c_sdnc { 
+} 
+package "ct:sdnc-types" as ct_sdnc_types { 
+} 
+package "cs:sdnc-sku" as cs_sdnc_sku { 
+} 
+package "cp:sdnc-pools" as cp_sdnc_pools { 
+} 
+package "cnf:sdnc-xnf" as cnf_sdnc_xnf { 
+} 
+package "cg:sdnc-groupings" as cg_sdnc_groupings { 
+} 
+package "inet:ietf-inet-types" as inet_ietf_inet_types { 
+} 
+note top of icx_icx_generic : <b>Namespace: </b> urn:com:vendor:yang:icx:generic \n<b>Prefix: </b> icx \n<b>Organization : </b>\nCowdrey Consulting UK \n<b>Contact : </b>\nlee@cowdrey.net \n<b>Revision : </b> 2021-06-01 \n
+package "icx:icx-generic" as icx_icx_generic { 
+c_sdnc +-- icx_icx_generic
+ct_sdnc_types +-- icx_icx_generic
+cs_sdnc_sku +-- icx_icx_generic
+cp_sdnc_pools +-- icx_icx_generic
+cnf_sdnc_xnf +-- icx_icx_generic
+cg_sdnc_groupings +-- icx_icx_generic
+inet_ietf_inet_types +-- icx_icx_generic
+class "icx-generic" as icx_generic << (M, #33CCFF) module>> 
+icx_generic : feature : icx_generic 
+class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs" as c_sdnc_cnf_xnf_cnf_nf_cnf_configs << (A,CadetBlue) augment>>
+icx_generic *--  c_sdnc_cnf_xnf_cnf_nf_cnf_configs 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>c:sdnc
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cnf:sdnc-xnf
+end note 
+note bottom of c_sdnc_cnf_xnf_cnf_nf_cnf_configs
+<b>if-feature: </b>cs:sdnc-sku
+end note 
+class "config" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config <<container>> 
+c_sdnc_cnf_xnf_cnf_nf_cnf_configs *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config
+<b>Config = </b>true
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : raw : string  
+class "cli-header" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_header
+<b>Config = </b>false
+end note 
+class "hardware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : cg:common-hardware {uses} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : operational-mode : ct:l2-operational-mode   = mixed 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : stackable-capable : boolean   = false 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_hardware : legacy-license-identifier : string {length = 11}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host  
+class "interfaces" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports : +port-id : string {pattern = [1-9]/[1-9](([0-9]*)...}  {key} 
+class "group-ve" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_group_ve <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_group_ve 
+class "loopback" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_loopback <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_loopback 
+class "management" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_management <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_management 
+class "tunnel" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_tunnel <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_tunnel 
+class "ve" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve 
+class "virtual-ethernet" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve_I_virtual_ethernet << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve_I_virtual_ethernet 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve_I_virtual_ethernet : +vif : leafref : ...vlan-id  {key} 
+class "ip" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip 
+class "mtu" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_mtu <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_mtu 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_ip_I_mtu : mtu : uint16 [576..1500]  
+class "vlan" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan 
+class "vlans" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans : outer : ct:ip-vlan-id   = 1 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans : +vlan-id : leafref : ...cp:identifier  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans : vlan-name : string  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans : vlan-type : leafref : ...cp:type  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans : by-type : enumeration : {port,}  
+class "protocol-name" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name 
+class "protocol" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol <<choice>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol : choice 
+class "appletalk" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_appletalk_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_appletalk_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_appletalk_case : atalk-name : string {length = 1..32}  
+class "decnet" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_decnet_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_decnet_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_decnet_case : decnet-proto-name : string {length = 1..32}  
+class "ip" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ip_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ip_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ip_case : ipv4-proto-name : string {length = 1..32}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ip_case : ipv6-proto-name : string {length = 1..32}  
+class "ipx" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ipx_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ipx_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_ipx_case : ipx-name : string {length = 1..32}  
+class "netbios" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_netbios_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_netbios_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_netbios_case : netbios-name : string {length = 1..32}  
+class "other" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_other_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_other_case  : choice protocol
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_protocol_name_I_protocol_I_other_case : other-name : string {length = 1..32}  
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet 
+class "loopbacks" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet_I_loopbacks << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet_I_loopbacks 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet_I_loopbacks : +port-id : leafref : ...port-id  {key} 
+class "ip-subnet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ip_subnet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ip_subnet 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ip_subnet : ip-address : union{inet:ipv4-address-no-zone, inet:ipv4-address}  
+class "ipx-network" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ipx_network <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ipx_network 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ipx_network
+<b>When: </b>(../protocol-name/ipx-name)
+end note 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ipx_network : network : string {length = 3..10} {pattern = 0x(([0-9a-fA-F])*)?}  
+class "loop-detection" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_loop_detection <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_loop_detection 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_loop_detection : enabled : empty  
+class "metro" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro 
+class "ring" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : +ring-id : uint16 [1..1023]  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : enabled : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : hello-time : uint16 [100..15000]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : master : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : ring-label : string {length = 1..64}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring : preforwarding-time : uint16 [200..30000]  
+class "ring-interface" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring_I_ring_interface << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring_I_ring_interface 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring_I_ring_interface : +port-id : leafref : ...port-id  {key} 
+class "rings" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_rings << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_rings 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_rings : +ring-id : uint16 [1..1023]  {key} 
+class "monitoring" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring 
+class "monitors" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring_I_monitors << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring_I_monitors 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring_I_monitors : +port-id : leafref : ...port-id  {key} 
+class "multicast" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : active : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : disable-igmp-snoop : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : disable-pimsm-snoop : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : fast-convergence : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : fast-leave-v2 : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : passive : empty  
+class "pimsm-snooping" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_pimsm_snooping <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_pimsm_snooping 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_pimsm_snooping : prune-wait : uint16 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : port-version : enumeration : {2,3,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast : proxy-off : empty  
+class "router-port" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_router_port <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_router_port 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_router_port : +port-id : leafref : ...port-id  {key} 
+class "static-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group 
+class "groups" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups : +ip-address : inet:ipv4-address-no-zone  {key} 
+class "count" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count : contiguous-groups : uint16 [1..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count : drop : empty  
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_count_I_ethernet_I_ports : +port-id : empty  {key} 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet_I_ports : +port-id : leafref : ...port-id  {key} 
+class "multicast6" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : active : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : disable-mld-snoop : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : disable-pimsm-snoop : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : fast-convergence : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : fast-leave-v1 : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : passive : empty  
+class "pimsm-snooping" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_pimsm_snooping <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_pimsm_snooping 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_pimsm_snooping : prune-wait : uint16 [0..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : port-version : enumeration : {1,2,}  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : proxy-off : empty  
+class "router-port" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_router_port <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_router_port 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_router_port : +port-id : leafref : ...port-id  {key} 
+class "static-group" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group 
+class "groups" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups : +ip-address : inet:ipv6-address-no-zone  {key} 
+class "count" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count : contiguous-groups : uint16 [1..max]  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count : drop : empty  
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_count_I_ethernet_I_ports : +port-id : empty  {key} 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet_I_ports : +port-id : leafref : ...port-id  {key} 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : tracking : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6 : version : enumeration : {1,2,}  
+class "pvlan" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_pvlan <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_pvlan 
+class "router-interface" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_router_interface <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_router_interface 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_router_interface : vif : leafref : ...vif  
+class "spanning-tree" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_spanning_tree <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_spanning_tree 
+class "static-mac-address" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_static_mac_address <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_static_mac_address 
+class "tagged" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged
+<b>When: </b>../vlan-type = 'tagged'
+end note 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet_I_ports : +port-id : leafref : ...port-id  {key} 
+class "untagged" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged
+<b>When: </b>../vlan-type = 'untagged'
+end note 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet_I_ports : +port-id : leafref : ...port-id  {key} 
+class "uplink-switch" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch 
+class "ethernet" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet 
+class "ports" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet_I_ports << (L, #FF7700) list>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet *-- "0..N" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet_I_ports 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet_I_ports : +port-id : leafref : ...port-id  {key} 
+class "vsrp" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp 
+class "auth-type" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type <<choice>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type : choice 
+class "simple" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_simple_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_simple_case  : choice auth-type
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_simple_case : simple-text-auth : string {length = 1..8}  
+class "none" as sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_none_case <<case>>
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type .. sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_none_case  : choice auth-type
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_I_auth_type_I_none_case : no-auth : empty  
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp : vrid : leafref : ...cp:identifier  
+class "vsrp-aware" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_aware <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_aware 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_aware : vrid : leafref : ...cp:identifier  
+class "webauth" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_webauth <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_webauth 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_webauth : enabled : empty  
+class "cli-footer" as  sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer <<container>> 
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config *-- "1" sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer 
+note bottom of sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_cli_footer
+<b>Config = </b>false
+end note 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../icx:outer]/cp:inner" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:vlan/cp:outer[cp:identifier=current()/../icx:outer]/cp:inner[cp:identifier=current()/../icx:vlan-id]" as sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:virtual-router/cp:virtual-routers" as sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers <<leafref>> 
+class "/c:sdnc/cp:pools/cp:ip/cp:virtual-router/cp:virtual-routers" as sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers <<leafref>> 
+} 
+
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve_I_virtual_ethernet-->"vlan-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans: vif
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: vlan-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans-->"cp:type"sdnc_I_sdnc_I_pools_I_ip_I_vlan_I_outer_I_inner: vlan-type
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_ethernet_I_loopbacks-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_metro_I_ring_I_ring_interface-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_monitoring_I_monitors-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_router_port-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast_I_static_group_I_groups_I_ethernet_I_ports-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_router_port-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_multicast6_I_static_group_I_groups_I_ethernet_I_ports-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_router_interface-->"vif"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ve_I_virtual_ethernet: vif
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_tagged_I_ethernet_I_ports-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_untagged_I_ethernet_I_ports-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ethernet_I_ports-->"port-id"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_interfaces_I_ethernet_I_ports: port-id
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers: vrid
+sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_aware-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers: vrid
+center footer
+ <size:24> CommScope © 2020-2022 All Rights Reserved </size>
+ endfooter 
+@enduml 

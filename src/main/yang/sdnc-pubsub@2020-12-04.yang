@@ -1,0 +1,520 @@
+module sdnc-pubsub {
+  yang-version 1.1;
+  namespace "urn:com:vendor:yang:sdnc:pubsub";
+  prefix cps;
+
+  import sdnc {
+    prefix c;
+    revision-date 2020-12-04;
+  }
+  import ietf-inet-types {
+    prefix inet;
+    revision-date 2013-05-15;
+    reference
+      "RFC 6991";
+  }
+
+  organization
+    "Cowdrey Consulting UK";
+  contact
+    "lee@cowdrey.net";
+  description
+    "SDNc YANG Publish/Subscribe (PubSub)";
+
+  revision 2020-12-04 {
+    description
+      "initial";
+  }
+
+  feature sdnc-pubsub {
+    status current;
+  }
+
+  rpc listen {
+    if-feature "c:sdnc";
+    description
+      "add YANG notification to listen for to notification list";
+    input {
+      leaf-list yang-notification {
+        min-elements 1;
+        description "namespace:notification-name i.e. sdnc-xnf:nf-config-change or "
+                  + "(urn:com:vendor:yang:sdnc:xnf?revision=2020-12-04)nf-config-change";
+        type string {
+          //pattern '([A-Za-z_][A-Za-z0-9_-]+):([A-Za-z_][A-Za-z0-9_-]+)';
+          pattern '(\()?([A-Za-z_][A-Za-z0-9_:-]+)((\?revision=\d{4}-\d{2}-\d{2}\))?([A-Za-z_][A-Za-z0-9_-]+)?)';
+        }
+      }
+    }
+  }
+
+  rpc publish {
+    description
+      "Generated notification from this mechanism will match RFC6020
+
+       <notification
+       xmlns=\"urn:ietf:params:netconf:capability:notification:1.0\">
+       <eventTime>2007-09-01T10:00:00Z</eventTime>
+       <link-failure xmlns=\"http://acme.example.com/system\">
+       <if-name>so-1/2/3.0</if-name>
+       <if-admin-status>up</if-admin-status>
+       <if-oper-status>down</if-oper-status>
+       </link-failure>
+       </notification>
+
+       In reality construction will occur as:
+
+       <notification
+       xmlns=\"%%yang-notification value%%\">
+       <eventTime>%%timestamp%%</eventTime>
+       %%data value%%
+       </notification>
+
+       For example:
+
+       <notification
+       xmlns=\"sdnc-xnf:nf-config-change\">
+       <eventTime>2021-09-23T11:31:00Z</eventTime>
+       <config-generated xmlns=\"urn:com:vendor:yang:sdnc:xnf\">
+       <instance>c321b4c6-6cda-44d0-95b9-5b12eb37641e</instance>
+       <model-namespace>pon-xp6164s</model-namespace>
+       <model-version>2021-09-01</model-version>
+       </config-generated
+       </notification>
+      ";
+    if-feature "c:sdnc";
+    input {
+      leaf yang-notification {
+        description
+          "namespace:notification-name i.e. sdnc-xnf:nf-config-change
+           example: sdnc-xnf:nf-config-change ";
+        type string {
+          //pattern '([A-Za-z_][A-Za-z0-9_-]+):([A-Za-z_][A-Za-z0-9_-]+)';
+          pattern '(\()?([A-Za-z_][A-Za-z0-9_:-]+)((\?revision=\d{4}-\d{2}-\d{2}\))?([A-Za-z_][A-Za-z0-9_-]+)?)';
+        }
+        mandatory true;
+      }
+      leaf data {
+        type string;
+        description
+          "XML formatted string example:
+           <nf-config-change xmlns=\"urn:com:vendor:yang:sdnc:xnf\">
+           <instance>e91ace6a-de87-4661-9a41-6566fa79e270</instance>
+           <model-namespace>rxd-rd2322</model-namespace>
+           <model-revision>2020-12-04</model-revision>
+           </nf-config-change>";
+        mandatory true;
+      }
+    }
+  }
+
+  rpc subscribe {
+    if-feature "c:sdnc";
+    input {
+      list subscriptions {
+        key "yang-notification";
+        ordered-by user;
+        leaf yang-notification {
+          description
+            "namespace:notification-name i.e. sdnc-xnf:nf-config-change";
+          type string {
+            //pattern '([A-Za-z_][A-Za-z0-9_-]+):([A-Za-z_][A-Za-z0-9_-]+)';
+            pattern '(\()?([A-Za-z_][A-Za-z0-9_:-]+)((\?revision=\d{4}-\d{2}-\d{2}\))?([A-Za-z_][A-Za-z0-9_-]+)?)';
+          }
+          mandatory true;
+        }
+        leaf endpoint {
+          description
+            "Endpoints for the async RESTful callback or kafka publisher
+             format   {http|https}://{host}[:port]/{path}
+             examples http://1.2.3.4:8888/
+                     https://1.2.3.4/return/path/point ";
+          type inet:uri;
+          must "starts-with(current(),'http:') or "
+             + "starts-with(current(),'https:')" {
+            error-app-tag "endpoint-protocol-invalid";
+            error-message "endpoint protocol invalid, must be http: or https:";
+          }
+          mandatory true;
+        }
+      }
+      leaf retries {
+        type uint8 {
+          range "1..8";
+        }
+        default "2";
+      }
+      leaf retry-delay {
+        description
+          "Time to wait before retrying";
+        units "Milliseconds";
+        type uint64 {
+          range "0..max";
+        }
+        default "10000";
+      }
+      leaf max-life-retries {
+        description "Maximum number of retries before endpoint is deemed unreachable before this callback is automatically deleted"
+                  + "0 means unlimited, never deleted";
+        type uint8 {
+          range "0..255";
+        }
+        default "16";
+      }
+      leaf username {
+        type string;
+      }
+      leaf password {
+        type string;
+      }
+      leaf security-protocol {
+        type enumeration {
+          enum none;
+          enum basic;
+        }
+        default "none";
+      }
+    }
+  }
+
+  rpc kafka-broker-register {
+    input {
+      list brokers {
+        key "host port";
+        leaf host {
+          description
+            "Kafka broker host/ip name";
+          type inet:host;
+        }
+        leaf port {
+          description
+            "Kafka broker port number";
+          type inet:port-number;
+        }
+        leaf client-id {
+          type string;
+          default "sdnc";
+        }
+        leaf retries {
+          type uint8 {
+            range "0..8";
+          }
+          default "2";
+        }
+        leaf retry-delay {
+          description
+            "Time to wait before retrying";
+          units "Milliseconds";
+          type uint64 {
+            range "0..max";
+          }
+          default "10000";
+        }
+        leaf username {
+          type string;
+        }
+        leaf password {
+          type string;
+        }
+        leaf security-protocol {
+          type enumeration {
+            enum none;
+            enum basic;
+            enum digest;
+            enum plaintext;
+            enum sasl_ssl;
+            enum sasl_plain;
+          }
+          default "none";
+        }
+        leaf acks {
+          description
+            "Kafka producer acks to prevent data loss";
+          type enumeration {
+            enum all {
+              description
+                "produer never gets ack when all in-sync replicas have received record";
+            }
+            enum 0 {
+              description
+                "producer never gets ack";
+            }
+            enum 1 {
+              description
+                "producer gets ack after leader received record";
+            }
+          }
+          default "1";
+        }
+        leaf linger {
+          description
+            "Time to wait before sending current batch";
+          units "Milliseconds";
+          type uint64 {
+            range "0..max";
+          }
+          default "0";
+        }
+        leaf batch-size {
+          units "KB";
+          type uint64 {
+            range "0..max";
+          }
+          default "16";
+        }
+        leaf buffer-memory {
+          units "MB";
+          type uint64 {
+            range "0..max";
+          }
+          default "32";
+        }
+        leaf max-request-size {
+          units "MB";
+          type uint64 {
+            range "0..max";
+          }
+          default "1";
+        }
+        leaf max-inflight-requests-per-connection {
+          type uint8 {
+            range "1..255";
+          }
+          default "5";
+        }
+        leaf compression-method {
+          type enumeration {
+            enum none;
+            enum gzip;
+            enum lz4;
+            enum snappy;
+          }
+          default "none";
+        }
+      }
+    }
+  }
+
+  augment "/c:sdnc" {
+    if-feature "c:sdnc";
+    container pubsub {
+      container kafka {
+        list brokers {
+          key "host port";
+          leaf host {
+            description
+              "Kafka broker host/ip name";
+            type inet:host;
+          }
+          leaf port {
+            description
+              "Kafka broker port number";
+            type inet:port-number;
+          }
+          action unregister {
+            description
+              "remove kafka broker host";
+          }
+          leaf client-id {
+            type string;
+            default "sdnc";
+          }
+          leaf retries {
+            type uint8 {
+              range "0..8";
+            }
+            mandatory true;
+          }
+          leaf retry-delay {
+            description
+              "Time to wait before retrying";
+            units "Milliseconds";
+            type uint64 {
+              range "0..max";
+            }
+            default "10000";
+          }
+          leaf username {
+            type string;
+          }
+          leaf password {
+            type string;
+          }
+          leaf security-protocol {
+            type enumeration {
+              enum none;
+              enum basic;
+              enum digest;
+              enum plaintext;
+              enum sasl_ssl;
+              enum sasl_plain;
+            }
+            default "none";
+          }
+          leaf acks {
+            description
+              "Kafka producer acks to prevent data loss";
+            type enumeration {
+              enum all {
+                description
+                  "produer never gets ack when all in-sync replicas have received record";
+              }
+              enum 0 {
+                description
+                  "producer never gets ack";
+              }
+              enum 1 {
+                description
+                  "producer gets ack after leader received record";
+              }
+            }
+            default "1";
+          }
+          leaf linger {
+            description
+              "Time to wait before sending current batch";
+            units "Milliseconds";
+            type uint64 {
+              range "0..max";
+            }
+            default "0";
+          }
+          leaf batch-size {
+            units "KB";
+            type uint64 {
+              range "0..max";
+            }
+            default "16";
+          }
+          leaf buffer-memory {
+            units "MB";
+            type uint64 {
+              range "0..max";
+            }
+            default "32";
+          }
+          leaf max-request-size {
+            units "MB";
+            type uint64 {
+              range "0..max";
+            }
+            default "1";
+          }
+          leaf max-inflight-requests-per-connection {
+            type uint8 {
+              range "1..255";
+            }
+            default "5";
+          }
+          leaf compression-method {
+            type enumeration {
+              enum none;
+              enum gzip;
+              enum lz4;
+              enum snappy;
+            }
+            default "none";
+          }
+        }
+      }
+      container listener {
+        list notifications {
+          key "yang-notification";
+          leaf yang-notification {
+            description
+              "namespace:notification-name i.e. sdnc-xnf:nf-config-change";
+            type string {
+              //pattern '([A-Za-z_][A-Za-z0-9_-]+):([A-Za-z_][A-Za-z0-9_-]+)';
+              pattern '(\()?([A-Za-z_][A-Za-z0-9_:-]+)((\?revision=\d{4}-\d{2}-\d{2}\))?([A-Za-z_][A-Za-z0-9_-]+)?)';
+            }
+            mandatory true;
+          }
+          action unlisten {
+            description
+              "remove listened for YANG notification, and remove any occurrences from subscriptions";
+          }
+        }
+      }
+      container subscriptions {
+        list subscription {
+          key "yang-notification";
+          leaf yang-notification {
+            description
+              "namespace:notification-name i.e. sdnc-xnf:nf-config-change";
+            type leafref {
+              path "../../../listener/notifications/yang-notification";
+              require-instance true;
+            }
+            mandatory true;
+          }
+          list consumers {
+            key "endpoint";
+            leaf endpoint {
+              description
+                "Endpoints for the async RESTful callback or kafka publisher
+                 format   {http|https}://{host}[:port]/{path}
+                 examples http://1.2.3.4:8888/
+                         https://1.2.3.4/return/path/point";
+              type inet:uri;
+              must "starts-with(current(),'http:') or "
+                 + "starts-with(current(),'https:')" {
+                error-app-tag "endpoint-protocol-invalid";
+                error-message "endpoint protocol invalid, must be http: or https:";
+              }
+              mandatory true;
+            }
+            action unsubscribe {
+              description
+                "cancel notification subscription";
+            }
+            container options {
+              leaf retries {
+                type uint8 {
+                  range "1..8";
+                }
+                mandatory true;
+              }
+              leaf retry-delay {
+                description
+                  "Time to wait before retrying";
+                units "Milliseconds";
+                type uint64 {
+                  range "0..max";
+                }
+                mandatory true;
+              }
+              leaf life-retries {
+                config false;
+                type uint8 {
+                  range "0..255";
+                }
+                default "0";
+              }
+              leaf max-life-retries {
+                description "Maximum number of retries before endpoint is deemed unreachable before this callback is automatically deleted"
+                          + "0 means unlimited, never deleted";
+                type uint8 {
+                  range "0..255";
+                }
+                default "16";
+              }
+              leaf username {
+                type string;
+              }
+              leaf password {
+                type string;
+              }
+              leaf security-protocol {
+                type enumeration {
+                  enum none;
+                  enum basic;
+                  enum digest;
+                }
+                mandatory true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
