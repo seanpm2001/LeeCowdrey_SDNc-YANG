@@ -11,7 +11,7 @@ run() {
 }
 DN=$(dirname $0)
 pushd ${DN}/.. &>/dev/null
-UML_FOOTER="Cowdrey Consulting UK"
+UML_FOOTER="subject to revision"
 UML_OPTS=""
 [[ ! -d src/doc/uml ]] && (mkdir -p src/doc/uml)
 [[ ! -d src/doc/uml/devices ]] && (mkdir -p src/doc/uml/devices)

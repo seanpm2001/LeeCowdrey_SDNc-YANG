@@ -23,6 +23,6 @@ sdnc_notifications_I_notification_event_grouping : cg:common-notification-event 
 } 
 
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

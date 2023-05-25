@@ -86,6 +86,6 @@ sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription_I_consumers_I_options : secu
 
 sdnc_I_sdnc_I_pubsub_I_subscriptions_I_subscription-->"yang-notification"sdnc_I_sdnc_I_pubsub_I_listener_I_notifications: yang-notification
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

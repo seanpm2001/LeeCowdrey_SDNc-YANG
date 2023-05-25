@@ -5493,9 +5493,9 @@ sdnc_xnf_I_nf_config_delivery-->"cnf:instance-slice"sdnc_I_sdnc_I_xnf_I_nf_I_con
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_types-->"hostname"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config: type7
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things: variant
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things_I_level2_I_things-->"variant"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_things_I_level1_I_things: variant
-c_sdnc-->sdnc_I_sdnc : augments
 c_sdnc_cnf_xnf_cnf_nf_cnf_configs-->sdnc_I_sdnc_I_xnf_I_nf_I_configs : augments
+c_sdnc-->sdnc_I_sdnc : augments
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

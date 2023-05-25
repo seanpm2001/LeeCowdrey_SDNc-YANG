@@ -30,6 +30,6 @@ class "common-notification-event" as sdnc_groupings_I_common_notification_event_
 } 
 
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

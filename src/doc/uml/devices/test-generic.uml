@@ -45,6 +45,6 @@ sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config : hostname : inet:host
 } 
 
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

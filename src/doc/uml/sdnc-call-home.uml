@@ -64,6 +64,6 @@ sdnc_I_sdnc_I_call_home_I_tls_I_certificates : revoke()
 } 
 
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

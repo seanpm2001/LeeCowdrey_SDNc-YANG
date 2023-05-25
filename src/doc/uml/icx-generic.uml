@@ -314,6 +314,6 @@ sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_uplink_switch_I_ether
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers: vrid
 sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_I_vlan_I_vlans_I_vsrp_aware-->"cp:identifier"sdnc_I_sdnc_I_pools_I_ip_I_virtual_router_I_virtual_routers: vrid
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

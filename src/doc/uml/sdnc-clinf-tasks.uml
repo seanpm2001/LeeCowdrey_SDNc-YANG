@@ -57,6 +57,6 @@ class "/c:sdnc/cnf:xnf/cnf:nf/cnf:configs/cnf:config-slices" as sdnc_I_sdnc_I_xn
 sdnc_I_sdnc_I_clinf_I_tasks_I_xnf-->"cnf:instance"sdnc_I_sdnc_I_xnf_I_nf: instance
 sdnc_I_sdnc_I_clinf_I_tasks_I_xnf_I_slices_I_slices-->"cnf:instance-slice"sdnc_I_sdnc_I_xnf_I_nf_I_configs_I_config_slices: instance-slice
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

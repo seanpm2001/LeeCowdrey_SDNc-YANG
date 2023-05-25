@@ -130,6 +130,6 @@ sdnc_snmp_I_snmp_security_group_deleted-->"css:identifier"sdnc_I_sdnc_I_snmp_I_s
 sdnc_snmp_I_snmp_request_oid_added-->"css:identifier"sdnc_I_sdnc_I_snmp_I_requests_I_request_groups: identifier
 sdnc_snmp_I_snmp_request_oid_deleted-->"css:identifier"sdnc_I_sdnc_I_snmp_I_requests_I_request_groups: identifier
 center footer
- <size:24> Cowdrey Consulting UK </size>
+ <size:24> subject to revision </size>
  endfooter 
 @enduml 

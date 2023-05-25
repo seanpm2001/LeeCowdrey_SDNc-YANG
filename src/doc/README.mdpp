@@ -440,46 +440,6 @@ Work In Progress, expected to be required for RMD Layer 2 Bridge and External In
 
 <<tree/sdnc-call-home.md>>
 
-## Universal License Management (ULS)
-
-### YANG model name
-
-`sdnc-uls`
-
-### YANG namespace
-
-`urn:com:vendor:yang:sdnc:uls`
-
-### YANG model prefix
-
-`cu`
-
-### YANG version
-
-`1.1`
-
-### YANG revision
-
-`2020-12-04`
-
-### Status
-
-`Unpublished/Draft`
-
-### YANG exposed RPCs
-
-| type | path | name |
-| :--- | :--- | :--- |
-|      |      |      |
-
-### YANG Model (UML)
-
-[![](./img/sdnc-uls.png)](./img/sdnc-uls.svg)
-
-### YANG Tree Structure
-
-<<tree/sdnc-uls.md>>
-
 ## SNMP Security/Requests Management (SNMP)
 
 ### YANG model name
