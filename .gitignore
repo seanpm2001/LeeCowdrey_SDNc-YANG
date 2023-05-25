@@ -1,0 +1,5 @@
+.github/workflows
+src/main/java/
+target/
+*.out
+*.java
